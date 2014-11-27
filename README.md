@@ -21,9 +21,15 @@ How to build
 Resources from others
 ---------------------
 
-launcher icon from Vivien Bocquelet under Creative Commons (Attribution 3.0 Unported)
+launcher icon from Vivien Bocquelet under Creative Commons (Attribution 3.0)
+
 material-design-icons from google under Creative Commons (Attribution 4.0)
+
 login background from bighope, Shanghai Resistance.
+
+retrofit from square https://github.com/square/retrofit
+
+RippleEffect from traex https://github.com/traex/RippleEffect
 
 LICENSE
 -------
