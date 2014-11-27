@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/filter_drawer_bg"
+    android:layout_gravity="end"
+    android:layout_width="300dp"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="@string/filter_drawer_title"
+        android:textColor="@color/filter_drawer_title_color"
+        android:layout_margin="@dimen/filter_drawer_title_margin"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@android:color/darker_gray"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.andexert.library.RippleView
+                android:id="@+id/item_everything"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                ripple:rv_type="rectangle"
+                ripple:rv_color="@color/ripple_material_light">
+
+                <LinearLayout
+                    android:layout_margin="@dimen/filter_drawer_title_margin"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src = "@drawable/ic_all"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
+                        android:text="@string/everything"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/filter_drawer_item_text_color"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/count_everything"
+                        android:clickable="false"
+                        android:text="0"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/filter_drawer_count_text_everything"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </com.andexert.library.RippleView>
+
+
+
+            <View
+                android:layout_marginLeft="@dimen/filter_drawer_item_item_divider_margin_left"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/darker_gray"/>
+
+            <com.andexert.library.RippleView
+                android:id="@+id/item_accepted"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                ripple:rv_type="rectangle"
+                ripple:rv_color="@color/ripple_material_light">
+
+                <LinearLayout
+                    android:layout_margin="@dimen/filter_drawer_title_margin"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src = "@drawable/ic_accepted"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
+                        android:text="@string/accepted"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/filter_drawer_item_text_color"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/count_accepted"
+                        android:clickable="false"
+                        android:text="0"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/filter_drawer_count_text_accepted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </com.andexert.library.RippleView>
+
+
+
+            <View
+                android:layout_marginLeft="@dimen/filter_drawer_item_item_divider_margin_left"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/darker_gray"/>
+
+            <com.andexert.library.RippleView
+                android:id="@+id/item_rejected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                ripple:rv_type="rectangle"
+                ripple:rv_color="@color/ripple_material_light">
+
+                <LinearLayout
+                    android:layout_margin="@dimen/filter_drawer_title_margin"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src = "@drawable/ic_rejected"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
+                        android:text="@string/rejected"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/filter_drawer_item_text_color"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/count_rejected"
+                        android:clickable="false"
+                        android:text="0"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/filter_drawer_count_text_rejected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </com.andexert.library.RippleView>
+
+            <View
+                android:layout_marginLeft="@dimen/filter_drawer_item_item_divider_margin_left"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/darker_gray"/>
+
+            <com.andexert.library.RippleView
+                android:id="@+id/item_waiting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                ripple:rv_type="rectangle"
+                ripple:rv_color="@color/ripple_material_light">
+
+                <LinearLayout
+                    android:layout_margin="@dimen/filter_drawer_title_margin"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src = "@drawable/ic_proposed"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
+                        android:text="@string/waiting"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/filter_drawer_item_text_color"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/count_waiting"
+                        android:clickable="false"
+                        android:text="0"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/filter_drawer_count_text_waiting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </com.andexert.library.RippleView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/darker_gray"/>
+
+            <TextView
+                android:text="@string/order"
+                android:layout_margin="@dimen/filter_drawer_title_margin"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.andexert.library.RippleView
+                android:id="@+id/item_smart_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                ripple:rv_type="rectangle"
+                ripple:rv_color="@color/ripple_material_light">
+
+                <LinearLayout
+                    android:layout_margin="@dimen/filter_drawer_title_margin"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src = "@drawable/ic_smart_order"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
+                        android:text="@string/smart_order"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/filter_drawer_item_text_color"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </com.andexert.library.RippleView>
+
+            <View
+                android:layout_marginLeft="@dimen/filter_drawer_item_item_divider_margin_left"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/darker_gray"/>
+
+            <com.andexert.library.RippleView
+                android:id="@+id/item_asc_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                ripple:rv_type="rectangle"
+                ripple:rv_color="@color/ripple_material_light">
+
+                <LinearLayout
+                    android:layout_margin="@dimen/filter_drawer_title_margin"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src = "@drawable/ic_all"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
+                        android:text="@string/asc_order"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/filter_drawer_item_text_color"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </com.andexert.library.RippleView>
+
+            <View
+                android:layout_marginLeft="@dimen/filter_drawer_item_item_divider_margin_left"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/darker_gray"/>
+
+            <com.andexert.library.RippleView
+                android:id="@+id/item_desc_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                ripple:rv_type="rectangle"
+                ripple:rv_color="@color/ripple_material_light">
+
+                <LinearLayout
+                    android:layout_margin="@dimen/filter_drawer_title_margin"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src = "@drawable/ic_desc"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
+                        android:text="@string/desc_order"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/filter_drawer_item_text_color"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </com.andexert.library.RippleView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/darker_gray"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="@dimen/cardview_vertical_margin"
+                                    android:layout_marginLeft="@dimen/cardview_horizontal_margin"
+                                    android:layout_marginRight="@dimen/cardview_horizontal_margin"
+                                    android:elevation="@dimen/card_elevation"
+                                    card_view:cardCornerRadius="@dimen/card_corner_radius">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/portal_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/portal_list_name_margin"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/default_portal_name"/>
+
+        <LinearLayout
+            android:layout_marginBottom="@dimen/portal_list_last_updated_margin"
+            android:layout_marginLeft="@dimen/portal_list_name_margin"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/last_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/portal_last_updated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/default_date_diff"/>
+
+            <TextView
+                android:text="@string/day_ago"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/portal_event_list"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</android.support.v7.widget.CardView>

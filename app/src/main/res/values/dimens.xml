@@ -1,0 +1,35 @@
+<resources>
+    <dimen name="activity_horizontal_margin">0dp</dimen>
+    <dimen name="activity_vertical_margin">0dp</dimen>
+    <dimen name="cardview_horizontal_margin">10dp</dimen>
+    <dimen name="cardview_vertical_margin">25dp</dimen>
+    <dimen name="summary_list_vertical_margin">10dp</dimen>
+    <dimen name="summary_title_text_margin">20dp</dimen>
+    <dimen name="summary_list_text_to_image_margin_top">5dp</dimen>
+    <dimen name="summary_list_margin_left">30dp</dimen>
+    <dimen name="summary_list_margin_right">50dp</dimen>
+    <dimen name="summary_list_last_update_width">140dp</dimen>
+    <dimen name="card_elevation">5dp</dimen>
+    <dimen name="card_corner_radius">2dp</dimen>
+    <dimen name="account_info_title_image_margin">10dp</dimen>
+    <dimen name="account_info_title_text_margin">20dp</dimen>
+    <dimen name="account_info_mail_image_margin">10dp</dimen>
+    <dimen name="account_info_mail_text_margin">20dp</dimen>
+    <dimen name="account_info_last_update_text_margin_top">10dp</dimen>
+    <dimen name="account_info_last_update_text_margin_bottom">15dp</dimen>
+    <dimen name="portal_event_list_image_size">24dp</dimen>
+    <dimen name="event_list_last_update_width">120dp</dimen>
+    <dimen name="portal_list_name_margin">15dp</dimen>
+    <dimen name="portal_list_last_updated_margin">15dp</dimen>
+    <dimen name="portal_event_list_item_margin">5dp</dimen>
+    <dimen name="portal_event_list_text_marginTop">10dp</dimen>
+    <dimen name="portal_list_item_text_margin_right">20dp</dimen>
+    <dimen name="no_date_alert_card_text_margin">40dp</dimen>
+
+    <dimen name="auth_activity_login_button_margin">40dp</dimen>
+
+    <!--filter_drawer-->
+    <dimen name="filter_drawer_title_margin">20dp</dimen>
+    <dimen name="filter_drawer_item_text_margin_left">15dp</dimen>
+    <dimen name="filter_drawer_item_item_divider_margin_left">61dp</dimen>
+</resources>
