@@ -248,6 +248,7 @@ public class MainActivity extends ActionBarActivity{
                 PortalEvent event = new PortalEvent(name, operationType, operationResult, date, messageId);
                 portalEvents.add(event);
             }
+            cursor.close();
             database.close();
             // merge stored events to empty portal detail.
             GMailServiceUtil util = GMailServiceUtil.getInstance(token);

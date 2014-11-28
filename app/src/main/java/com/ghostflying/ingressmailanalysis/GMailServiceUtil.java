@@ -25,7 +25,7 @@ import retrofit.RestAdapter;
  * An util class for query and process data.
  */
 public class GMailServiceUtil {
-    private static final int ONE_DAY_MILLISECONDS = 3600 * 24 * 1000;
+    private static final long ONE_DAY_MILLISECONDS = 3600L * 24 * 1000;
     private static final String QUERY_STRING = "from:(super-ops@google.com OR ingress-support@google.com) subject:(Ingress Portal)";
     private static final String QUERY_MESSAGE_FORMAT = "metadata";
     private static final String QUERY_MESSAGE_METADATA_DATE = "date";
@@ -104,6 +104,8 @@ public class GMailServiceUtil {
             afterStr = DEFAULT_AFTER_STR;
         }
 
+        lastEvent.close();
+
         ArrayList<MessageList.MessageId> messageIds = getAllPortalMessageIds("after:" + afterStr);
 
         // remove all exist messageId
@@ -144,7 +146,7 @@ public class GMailServiceUtil {
         for (MessageList.MessageId id : ids.toArray(new MessageList.MessageId[ids.size()])){
             Cursor existEvent = database.query(
                     PortalEventContract.PortalEvent.TABLE_NAME,
-                    null,
+                    new String[]{PortalEventContract.PortalEvent.COLUMN_NAME_MESSAGE_ID},
                     PortalEventContract.PortalEvent.COLUMN_NAME_MESSAGE_ID + " = ?",
                     new String[]{id.getId()},
                     null,
@@ -154,6 +156,7 @@ public class GMailServiceUtil {
             );
             if (existEvent.moveToFirst())
                 ids.remove(id);
+            existEvent.close();
         }
     }
 
