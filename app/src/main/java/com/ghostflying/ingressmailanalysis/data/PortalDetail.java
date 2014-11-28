@@ -84,10 +84,15 @@ public class PortalDetail implements Comparable<PortalDetail>{
 
     /**
      * Check if the portal edit/submit accepted by NIA.
+     * If there is any accept event for the portal, it will be deal as accepted.
      * @return  true if accepted, otherwise false.
      */
     public boolean isAccepted(){
-        return events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.PASSED;
+        for (PortalEvent eachEvent : events){
+            if (eachEvent.getOperationResult() == PortalEvent.OperationResult.PASSED)
+                return true;
+        }
+        return false;
     }
 
     /**
