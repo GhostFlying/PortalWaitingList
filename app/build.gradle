@@ -15,8 +15,8 @@ android {
         applicationId "com.ghostflying.ingressmailanalysis"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 3
-        versionName "1.1b"
+        versionCode 5
+        versionName "1.1d"
     }
     buildTypes {
         release {
