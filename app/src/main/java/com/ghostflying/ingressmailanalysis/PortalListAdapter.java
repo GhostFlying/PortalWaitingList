@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.ghostflying.ingressmailanalysis.data.PortalDetail;
 import com.ghostflying.ingressmailanalysis.data.PortalEvent;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -22,12 +22,12 @@ import java.util.Date;
  */
 public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.ViewHolder>{
     ArrayList<PortalDetail> dataSet;
-    SimpleDateFormat dateFormat;
+    DateFormat localeDateFormat;
     Date dateNow;
 
     public PortalListAdapter (ArrayList<PortalDetail> dataSet){
         this.dataSet = dataSet;
-        dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+        localeDateFormat = DateFormat.getDateInstance(DateFormat.FULL);
         dateNow = new Date();
     }
 
@@ -61,7 +61,7 @@ public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.Vi
         for (int i = 0; i < events.size(); i++){
             viewHolder.setEventIcon(i, getEventIcon(events.get(i).getOperationType(),
                     events.get(i).getOperationResult()));
-            viewHolder.setEventDate(i, dateFormat.format(events.get(i).getDate()));
+            viewHolder.setEventDate(i, localeDateFormat.format(events.get(i).getDate()));
         }
     }
 
