@@ -143,6 +143,9 @@ public class MainActivity extends ActionBarActivity{
             case REJECTED:
                 setTitle(R.string.rejected);
                 break;
+            case WAITING:
+                setTitle(R.string.waiting);
+                break;
         }
     }
 

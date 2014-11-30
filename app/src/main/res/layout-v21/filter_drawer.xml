@@ -180,7 +180,7 @@
 
                 <ImageView
                     android:clickable="false"
-                    android:src = "@drawable/ic_proposed"
+                    android:src = "@drawable/ic_waiting"
                     android:layout_width="24dp"
                     android:layout_height="24dp" />
 
