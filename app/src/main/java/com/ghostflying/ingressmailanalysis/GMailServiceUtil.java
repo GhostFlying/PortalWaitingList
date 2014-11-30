@@ -47,6 +47,7 @@ public class GMailServiceUtil {
     private static final String REGEX_PORTAL_EDIT_PASSED = "(?<=Ingress Portal Data Edit Accepted:).+";
     private static final String REGEX_PORTAL_EDIT_REJECTED = "(?<=Ingress Portal Data Edit Reviewed:).+";
     private static final String REGEX_EACH_JSON_IN_BATCH = "\\{.+\\}";
+    private static final String REGEX_FIND_BOUNDARY = "(?<=boundary=).+";
     private static final String DEFAULT_AFTER_STR = "1995/07/08";
     private static final String PART_REQUEST_BASE_PATH = "GET /gmail/v1/users/me/messages/";
     private static final String BATCH_REQUEST_URL = "https://www.googleapis.com/batch";
@@ -60,6 +61,7 @@ public class GMailServiceUtil {
     private Pattern patternEditPassed;
     private Pattern patternEditRejected;
     private Pattern patternEachResponse;
+    private Pattern patternBoundary;
     private Gson gson;
     private GMailService GMailService;
 
@@ -131,14 +133,24 @@ public class GMailServiceUtil {
         database.close();
 
         // Query and add Message to list.
-        for (int i = 0; i < (messageIds.size()/100 + 1); i++){
-            int count = (messageIds.size() > (i + 1) * 100) ? 100 : messageIds.size() - 100 * i;
-            messages.addAll(getBatchMessages(messageIds, i * 100, count));
+        if (messageIds.size() > 0){
+            for (int i = 0; i < (messageIds.size()/100 + 1); i++){
+                int count = (messageIds.size() > (i + 1) * 100) ? 100 : messageIds.size() - 100 * i;
+                messages.addAll(getBatchMessages(messageIds, i * 100, count));
+            }
         }
 
         return messages;
     }
 
+    /**
+     * Get messages by batch request
+     * @param messageIds    the id list.
+     * @param start          start index.
+     * @param count          count.
+     * @return                the parsed messages.
+     * @throws IOException    the response has error.
+     */
     private ArrayList<Message> getBatchMessages(ArrayList<MessageList.MessageId> messageIds,
                                                 int start, int count) throws IOException{
         OkHttpClient client = new OkHttpClient();
@@ -165,8 +177,10 @@ public class GMailServiceUtil {
         Response response = client.newCall(request).execute();
         String contentType = response.header("Content-Type");
         String responseBody = response.body().string();
-        Pattern pattern = Pattern.compile("(?<=boundary=).+");
-        Matcher matcher = pattern.matcher(contentType);
+        if (patternBoundary == null){
+            patternBoundary = Pattern.compile(REGEX_FIND_BOUNDARY);
+        }
+        Matcher matcher = patternBoundary.matcher(contentType);
         if (matcher.find()){
             String boundary = matcher.group();
             String[] eachResponses = responseBody.split("--" + boundary);
