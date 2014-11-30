@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
-import retrofit.http.Multipart;
 
 /**
  * Created by ghostflying on 11/20/14.
@@ -63,13 +62,20 @@ public class GMailServiceUtil {
     private Pattern patternEachResponse;
     private Pattern patternBoundary;
     private Gson gson;
-    private GMailService GMailService;
+    private GMailService gmailService;
 
     /**
-     * Private constructor, initial the restful API Client and set some parameters.
-     * @param token
+     * Private constructor
      */
-    private GMailServiceUtil(final String token){
+    private GMailServiceUtil(){
+
+    }
+
+    /**
+     * Set the token before query.
+     * @param token the token to query.
+     */
+    public void setToken(final String token){
         RequestInterceptor requestInterceptor = new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
@@ -81,18 +87,17 @@ public class GMailServiceUtil {
                 .setEndpoint("https://www.googleapis.com/gmail/v1")
                 .setRequestInterceptor(requestInterceptor)
                 .build();
-        GMailService = restAdapter.create(GMailService.class);
+        gmailService = restAdapter.create(GMailService.class);
         this.token = token;
     }
 
     /**
      * Get an instance of GMailServiceUtil.
-     * @param token the token to query in all methods.
      * @return the instance.
      */
-    public static GMailServiceUtil getInstance(String token){
+    public static GMailServiceUtil getInstance(){
         if (instance == null){
-            instance = new GMailServiceUtil(token);
+            instance = new GMailServiceUtil();
         }
         return instance;
     }
@@ -218,7 +223,7 @@ public class GMailServiceUtil {
         MessageList messageList;
         String pageToken = null;
         do{
-            messageList = GMailService.getMessages(QUERY_STRING + afterStr, pageToken);
+            messageList = gmailService.getMessages(QUERY_STRING + afterStr, pageToken);
             messageIds.addAll(messageList.getMessages());
             pageToken = messageList.getNextPageToken();
         }while (messageList.hasNextPage());
