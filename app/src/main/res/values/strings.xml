@@ -36,5 +36,6 @@
 
     <string name="alert_to_refresh">First time? Please wait refreshing.</string>
     <string name="network_error">Network error, please make sure a reliable connection.</string>
+    <string name="auth_error">Authorization Error, need to grant again.</string>
 
 </resources>

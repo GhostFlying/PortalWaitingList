@@ -1,6 +1,7 @@
 package com.ghostflying.ingressmailanalysis;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,10 +25,13 @@ import com.ghostflying.ingressmailanalysis.data.PortalDetail;
 import com.ghostflying.ingressmailanalysis.data.PortalEvent;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+
+import retrofit.RetrofitError;
 
 
 public class MainActivity extends ActionBarActivity{
@@ -54,8 +58,7 @@ public class MainActivity extends ActionBarActivity{
         // If account is not set, usually user open this first time
         // turn to AuthIntent.
         if ((account = SettingUtil.getAccount()) == null){
-            Intent authIntent = new Intent(new Intent(this, AuthActivity.class));
-            startActivity(authIntent);
+            doAuth();
         }
         // Initial some members
         totalPortalDetails = new ArrayList<PortalDetail>();
@@ -67,6 +70,12 @@ public class MainActivity extends ActionBarActivity{
         setDrawerLayout();
         //Initial storied data
         new InitialTask().execute();
+    }
+
+    private void doAuth() {
+        Intent authIntent = new Intent(new Intent(this, AuthActivity.class));
+        authIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(authIntent);
     }
 
     private void setDrawerLayout(){
@@ -212,16 +221,6 @@ public class MainActivity extends ActionBarActivity{
             // if no account is set, stop initial.
             if (account == null)
                 return null;
-            // if token is not set, get new token
-            if (token == null){
-                try {
-                    token = GoogleAuthUtil.getToken(getApplicationContext(), account, AuthActivity.SCOPE);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (GoogleAuthException e) {
-                    e.printStackTrace();
-                }
-            }
             ArrayList<PortalEvent> portalEvents = new ArrayList<PortalEvent>();
             // query from SQLite
             SQLiteDatabase database = dbHelper.getReadableDatabase();
@@ -251,7 +250,7 @@ public class MainActivity extends ActionBarActivity{
             cursor.close();
             database.close();
             // merge stored events to empty portal detail.
-            GMailServiceUtil util = GMailServiceUtil.getInstance(token);
+            GMailServiceUtil util = GMailServiceUtil.getInstance();
             util.mergeEvents(totalPortalDetails, portalEvents);
             //update counts
             counts = util.getCounts(totalPortalDetails);
@@ -274,11 +273,20 @@ public class MainActivity extends ActionBarActivity{
             isInitialed = true;
 
             if (account != null && totalPortalDetails.size() == 0){
-                Toast.makeText(getApplicationContext(), R.string.alert_to_refresh, Toast.LENGTH_LONG).show();
+                showToast(R.string.alert_to_refresh);
                 swipeRefreshLayout.setRefreshing(true);
                 new RefreshTask().execute();
             }
         }
+    }
+
+    private void showToast(final int resId){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), resId, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -292,24 +300,24 @@ public class MainActivity extends ActionBarActivity{
         protected Void doInBackground(Void...params) {
             // wait until initial done.
             while (!isInitialed);
-
+            try{
+                token = GoogleAuthUtil.getToken(getApplicationContext(), account, AuthActivity.SCOPE);
+            }catch (Exception e){
+                handleException(e);
+                return null;
+            }
+            GMailServiceUtil util = GMailServiceUtil.getInstance();
+            util.setToken(token);
             // query and convert all new messages.
             ArrayList<Message> newMessages;
             try{
-                newMessages = GMailServiceUtil.getInstance(token)
-                        .getPortalMessages(dbHelper);
+                newMessages = util.getPortalMessages(dbHelper);
             }
-            catch (IOException e){
-                e.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
-                    }
-                });
+            catch (Exception e){
+                handleException(e);
                 return null;
             }
-            ArrayList<PortalEvent> newEvents = GMailServiceUtil.getInstance(token).analysisMessages(newMessages);
+            ArrayList<PortalEvent> newEvents = GMailServiceUtil.getInstance().analysisMessages(newMessages);
 
             // write new messages to db.
             SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -328,7 +336,6 @@ public class MainActivity extends ActionBarActivity{
             }
             db.close();
             // merge new events to exist portal details
-            GMailServiceUtil util = GMailServiceUtil.getInstance(token);
             util.mergeEvents(totalPortalDetails, newEvents);
             // update counts
             counts = util.getCounts(totalPortalDetails);
@@ -340,6 +347,29 @@ public class MainActivity extends ActionBarActivity{
                     ((PortalListAdapter) recyclerView.getAdapter()).dataSet
             );
             return null;
+        }
+
+        /**
+         * Handle the exception during the refresh.
+         * @param e the exception.
+         */
+        private void handleException(final Exception e){
+            if (e instanceof GoogleAuthException) {
+                showToast(R.string.auth_error);
+                doAuth();
+            } else if (e instanceof IOException) {
+                showToast(R.string.network_error);
+            } else if (e instanceof RetrofitError) {
+                if (((RetrofitError) e).getResponse().getStatus() == 401) {
+                    try {
+                        showToast(R.string.auth_error);
+                        GoogleAuthUtil.clearToken(getApplicationContext(), token);
+                        doAuth();
+                    } catch (Exception e1) {
+                        handleException(e1);
+                    }
+                }
+            }
         }
 
         @Override
@@ -358,7 +388,7 @@ public class MainActivity extends ActionBarActivity{
 
         @Override
         protected Void doInBackground(Void... params) {
-            GMailServiceUtil.getInstance(token).filterAndSort(
+            GMailServiceUtil.getInstance().filterAndSort(
                     SettingUtil.getFilterMethod(),
                     SettingUtil.getSortOrder(),
                     totalPortalDetails,
