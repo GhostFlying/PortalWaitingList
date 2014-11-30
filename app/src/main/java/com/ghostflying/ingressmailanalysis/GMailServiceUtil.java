@@ -7,7 +7,15 @@ import com.ghostflying.ingressmailanalysis.data.Message;
 import com.ghostflying.ingressmailanalysis.data.MessageList;
 import com.ghostflying.ingressmailanalysis.data.PortalDetail;
 import com.ghostflying.ingressmailanalysis.data.PortalEvent;
+import com.google.gson.Gson;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.MultipartBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +26,7 @@ import java.util.regex.Pattern;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.http.Multipart;
 
 /**
  * Created by ghostflying on 11/20/14.
@@ -27,24 +36,31 @@ import retrofit.RestAdapter;
 public class GMailServiceUtil {
     private static final long ONE_DAY_MILLISECONDS = 3600L * 24 * 1000;
     private static final String QUERY_STRING = "from:(super-ops@google.com OR ingress-support@google.com) subject:(Ingress Portal)";
-    private static final String QUERY_MESSAGE_FORMAT = "metadata";
-    private static final String QUERY_MESSAGE_METADATA_DATE = "date";
-    private static final String QUERY_MESSAGE_METADATA_SUBJECT = "subject";
-    private static final String[] QUERY_MESSAGE_METADATA = {QUERY_MESSAGE_METADATA_SUBJECT, QUERY_MESSAGE_METADATA_DATE};
+    private static final String QUERY_MESSAGE_FORMAT = "?format=metadata";
+    private static final String QUERY_MESSAGE_METADATA_DATE = "&metadataHeaders=date";
+    private static final String QUERY_MESSAGE_METADATA_SUBJECT = "&metadataHeaders=subject";
+    //private static final String[] QUERY_MESSAGE_METADATA = {QUERY_MESSAGE_METADATA_SUBJECT, QUERY_MESSAGE_METADATA_DATE};
     private static final String REGEX_PORTAL_SUBMIT = "(?<=Ingress Portal Submitted:).+";
     private static final String REGEX_PORTAL_EDIT = "(?<=Ingress Portal Edits Submitted:).+|" + "(?<=Invalid Ingress Portal Report:).+";
     private static final String REGEX_PORTAL_SUBMIT_PASSED = "(?<=Ingress Portal Live:).+";
     private static final String REGEX_PORTAL_SUBMIT_REJECTED = "(?<=Ingress Portal Rejected:).+|" + "(?<=Ingress Portal Duplicate:).+";
     private static final String REGEX_PORTAL_EDIT_PASSED = "(?<=Ingress Portal Data Edit Accepted:).+";
     private static final String REGEX_PORTAL_EDIT_REJECTED = "(?<=Ingress Portal Data Edit Reviewed:).+";
+    private static final String REGEX_EACH_JSON_IN_BATCH = "\\{.+\\}";
     private static final String DEFAULT_AFTER_STR = "1995/07/08";
+    private static final String PART_REQUEST_BASE_PATH = "GET /gmail/v1/users/me/messages/";
+    private static final String BATCH_REQUEST_URL = "https://www.googleapis.com/batch";
+    private static final MediaType HTTP = MediaType.parse("application/http");
     private static GMailServiceUtil instance;
+    private String token;
     private Pattern patternSubmit;
     private Pattern patternEdit;
     private Pattern patternSubmitPassed;
     private Pattern patternSubmitRejected;
     private Pattern patternEditPassed;
     private Pattern patternEditRejected;
+    private Pattern patternEachResponse;
+    private Gson gson;
     private GMailService GMailService;
 
     /**
@@ -64,6 +80,7 @@ public class GMailServiceUtil {
                 .setRequestInterceptor(requestInterceptor)
                 .build();
         GMailService = restAdapter.create(GMailService.class);
+        this.token = token;
     }
 
     /**
@@ -83,7 +100,7 @@ public class GMailServiceUtil {
      * @param dbHelper the SQLiteHelper to create a database instance.
      * @return list of Message
      */
-    public ArrayList<Message> getPortalMessages(PortalEventDbHelper dbHelper){
+    public ArrayList<Message> getPortalMessages(PortalEventDbHelper dbHelper) throws IOException{
         ArrayList<Message> messages = new ArrayList<Message>();
 
         SQLiteDatabase database = dbHelper.getReadableDatabase();
@@ -114,10 +131,67 @@ public class GMailServiceUtil {
         database.close();
 
         // Query and add Message to list.
-        for(MessageList.MessageId id : messageIds){
-            messages.add(GMailService.getMessage(id.getId(), QUERY_MESSAGE_FORMAT, QUERY_MESSAGE_METADATA));
+        for (int i = 0; i < (messageIds.size()/100 + 1); i++){
+            int count = (messageIds.size() > (i + 1) * 100) ? 100 : messageIds.size() - 100 * i;
+            messages.addAll(getBatchMessages(messageIds, i * 100, count));
         }
+
         return messages;
+    }
+
+    private ArrayList<Message> getBatchMessages(ArrayList<MessageList.MessageId> messageIds,
+                                                int start, int count) throws IOException{
+        OkHttpClient client = new OkHttpClient();
+        ArrayList<Message> messages = new ArrayList<Message>();
+        MultipartBuilder builder = new MultipartBuilder();
+        builder.type(MultipartBuilder.MIXED);
+
+        for (int i = start; i < start + count; i++){
+            byte[] request = (PART_REQUEST_BASE_PATH
+                    + messageIds.get(i).getId()
+                    + QUERY_MESSAGE_FORMAT
+                    + QUERY_MESSAGE_METADATA_DATE
+                    + QUERY_MESSAGE_METADATA_SUBJECT
+                    + "\n").getBytes();
+            RequestBody partRequest = RequestBody.create(HTTP, request);
+            builder.addPart(partRequest);
+        }
+
+        Request request = new Request.Builder()
+                .url(BATCH_REQUEST_URL)
+                .post(builder.build())
+                .header("Authorization", "Bearer " + token)
+                .build();
+        Response response = client.newCall(request).execute();
+        String contentType = response.header("Content-Type");
+        String responseBody = response.body().string();
+        Pattern pattern = Pattern.compile("(?<=boundary=).+");
+        Matcher matcher = pattern.matcher(contentType);
+        if (matcher.find()){
+            String boundary = matcher.group();
+            String[] eachResponses = responseBody.split("--" + boundary);
+
+            for (int i = 1; i < count + 1; i++){
+                messages.add(parseEachInBatch(eachResponses[i]));
+            }
+            return messages;
+        }
+        else
+            throw new IOException("Can not found the boundary, maybe request failed.");
+    }
+
+    private Message parseEachInBatch(String eachStr) throws IOException{
+        // Initial the gson and pattern.
+        if (patternEachResponse == null){
+            patternEachResponse = Pattern.compile(REGEX_EACH_JSON_IN_BATCH, Pattern.DOTALL);
+            gson = new Gson();
+        }
+
+        Matcher matcher = patternEachResponse.matcher(eachStr);
+        if (matcher.find())
+            return gson.fromJson(matcher.group(), Message.class);
+        else
+            throw new IOException("Parse response " + eachStr + " error, maybe the fetch failed.");
     }
 
     /**

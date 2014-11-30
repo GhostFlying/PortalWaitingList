@@ -15,8 +15,8 @@ android {
         applicationId "com.ghostflying.ingressmailanalysis"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 5
-        versionName "1.1d"
+        versionCode 6
+        versionName "1.2a"
     }
     buildTypes {
         release {
@@ -38,4 +38,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.1.+'
     compile 'com.squareup.retrofit:retrofit:1.8.0'
     compile 'com.github.traex.rippleeffect:library:1.2.2'
+    compile 'com.squareup.okhttp:okhttp:2.1.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
+    compile 'com.google.code.gson:gson:2.3.1'
 }

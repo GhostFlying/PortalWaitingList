@@ -299,7 +299,7 @@ public class MainActivity extends ActionBarActivity{
                 newMessages = GMailServiceUtil.getInstance(token)
                         .getPortalMessages(dbHelper);
             }
-            catch (Exception e){
+            catch (IOException e){
                 e.printStackTrace();
                 runOnUiThread(new Runnable() {
                     @Override
