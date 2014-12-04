@@ -3,7 +3,7 @@ IngressMaillAnalysis
 
 A simple app to read and analysis your ingress related mails.
 
-[![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.ghostflying.ingressmailanalysis)
+*The App is removed by Google as the name start with ingress from Google Play, the project will rename and republish in a time.*
 
 *STILL BETA*
 
