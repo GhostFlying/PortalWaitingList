@@ -7,18 +7,18 @@ import java.util.Date;
  * <br>
  * The data structure of each event of portal.
  */
-public class PortalEvent implements Comparable<PortalEvent>{
+public abstract class PortalEvent implements Comparable<PortalEvent>{
     String portalName;
-    OperationType operationType;
     OperationResult operationResult;
     Date date;
     // The message's id related to this event, store to avoid duplicate when update.
     String messageId;
 
-    public PortalEvent(String portalName, OperationType operationType,
-                       OperationResult operationResult, Date date, String messageId){
+    public PortalEvent(String portalName,
+                       OperationResult operationResult,
+                       Date date,
+                       String messageId){
         this.portalName = portalName;
-        this.operationType = operationType;
         this.operationResult = operationResult;
         this.date = date;
         this.messageId = messageId;
@@ -28,9 +28,7 @@ public class PortalEvent implements Comparable<PortalEvent>{
         return portalName;
     }
 
-    public OperationType getOperationType() {
-        return operationType;
-    }
+    public abstract OperationType getOperationType();
 
     public OperationResult getOperationResult() {
         return operationResult;
@@ -50,10 +48,10 @@ public class PortalEvent implements Comparable<PortalEvent>{
     }
 
     public enum OperationType{
-        SUBMIT, EDIT
+        SUBMISSION, EDIT, INVALID
     }
 
     public enum OperationResult{
-        PROPOSED, PASSED, REJECTED
+        PROPOSED, PASSED, REJECTED, DUPLICATE
     }
 }
