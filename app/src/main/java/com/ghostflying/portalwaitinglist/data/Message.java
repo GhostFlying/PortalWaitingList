@@ -45,6 +45,10 @@ public class Message {
         return null;
     }
 
+    public String getMessageHtml(){
+        return null;
+    }
+
     private class Payload{
         Header[] headers;
     }
