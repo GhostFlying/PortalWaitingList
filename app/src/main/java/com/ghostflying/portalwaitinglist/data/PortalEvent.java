@@ -1,4 +1,4 @@
-package com.ghostflying.ingressmailanalysis.data;
+package com.ghostflying.portalwaitinglist.data;
 
 import java.util.Date;
 

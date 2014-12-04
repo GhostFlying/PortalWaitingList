@@ -1,4 +1,4 @@
-package com.ghostflying.ingressmailanalysis;
+package com.ghostflying.portalwaitinglist;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ghostflying.ingressmailanalysis.data.PortalDetail;
-import com.ghostflying.ingressmailanalysis.data.PortalEvent;
+import com.ghostflying.portalwaitinglist.data.PortalDetail;
+import com.ghostflying.portalwaitinglist.data.PortalEvent;
 
 import java.text.DateFormat;
 import java.util.ArrayList;

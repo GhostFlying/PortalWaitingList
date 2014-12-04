@@ -1,4 +1,4 @@
-package com.ghostflying.ingressmailanalysis;
+package com.ghostflying.portalwaitinglist;
 
 import android.provider.BaseColumns;
 

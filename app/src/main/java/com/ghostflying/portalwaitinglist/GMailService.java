@@ -1,7 +1,7 @@
-package com.ghostflying.ingressmailanalysis;
+package com.ghostflying.portalwaitinglist;
 
-import com.ghostflying.ingressmailanalysis.data.Message;
-import com.ghostflying.ingressmailanalysis.data.MessageList;
+import com.ghostflying.portalwaitinglist.data.Message;
+import com.ghostflying.portalwaitinglist.data.MessageList;
 
 import retrofit.http.GET;
 import retrofit.http.Path;

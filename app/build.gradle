@@ -12,7 +12,7 @@ android {
     compileSdkVersion 21
     buildToolsVersion "21.1.1"
     defaultConfig {
-        applicationId "com.ghostflying.ingressmailanalysis"
+        applicationId "com.ghostflying.portalwaitinglist"
         minSdkVersion 16
         targetSdkVersion 21
         versionCode 8

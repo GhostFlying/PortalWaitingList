@@ -1,12 +1,12 @@
-package com.ghostflying.ingressmailanalysis;
+package com.ghostflying.portalwaitinglist;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.ghostflying.ingressmailanalysis.data.Message;
-import com.ghostflying.ingressmailanalysis.data.MessageList;
-import com.ghostflying.ingressmailanalysis.data.PortalDetail;
-import com.ghostflying.ingressmailanalysis.data.PortalEvent;
+import com.ghostflying.portalwaitinglist.data.Message;
+import com.ghostflying.portalwaitinglist.data.MessageList;
+import com.ghostflying.portalwaitinglist.data.PortalDetail;
+import com.ghostflying.portalwaitinglist.data.PortalEvent;
 import com.google.gson.Gson;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.MultipartBuilder;

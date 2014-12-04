@@ -1,7 +1,6 @@
-package com.ghostflying.ingressmailanalysis;
+package com.ghostflying.portalwaitinglist;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,12 +19,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ghostflying.ingressmailanalysis.data.Message;
-import com.ghostflying.ingressmailanalysis.data.PortalDetail;
-import com.ghostflying.ingressmailanalysis.data.PortalEvent;
+import com.ghostflying.portalwaitinglist.data.Message;
+import com.ghostflying.portalwaitinglist.data.PortalDetail;
+import com.ghostflying.portalwaitinglist.data.PortalEvent;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.auth.UserRecoverableAuthException;
 
 import java.io.IOException;
 import java.util.ArrayList;
