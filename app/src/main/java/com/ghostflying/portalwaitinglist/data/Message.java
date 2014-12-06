@@ -46,15 +46,25 @@ public class Message {
     }
 
     public String getMessageHtml(){
-        return null;
+        return payload.parts[1].body.data;
     }
 
     private class Payload{
         Header[] headers;
+        MimePart[] parts;
     }
 
     private class Header{
         String name;
         String value;
+    }
+
+    private class MimePart{
+        String mimeType;
+        MimeBody body;
+    }
+
+    private class MimeBody{
+        String data;
     }
 }
