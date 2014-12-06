@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Ghost on 2014/12/4.
  */
-public class ProcessUtil {
+public class MailProcessUtil {
     private static final String REGEX_PORTAL_SUBMISSION = "(?<=Ingress Portal Submitted:).+";
     private static final String REGEX_PORTAL_EDIT = "(?<=Ingress Portal Edits Submitted:).+";
     private static final String REGEX_INVALID_REPORT = "(?<=Invalid Ingress Portal Report:).+";
