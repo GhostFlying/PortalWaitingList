@@ -87,7 +87,7 @@ public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.Vi
                 switch (operationType){
                     case EDIT:
                         return R.drawable.ic_edit;
-                    case SUBMIT:
+                    case SUBMISSION:
                         return R.drawable.ic_proposed;
                 }
             default:

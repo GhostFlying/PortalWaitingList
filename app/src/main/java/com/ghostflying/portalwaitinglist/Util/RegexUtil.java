@@ -1,6 +1,5 @@
 package com.ghostflying.portalwaitinglist.Util;
 
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,7 +51,7 @@ public class RegexUtil {
      */
     private RegexUtil(){
         regexPairs = new RegexPair[10];
-    };
+    }
 
     /**
      * Get the instance of RegexUtil
@@ -96,8 +95,17 @@ public class RegexUtil {
 
         public Pattern getPattern(){
             if (pattern == null)
-                pattern = Pattern.compile(regex);
+                compilePattern();
             return pattern;
+        }
+
+        private void compilePattern(){
+            if (regex.equals(RegexUtil.REGEX_EACH_JSON_IN_BATCH)){
+                pattern = Pattern.compile(regex, Pattern.DOTALL);
+            }
+            else {
+                pattern = Pattern.compile(regex);
+            }
         }
     }
 }

@@ -11,29 +11,19 @@ import com.ghostflying.portalwaitinglist.data.SubmissionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by Ghost on 2014/12/4.
  */
 public class MailProcessUtil {
-    private static final String REGEX_PORTAL_SUBMISSION = "(?<=Ingress Portal Submitted:).+";
-    private static final String REGEX_PORTAL_EDIT = "(?<=Ingress Portal Edits Submitted:).+";
-    private static final String REGEX_INVALID_REPORT = "(?<=Invalid Ingress Portal Report:).+";
-    private static final String REGEX_PORTAL_SUBMISSION_PASSED = "(?<=Ingress Portal Live:).+";
-    private static final String REGEX_PORTAL_SUBMISSION_REJECTED = "(?<=Ingress Portal Rejected:).+";
-    private static final String REGEX_PORTAL_SUBMISSION_DUPLICATE = "(?<=Ingress Portal Duplicate:).+";
-    private static final String REGEX_PORTAL_EDIT_PASSED = "(?<=Ingress Portal Data Edit Accepted:).+";
-    private static final String REGEX_PORTAL_EDIT_REJECTED = "(?<=Ingress Portal Data Edit Reviewed:).+";
-    private Pattern patternSubmission;
-    private Pattern patternEdit;
-    private Pattern patternInvalid;
-    private Pattern patternSubmissionPassed;
-    private Pattern patternSubmissionRejected;
-    private Pattern patternSubmissionDuplicate;
-    private Pattern patternEditPassed;
-    private Pattern patternEditRejected;
+    private static MailProcessUtil instance;
+    private MailProcessUtil(){}
+
+    public static MailProcessUtil getInstance(){
+        if(instance == null)
+            instance = new MailProcessUtil();
+        return instance;
+    }
 
     /**
      * Convert messages to events.
@@ -41,7 +31,7 @@ public class MailProcessUtil {
      * @return the converted events.
      */
     public ArrayList<PortalEvent> analysisMessages(ArrayList<Message> messages){
-        ArrayList<PortalEvent> portalEvents = new ArrayList<PortalEvent>();
+        ArrayList<PortalEvent> portalEvents = new ArrayList<>();
 
 
         for (Message message : messages){
@@ -58,84 +48,65 @@ public class MailProcessUtil {
      * @return the converted event.
      */
     private PortalEvent analysisMessage(Message message){
-        //Initial pattern
-        if (patternSubmission == null){
-            patternSubmission = Pattern.compile(REGEX_PORTAL_SUBMISSION);
-            patternEdit = Pattern.compile(REGEX_PORTAL_EDIT);
-            patternInvalid = Pattern.compile(REGEX_INVALID_REPORT);
-            patternSubmissionPassed = Pattern.compile(REGEX_PORTAL_SUBMISSION_PASSED);
-            patternSubmissionRejected = Pattern.compile(REGEX_PORTAL_SUBMISSION_REJECTED);
-            patternSubmissionDuplicate = Pattern.compile(REGEX_PORTAL_SUBMISSION_DUPLICATE);
-            patternEditPassed = Pattern.compile(REGEX_PORTAL_EDIT_PASSED);
-            patternEditRejected = Pattern.compile(REGEX_PORTAL_EDIT_REJECTED);
-        }
-
-        Matcher matcher;
 
         // Try to match regex.
-        matcher = patternSubmission.matcher(message.getSubject());
-        if (matcher.find()){
-            return new SubmissionEvent(matcher.group().trim(),
+        String subject = message.getSubject();
+        RegexUtil util = RegexUtil.getInstance();
+        if (util.isFound(RegexUtil.PORTAL_SUBMISSION, subject)){
+            return new SubmissionEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.PROPOSED,
                     message.getDate(),
                     message.getId(),
                     getImageUrl(message.getMessageHtml()));
         }
 
-        matcher = patternEdit.matcher(message.getSubject());
-        if (matcher.find()){
-            return new EditEvent(matcher.group().trim(),
+        if (util.isFound(RegexUtil.PORTAL_EDIT, subject)){
+            return new EditEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.PROPOSED, message.getDate(), message.getId());
         }
 
-        matcher = patternInvalid.matcher(message.getSubject());
-        if (matcher.find()){
-            return new InvalidEvent(matcher.group().trim(),
+        if (util.isFound(RegexUtil.INVALID_REPORT, subject)){
+            return new InvalidEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.PROPOSED,
                     message.getDate(),
                     message.getId(),
                     getImageUrl(message.getMessageHtml()));
         }
 
-        matcher = patternSubmissionPassed.matcher(message.getSubject());
-        if (matcher.find()){
-            return new SubmissionEvent(matcher.group().trim(),
+        if (util.isFound(RegexUtil.PORTAL_SUBMISSION_PASSED, subject)){
+            return new SubmissionEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.PASSED,
                     message.getDate(),
                     message.getId(),
                     getImageUrl(message.getMessageHtml()));
         }
 
-        matcher = patternSubmissionRejected.matcher(message.getSubject());
-        if (matcher.find()){
-            return new SubmissionEvent(matcher.group().trim(),
+        if (util.isFound(RegexUtil.PORTAL_SUBMISSION_REJECTED, subject)){
+            return new SubmissionEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.REJECTED,
                     message.getDate(),
                     message.getId(),
                     getImageUrl(message.getMessageHtml()));
         }
 
-        matcher = patternSubmissionDuplicate.matcher(message.getSubject());
-        if (matcher.find()){
-            return new SubmissionEvent(matcher.group().trim(),
+        if (util.isFound(RegexUtil.PORTAL_SUBMISSION_DUPLICATE, subject)){
+            return new SubmissionEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.DUPLICATE,
                     message.getDate(),
                     message.getId(),
                     getImageUrl(message.getMessageHtml()));
         }
 
-        matcher = patternEditPassed.matcher(message.getSubject());
-        if (matcher.find()){
-            return new EditEvent(matcher.group().trim(),
+        if (util.isFound(RegexUtil.PORTAL_EDIT_PASSED, subject)){
+            return new EditEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.PASSED,
                     message.getDate(), message.getId(),
                     getPortalAddress(message.getMessageHtml()),
                     getPortalAddressUrl(message.getMessageHtml()));
         }
 
-        matcher = patternEditRejected.matcher(message.getSubject());
-        if (matcher.find()){
-            return new EditEvent(matcher.group().trim(),
+        if (util.isFound(RegexUtil.PORTAL_EDIT_REJECTED, subject)){
+            return new EditEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.REJECTED,
                     message.getDate(), message.getId(),
                     getPortalAddress(message.getMessageHtml()),

@@ -6,12 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.ghostflying.portalwaitinglist.GMailService;
 import com.ghostflying.portalwaitinglist.PortalEventContract;
 import com.ghostflying.portalwaitinglist.PortalEventDbHelper;
-import com.ghostflying.portalwaitinglist.SettingUtil;
 import com.ghostflying.portalwaitinglist.data.Message;
 import com.ghostflying.portalwaitinglist.data.MessageList;
-import com.ghostflying.portalwaitinglist.data.PortalDetail;
-import com.ghostflying.portalwaitinglist.data.PortalEvent;
-import com.ghostflying.portalwaitinglist.data.SubmissionEvent;
 import com.google.gson.Gson;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.MultipartBuilder;
@@ -23,11 +19,7 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -43,15 +35,11 @@ public class GMailServiceUtil {
     private static final String QUERY_MESSAGE_FORMAT = "?format=full";
     private static final String QUERY_MESSAGE_METADATA_DATE = "&metadataHeaders=date";
     private static final String QUERY_MESSAGE_METADATA_SUBJECT = "&metadataHeaders=subject";
-    private static final String REGEX_EACH_JSON_IN_BATCH = "\\{.+\\}";
-    private static final String REGEX_FIND_BOUNDARY = "(?<=boundary=).+";
     private static final String DEFAULT_AFTER_STR = "1995/07/08";
     private static final String PART_REQUEST_BASE_PATH = "GET /gmail/v1/users/me/messages/";
     private static final String BATCH_REQUEST_URL = "https://www.googleapis.com/batch";
     private static final MediaType HTTP = MediaType.parse("application/http");
     private static GMailServiceUtil instance;
-    private Pattern patternEachResponse;
-    private Pattern patternBoundary;
     private Gson gson;
     private GMailService gmailService;
     private String token;
@@ -93,7 +81,7 @@ public class GMailServiceUtil {
      * @return list of Message
      */
     public ArrayList<Message> getPortalMessages(PortalEventDbHelper dbHelper) throws IOException{
-        ArrayList<Message> messages = new ArrayList<Message>();
+        ArrayList<Message> messages = new ArrayList<>();
 
         SQLiteDatabase database = dbHelper.getReadableDatabase();
 
@@ -144,7 +132,7 @@ public class GMailServiceUtil {
     private ArrayList<Message> getBatchMessages(ArrayList<MessageList.MessageId> messageIds,
                                                 int start, int count) throws IOException{
         OkHttpClient client = new OkHttpClient();
-        ArrayList<Message> messages = new ArrayList<Message>();
+        ArrayList<Message> messages = new ArrayList<>();
         MultipartBuilder builder = new MultipartBuilder();
         builder.type(MultipartBuilder.MIXED);
 
@@ -167,12 +155,8 @@ public class GMailServiceUtil {
         Response response = client.newCall(request).execute();
         String contentType = response.header("Content-Type");
         String responseBody = response.body().string();
-        if (patternBoundary == null){
-            patternBoundary = Pattern.compile(REGEX_FIND_BOUNDARY);
-        }
-        Matcher matcher = patternBoundary.matcher(contentType);
-        if (matcher.find()){
-            String boundary = matcher.group();
+        if (RegexUtil.getInstance().isFound(RegexUtil.FIND_BOUNDARY, contentType)){
+            String boundary = RegexUtil.getInstance().getMatchedStr();
             String[] eachResponses = responseBody.split("--" + boundary);
 
             for (int i = 1; i < count + 1; i++){
@@ -186,14 +170,12 @@ public class GMailServiceUtil {
 
     private Message parseEachInBatch(String eachStr) throws IOException{
         // Initial the gson and pattern.
-        if (patternEachResponse == null){
-            patternEachResponse = Pattern.compile(REGEX_EACH_JSON_IN_BATCH, Pattern.DOTALL);
+        if (gson == null){
             gson = new Gson();
         }
 
-        Matcher matcher = patternEachResponse.matcher(eachStr);
-        if (matcher.find())
-            return gson.fromJson(matcher.group(), Message.class);
+        if (RegexUtil.getInstance().isFound(RegexUtil.EACH_JSON_IN_BATCH, eachStr))
+            return gson.fromJson(RegexUtil.getInstance().getMatchedStr(), Message.class);
         else
             throw new IOException("Parse response " + eachStr + " error, maybe the fetch failed.");
     }
@@ -204,7 +186,7 @@ public class GMailServiceUtil {
      * @return the list of messageId needed.
      */
     private ArrayList<MessageList.MessageId> getAllPortalMessageIds(String afterStr){
-        ArrayList<MessageList.MessageId> messageIds = new ArrayList<MessageList.MessageId>();
+        ArrayList<MessageList.MessageId> messageIds = new ArrayList<>();
         MessageList messageList;
         String pageToken = null;
         do{
