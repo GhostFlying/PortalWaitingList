@@ -23,6 +23,8 @@ public class EditEvent extends PortalEvent {
                      String portalAddress,
                      String portalAddressUrl){
         super(portalName, result, date, messageId);
+        this.portalAddress = portalAddress;
+        this.portalAddressUrl = portalAddressUrl;
     }
 
     public String getPortalAddress(){

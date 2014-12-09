@@ -1,5 +1,7 @@
 package com.ghostflying.portalwaitinglist.Util;
 
+import android.util.Base64;
+
 import com.ghostflying.portalwaitinglist.SettingUtil;
 import com.ghostflying.portalwaitinglist.data.EditEvent;
 import com.ghostflying.portalwaitinglist.data.InvalidEvent;
@@ -117,18 +119,30 @@ public class MailProcessUtil {
     }
 
     private String getImageUrl(String html){
-        //TODO complete the html parse
-        return null;
+        String decodeStr = decodeMailHtml(html);
+        if (RegexUtil.getInstance().isFound(RegexUtil.IMG_URL, decodeStr))
+            return RegexUtil.getInstance().getMatchedStr();
+        return decodeStr;
     }
 
+
     private String getPortalAddress(String html){
-        //TODO complete the html parse
-        return null;
+        String decodeStr = decodeMailHtml(html);
+        if (RegexUtil.getInstance().isFound(RegexUtil.ADDRESS, decodeStr))
+            return RegexUtil.getInstance().getMatchedStr();
+        return decodeStr;
     }
 
     private String getPortalAddressUrl(String html){
-        //TODO complete the html parse
-        return null;
+        String decodeStr = decodeMailHtml(html);
+        if (RegexUtil.getInstance().isFound(RegexUtil.ADDRESS_URL, decodeStr))
+            return RegexUtil.getInstance().getMatchedStr();
+        return decodeStr;
+    }
+
+    private String decodeMailHtml(String html) {
+        byte[] decodeBytes = Base64.decode(html, Base64.URL_SAFE);
+        return new String(decodeBytes);
     }
 
     /**

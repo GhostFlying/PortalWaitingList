@@ -20,6 +20,9 @@ public class RegexUtil {
     private static final String REGEX_PORTAL_EDIT_REJECTED = "(?<=Ingress Portal Data Edit Reviewed:).+";
     private static final String REGEX_EACH_JSON_IN_BATCH = "\\{.+\\}";
     private static final String REGEX_FIND_BOUNDARY = "(?<=boundary=).+";
+    private static final String REGEX_IMG_URL = "(?<=<img src=\").+(?=\" alt)";
+    private static final String REGEX_ADDRESS = "(?<=z=18\">).+(?=</a>)";
+    private static final String REGEX_ADDRESS_URL = "https://www.ingress.com/intel.+(?=\">)";
     private static final String[] REGEXS = {
             REGEX_PORTAL_SUBMISSION,
             REGEX_PORTAL_EDIT,
@@ -30,7 +33,10 @@ public class RegexUtil {
             REGEX_PORTAL_EDIT_PASSED,
             REGEX_PORTAL_EDIT_REJECTED,
             REGEX_EACH_JSON_IN_BATCH,
-            REGEX_FIND_BOUNDARY
+            REGEX_FIND_BOUNDARY,
+            REGEX_IMG_URL,
+            REGEX_ADDRESS,
+            REGEX_ADDRESS_URL
     };
     static final int PORTAL_SUBMISSION = 0;
     static final int PORTAL_EDIT = 1;
@@ -42,6 +48,9 @@ public class RegexUtil {
     static final int PORTAL_EDIT_REJECTED = 7;
     static final int EACH_JSON_IN_BATCH = 8;
     static final int FIND_BOUNDARY = 9;
+    static final int IMG_URL = 10;
+    static final int ADDRESS = 11;
+    static final int ADDRESS_URL = 12;
 
     private RegexPair[] regexPairs;
     private Matcher matcher;
@@ -50,7 +59,7 @@ public class RegexUtil {
      * Private constructor
      */
     private RegexUtil(){
-        regexPairs = new RegexPair[10];
+        regexPairs = new RegexPair[REGEXS.length];
     }
 
     /**
