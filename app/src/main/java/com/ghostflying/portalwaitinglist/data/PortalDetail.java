@@ -38,6 +38,18 @@ public class PortalDetail implements Comparable<PortalDetail>{
         return name;
     }
 
+    /**
+     * Get the image url if exist.
+     * @return  the url if exist, otherwise null.
+     */
+    public String getImageUrl(){
+        for(PortalEvent event : events){
+            if (event instanceof SubmissionEvent)
+                return ((SubmissionEvent) event).getPortalImageUrl();
+        }
+        return null;
+    }
+
     public ArrayList<PortalEvent> getEvents(){
         return events;
     }

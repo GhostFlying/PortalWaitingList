@@ -10,19 +10,23 @@ import android.database.sqlite.SQLiteOpenHelper;
  * DB Helper Class, used for create or update.
  */
 public class PortalEventDbHelper extends SQLiteOpenHelper {
-    static final int DATABASE_VERSION = 1;
+    static final int DATABASE_VERSION = 2;
     static final String DATABASE_NAME = "PortalEvent.db";
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String INTEGER_TYPE = " INTEGER";
     private static final String COMMA_SEP = ",";
+    private static final String NOT_NULL = " NOT NULL";
     private static final String SQL_CREATE_EVENTS = "CREATE TABLE " + PortalEventContract.PortalEvent.TABLE_NAME
             + " (" + PortalEventContract.PortalEvent._ID + INTEGER_TYPE + " PRIMARY KEY, "
-            + PortalEventContract.PortalEvent.COLUMN_NAME_PORTAL_NAME + TEXT_TYPE + COMMA_SEP
-            + PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_TYPE + INTEGER_TYPE + COMMA_SEP
-            + PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_RESULT + INTEGER_TYPE + COMMA_SEP
-            + PortalEventContract.PortalEvent.COLUMN_NAME_MESSAGE_ID + TEXT_TYPE + COMMA_SEP
-            + PortalEventContract.PortalEvent.COLUMN_NAME_DATE + TEXT_TYPE + " )";
+            + PortalEventContract.PortalEvent.COLUMN_NAME_PORTAL_NAME + TEXT_TYPE + NOT_NULL + COMMA_SEP
+            + PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_TYPE + INTEGER_TYPE + NOT_NULL + COMMA_SEP
+            + PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_RESULT + INTEGER_TYPE + NOT_NULL + COMMA_SEP
+            + PortalEventContract.PortalEvent.COLUMN_NAME_MESSAGE_ID + TEXT_TYPE + NOT_NULL + COMMA_SEP
+            + PortalEventContract.PortalEvent.COLUMN_NAME_DATE + TEXT_TYPE + NOT_NULL + COMMA_SEP
+            + PortalEventContract.PortalEvent.COLUMN_NAME_IMAGE_URL + TEXT_TYPE + COMMA_SEP
+            + PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS + TEXT_TYPE + COMMA_SEP
+            + PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS_URL + TEXT_TYPE + " )";
     private static final String SQL_DELETE_EVENTS = "DROP TABLE IF EXISTS " + PortalEventContract.PortalEvent.TABLE_NAME;
 
     public PortalEventDbHelper(Context context){

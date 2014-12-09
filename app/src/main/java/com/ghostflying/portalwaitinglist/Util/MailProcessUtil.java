@@ -19,6 +19,8 @@ import java.util.Comparator;
  */
 public class MailProcessUtil {
     private static MailProcessUtil instance;
+    static final String PARSE_ERROR_TEXT = "Parse error, maybe the mail is too old to contains this part.";
+
     private MailProcessUtil(){}
 
     public static MailProcessUtil getInstance(){
@@ -122,7 +124,7 @@ public class MailProcessUtil {
         String decodeStr = decodeMailHtml(html);
         if (RegexUtil.getInstance().isFound(RegexUtil.IMG_URL, decodeStr))
             return RegexUtil.getInstance().getMatchedStr();
-        return decodeStr;
+        return PARSE_ERROR_TEXT;
     }
 
 
@@ -130,14 +132,14 @@ public class MailProcessUtil {
         String decodeStr = decodeMailHtml(html);
         if (RegexUtil.getInstance().isFound(RegexUtil.ADDRESS, decodeStr))
             return RegexUtil.getInstance().getMatchedStr();
-        return decodeStr;
+        return PARSE_ERROR_TEXT;
     }
 
     private String getPortalAddressUrl(String html){
         String decodeStr = decodeMailHtml(html);
         if (RegexUtil.getInstance().isFound(RegexUtil.ADDRESS_URL, decodeStr))
             return RegexUtil.getInstance().getMatchedStr();
-        return decodeStr;
+        return PARSE_ERROR_TEXT;
     }
 
     private String decodeMailHtml(String html) {
@@ -147,14 +149,16 @@ public class MailProcessUtil {
 
     /**
      * Merge new events to exist portal detail or create new one.
+     * To improve performance, the method is designed to work fine only if
+     * the events is newer than each one in origin and the event in events is in
+     * asc order by date.
      * @param origin exist portal detail list.
      * @param events events need to be merged.
      * @return the merged portal detail list.
      */
     public ArrayList<PortalDetail> mergeEvents(ArrayList<PortalDetail> origin, ArrayList<PortalEvent> events){
         for (PortalEvent event : events){
-            //TODO add save to sqlite
-            PortalDetail existDetail = findExistDetail(origin, event.getPortalName());
+            PortalDetail existDetail = findExistDetail(origin, event);
             if (existDetail == null){
                 PortalDetail newDetail = new PortalDetail(event);
                 origin.add(newDetail);
@@ -162,23 +166,37 @@ public class MailProcessUtil {
             else {
                 existDetail.addEvent(event);
                 // sort the event list.
-                Collections.sort(existDetail.getEvents());
+                // Collections.sort(existDetail.getEvents());
             }
         }
         return origin;
     }
 
     /**
-     * Find the exist portal detail has the same name with new event name
+     * Find the exist portal detail has the same name with new event name.
+     * To improve performance, the method is designed to work fine
+     * only if the new event is newer than any one in details.
      * @param details   exist portal detail list.
-     * @param eventName new event name.
+     * @param event     new event.
      * @return  the portal detail if exists, or null if it does not exist.
      */
-    private PortalDetail findExistDetail(ArrayList<PortalDetail> details, String eventName){
-        //TODO change to check image or address
+    private PortalDetail findExistDetail(ArrayList<PortalDetail> details, PortalEvent event){
         for (PortalDetail detail : details){
-            if (detail.getName().equals(eventName))
-                return detail;
+            if (detail.getName().equalsIgnoreCase(event.getPortalName())){
+                // if event is Edit, only check name.
+                // it may lead some mistakes but have no ideas now.
+                if (event instanceof EditEvent)
+                    return detail;
+                else {
+                    String url = detail.getImageUrl();
+                    // for submission event, must check the image url of the portal.
+                    // this may have some mistakes for the lack of some mails, ignored.
+                    if (url != null &&
+                            url.equalsIgnoreCase(((SubmissionEvent)event).getPortalImageUrl())){
+                        return detail;
+                    }
+                }
+            }
         }
         return null;
     }
