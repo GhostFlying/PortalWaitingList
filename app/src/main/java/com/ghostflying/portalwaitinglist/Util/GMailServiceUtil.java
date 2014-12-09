@@ -112,9 +112,11 @@ public class GMailServiceUtil {
 
         // Query and add Message to list.
         if (messageIds.size() > 0){
-            for (int i = 0; i < (messageIds.size()/100 + 1); i++){
-                int count = (messageIds.size() > (i + 1) * 100) ? 100 : messageIds.size() - 100 * i;
-                messages.addAll(getBatchMessages(messageIds, i * 100, count));
+            int page = (messageIds.size() - 1) / 100 + 1;
+            // reverse it to get a list in asc order by date.
+            for (int i = page; i > 0; i--){
+                int count = i == page ? messageIds.size() - 100 * (i -1) : 100;
+                messages.addAll(getBatchMessages(messageIds, (i - 1) * 100, count));
             }
         }
 
@@ -136,7 +138,8 @@ public class GMailServiceUtil {
         MultipartBuilder builder = new MultipartBuilder();
         builder.type(MultipartBuilder.MIXED);
 
-        for (int i = start; i < start + count; i++){
+        // reverse the id to get a list i asc order by date.
+        for (int i = start + count - 1; i > start - 1; i--){
             byte[] request = (PART_REQUEST_BASE_PATH
                     + messageIds.get(i).getId()
                     + QUERY_MESSAGE_FORMAT
