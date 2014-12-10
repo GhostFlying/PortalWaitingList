@@ -2,7 +2,6 @@ package com.ghostflying.portalwaitinglist.Util;
 
 import android.util.Base64;
 
-import com.ghostflying.portalwaitinglist.SettingUtil;
 import com.ghostflying.portalwaitinglist.data.EditEvent;
 import com.ghostflying.portalwaitinglist.data.InvalidEvent;
 import com.ghostflying.portalwaitinglist.data.Message;

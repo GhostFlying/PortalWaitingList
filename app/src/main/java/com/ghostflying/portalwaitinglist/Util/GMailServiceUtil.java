@@ -3,7 +3,6 @@ package com.ghostflying.portalwaitinglist.Util;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.ghostflying.portalwaitinglist.GMailService;
 import com.ghostflying.portalwaitinglist.PortalEventContract;
 import com.ghostflying.portalwaitinglist.PortalEventDbHelper;
 import com.ghostflying.portalwaitinglist.data.Message;

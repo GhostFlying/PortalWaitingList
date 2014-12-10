@@ -1,4 +1,4 @@
-package com.ghostflying.portalwaitinglist;
+package com.ghostflying.portalwaitinglist.Util;
 
 import com.ghostflying.portalwaitinglist.data.Message;
 import com.ghostflying.portalwaitinglist.data.MessageList;

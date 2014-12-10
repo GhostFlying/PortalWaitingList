@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.ghostflying.portalwaitinglist.Util.GMailServiceUtil;
 import com.ghostflying.portalwaitinglist.Util.MailProcessUtil;
+import com.ghostflying.portalwaitinglist.Util.SettingUtil;
 import com.ghostflying.portalwaitinglist.data.EditEvent;
 import com.ghostflying.portalwaitinglist.data.Message;
 import com.ghostflying.portalwaitinglist.data.PortalDetail;
@@ -279,7 +280,7 @@ public class MainActivity extends ActionBarActivity{
                     SettingUtil.getFilterMethod(),
                     SettingUtil.getSortOrder(),
                     totalPortalDetails,
-                    ((PortalListAdapter)recyclerView.getAdapter()).dataSet
+                    ((PortalListAdapter) recyclerView.getAdapter()).dataSet
             );
             return null;
         }
