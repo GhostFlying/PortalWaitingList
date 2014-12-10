@@ -267,14 +267,18 @@ public class MailProcessUtil {
                 Collections.sort(portalDetails, new Comparator<PortalDetail>() {
                     @Override
                     public int compare(PortalDetail lhs, PortalDetail rhs) {
-                        if (!(lhs.isReviewedOrNoResponseForLongTime() ^ rhs.isReviewedOrNoResponseForLongTime()))
-                            return lhs.compareTo(rhs);
-                        else{
-                            if (lhs.isReviewedOrNoResponseForLongTime())
-                                return 1;
+                        int lhsPri = lhs.getOrderPrior();
+                        int rhsPri = rhs.getOrderPrior();
+                        if (lhsPri == rhsPri){
+                            // asc for waiting portal, desc for others
+                            if (lhsPri == PortalDetail.PRIORITY_WAITING_FOR_REVIEW)
+                                return lhs.compareTo(rhs);
                             else
-                                return -1;
+                                return rhs.compareTo(lhs);
                         }
+                        // sort by the priority of portal
+                        else
+                            return rhsPri - lhsPri;
                     }
                 });
         }

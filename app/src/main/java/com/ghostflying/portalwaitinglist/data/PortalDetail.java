@@ -9,8 +9,13 @@ import java.util.Date;
  * The data structure of portal detail, the class used to create adapter finally.
  */
 public class PortalDetail implements Comparable<PortalDetail>{
-    private static final long LONG_TIME_THRESHOLD = 3600L * 24 * 7 * 1000;
-    private static final long LONG_TIME_NO_RESPONSE_THRESHOLD = 3600L * 24 * 1000 * 365;
+    public static final int PRIORITY_REVIEWED_IN_SHORT_TIME = 4;
+    public static final int PRIORITY_WAITING_FOR_REVIEW = 3;
+    public static final int PRIORITY_NO_RESPONSE_FOR_LONG_TIME = 2;
+    public static final int PRIORITY_REVIEWED_BEFORE_SHORT_TIME = 1;
+
+    private static final long SHORT_TIME_THRESHOLD_IN_MILLISECONDS = 3600L * 24 * 7 * 1000;
+    private static final long LONG_TIME_NO_RESPONSE_THRESHOLD_IN_MILLISECONDS = 3600L * 24 * 1000 * 365;
     private String name;
     private ArrayList<PortalEvent> events;
 
@@ -83,15 +88,52 @@ public class PortalDetail implements Comparable<PortalDetail>{
     }
 
     /**
-     * Check if the portal edit/submit reviewed for a long time or has no response for a long time.
-     * @return  true if it is reviewed before a long time or has no response for a long time, otherwise false.
+     * Check if the portal edit/submit has no response for a long time.
+     * @return  true if it has no response for a long time, otherwise false.
      */
-    public boolean isReviewedOrNoResponseForLongTime(){
-        if ((isReviewed() && (new Date().getTime() - getLastUpdated().getTime()) > LONG_TIME_THRESHOLD)
-                || (new Date().getTime() - getLastUpdated().getTime()) > LONG_TIME_NO_RESPONSE_THRESHOLD)
+    public boolean isNoResponseForLongTime(){
+        if ((!isReviewed())
+                && (new Date().getTime() - getLastUpdated().getTime()) >
+                LONG_TIME_NO_RESPONSE_THRESHOLD_IN_MILLISECONDS )
             return true;
         else
             return false;
+    }
+
+    /**
+     * Check if the portal edit/submit reviewed in a short time.
+     * @return  true if it is reviewed in a short time, otherwise false.
+     */
+    public boolean isReviewedInShortTime(){
+        return isReviewed() && isUpdatedInShortTime();
+    }
+
+    /**
+     * Check if the portal edit/submit reviewed before a short time.
+     * @return  true if it is reviewed before a short time, otherwise false.
+     */
+    public boolean isReviewedBeforeShortTime(){
+        return isReviewed() && (!isUpdatedInShortTime());
+    }
+
+    private boolean isUpdatedInShortTime(){
+        return (new Date().getTime() - getLastUpdated().getTime()) <
+                SHORT_TIME_THRESHOLD_IN_MILLISECONDS;
+    }
+
+    /**
+     * Get the priority to use in smart order.
+     * @return  the order priority.
+     */
+    public int getOrderPrior(){
+        if (isNoResponseForLongTime())
+            return PRIORITY_NO_RESPONSE_FOR_LONG_TIME;
+        else if (!isReviewed())
+            return PRIORITY_WAITING_FOR_REVIEW;
+        else if (isReviewedBeforeShortTime())
+            return PRIORITY_REVIEWED_BEFORE_SHORT_TIME;
+        else
+            return PRIORITY_REVIEWED_IN_SHORT_TIME;
     }
 
     /**
