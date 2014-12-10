@@ -78,7 +78,7 @@ public class MailProcessUtil {
 
         if (util.isFound(RegexUtil.PORTAL_SUBMISSION_PASSED, subject)){
             return new SubmissionEvent(util.getMatchedStr().trim(),
-                    PortalEvent.OperationResult.PASSED,
+                    PortalEvent.OperationResult.ACCEPTED,
                     message.getDate(),
                     message.getId(),
                     getImageUrl(message.getMessageHtml()));
@@ -102,7 +102,7 @@ public class MailProcessUtil {
 
         if (util.isFound(RegexUtil.PORTAL_EDIT_PASSED, subject)){
             return new EditEvent(util.getMatchedStr().trim(),
-                    PortalEvent.OperationResult.PASSED,
+                    PortalEvent.OperationResult.ACCEPTED,
                     message.getDate(), message.getId(),
                     getPortalAddress(message.getMessageHtml()),
                     getPortalAddressUrl(message.getMessageHtml()));

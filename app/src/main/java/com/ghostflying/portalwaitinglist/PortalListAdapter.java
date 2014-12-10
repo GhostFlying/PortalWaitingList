@@ -79,15 +79,19 @@ public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.Vi
      */
     private int getEventIcon(PortalEvent.OperationType operationType, PortalEvent.OperationResult operationResult){
         switch (operationResult){
-            case PASSED:
+            case ACCEPTED:
                 return R.drawable.ic_accepted;
             case REJECTED:
+                return R.drawable.ic_rejected;
+            case DUPLICATE:
                 return R.drawable.ic_rejected;
             case PROPOSED:
                 switch (operationType){
                     case EDIT:
                         return R.drawable.ic_edit;
                     case SUBMISSION:
+                        return R.drawable.ic_proposed;
+                    case INVALID:
                         return R.drawable.ic_proposed;
                 }
             default:

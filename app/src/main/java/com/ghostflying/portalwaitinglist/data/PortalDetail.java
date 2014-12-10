@@ -143,7 +143,7 @@ public class PortalDetail implements Comparable<PortalDetail>{
      */
     public boolean isAccepted(){
         for (PortalEvent eachEvent : events){
-            if (eachEvent.getOperationResult() == PortalEvent.OperationResult.PASSED)
+            if (eachEvent.getOperationResult() == PortalEvent.OperationResult.ACCEPTED)
                 return true;
         }
         return false;
@@ -154,6 +154,7 @@ public class PortalDetail implements Comparable<PortalDetail>{
      * @return  true if rejected, otherwise false.
      */
     public boolean isRejected(){
-        return events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.REJECTED;
+        return events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.REJECTED
+                || events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.DUPLICATE;
     }
 }

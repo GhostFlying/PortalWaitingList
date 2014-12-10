@@ -52,6 +52,6 @@ public abstract class PortalEvent implements Comparable<PortalEvent>{
     }
 
     public enum OperationResult{
-        PROPOSED, PASSED, REJECTED, DUPLICATE
+        PROPOSED, ACCEPTED, REJECTED, DUPLICATE
     }
 }
