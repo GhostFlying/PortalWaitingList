@@ -21,7 +21,7 @@ import java.util.Date;
  * Adapter for RecyclerView
  */
 public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.ViewHolder>{
-    ArrayList<PortalDetail> dataSet;
+    public ArrayList<PortalDetail> dataSet;
     DateFormat localeDateFormat;
     Date dateNow;
 
