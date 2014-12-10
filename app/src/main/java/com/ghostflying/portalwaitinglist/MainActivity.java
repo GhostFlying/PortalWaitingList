@@ -1,6 +1,9 @@
 package com.ghostflying.portalwaitinglist;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -18,14 +21,17 @@ import android.widget.Toast;
 
 import com.ghostflying.portalwaitinglist.Util.GMailServiceUtil;
 import com.ghostflying.portalwaitinglist.Util.MailProcessUtil;
+import com.ghostflying.portalwaitinglist.data.EditEvent;
 import com.ghostflying.portalwaitinglist.data.Message;
 import com.ghostflying.portalwaitinglist.data.PortalDetail;
 import com.ghostflying.portalwaitinglist.data.PortalEvent;
+import com.ghostflying.portalwaitinglist.data.SubmissionEvent;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import retrofit.RetrofitError;
 
@@ -44,7 +50,7 @@ public class MainActivity extends ActionBarActivity{
     TextView countAccepted;
     TextView countRejected;
     TextView countWaiting;
-    boolean isInitialed = true;
+    boolean isInitialed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +71,7 @@ public class MainActivity extends ActionBarActivity{
         setRecyclerView();
         setDrawerLayout();
         //Initial storied data
-        //new InitialTask().execute();
+        new InitialTask().execute();
     }
 
     private void doAuth() {
@@ -207,77 +213,92 @@ public class MainActivity extends ActionBarActivity{
         SettingUtil.saveAllSettings();
     }
 
-//    /**
-//     * The initial task once the activity start.
-//     */
-//    private class InitialTask extends AsyncTask<Void, Void, Void>{
-//        static final String ASC_STR = " ASC";
-//        static final String DESC_STR = " DESC";
-//        int[] counts;
-//
-//        @Override
-//        protected Void doInBackground(Void... params) {
-//            // if no account is set, stop initial.
-//            if (account == null)
-//                return null;
-//            ArrayList<PortalEvent> portalEvents = new ArrayList<PortalEvent>();
-//            // query from SQLite
-//            SQLiteDatabase database = dbHelper.getReadableDatabase();
-//            Cursor cursor = database.query(
-//                    PortalEventContract.PortalEvent.TABLE_NAME,
-//                    null,
-//                    null,
-//                    null,
-//                    null,
-//                    null,
-//                    null
-//            );
-//            int portalNameIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_PORTAL_NAME);
-//            int operationTypeIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_TYPE);
-//            int operationResultIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_RESULT);
-//            int messageIdIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_MESSAGE_ID);
-//            int dateIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_DATE);
-//            while(cursor.moveToNext()){
-//                String name = cursor.getString(portalNameIndex);
-//                PortalEvent.OperationType operationType = PortalEvent.OperationType.values()[cursor.getInt(operationTypeIndex)];
-//                PortalEvent.OperationResult operationResult = PortalEvent.OperationResult.values()[cursor.getInt(operationResultIndex)];
-//                Date date = new Date(cursor.getLong(dateIndex));
-//                String messageId = cursor.getString(messageIdIndex);
-//                PortalEvent event = new PortalEvent(name, operationType, operationResult, date, messageId);
-//                portalEvents.add(event);
-//            }
-//            cursor.close();
-//            database.close();
-//            // merge stored events to empty portal detail.
-//            GMailServiceUtil util = GMailServiceUtil.getInstance();
-//            util.mergeEvents(totalPortalDetails, portalEvents);
-//            //update counts
-//            counts = util.getCounts(totalPortalDetails);
-//            // sort and filter the portal details
-//            util.filterAndSort(
-//                    SettingUtil.getFilterMethod(),
-//                    SettingUtil.getSortOrder(),
-//                    totalPortalDetails,
-//                    ((PortalListAdapter)recyclerView.getAdapter()).dataSet
-//            );
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void param){
-//            // update UI.
-//            recyclerView.getAdapter().notifyDataSetChanged();
-//            updateCountText(counts);
-//            // set the flag, avoid refresh task run before initial done.
-//            isInitialed = true;
-//
-//            if (account != null && totalPortalDetails.size() == 0){
-//                showToast(R.string.alert_to_refresh);
-//                swipeRefreshLayout.setRefreshing(true);
-//                new RefreshTask().execute();
-//            }
-//        }
-//    }
+    /**
+     * The initial task once the activity start.
+     */
+    private class InitialTask extends AsyncTask<Void, Void, Void>{
+        int[] counts;
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // if no account is set, stop initial.
+            if (account == null)
+                return null;
+            ArrayList<PortalEvent> portalEvents = new ArrayList<PortalEvent>();
+            // query from SQLite
+            SQLiteDatabase database = dbHelper.getReadableDatabase();
+            Cursor cursor = database.query(
+                    PortalEventContract.PortalEvent.TABLE_NAME,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    PortalEventContract.PortalEvent.COLUMN_NAME_DATE + " ASC"
+            );
+            int portalNameIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_PORTAL_NAME);
+            int operationTypeIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_TYPE);
+            int operationResultIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_RESULT);
+            int messageIdIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_MESSAGE_ID);
+            int dateIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_DATE);
+            int imageUrlIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_IMAGE_URL);
+            int addressIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS);
+            int addressUrlIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS_URL);
+            while(cursor.moveToNext()){
+                PortalEvent event;
+                String name = cursor.getString(portalNameIndex);
+                PortalEvent.OperationType operationType = PortalEvent.OperationType.values()[cursor.getInt(operationTypeIndex)];
+                PortalEvent.OperationResult operationResult = PortalEvent.OperationResult.values()[cursor.getInt(operationResultIndex)];
+                Date date = new Date(cursor.getLong(dateIndex));
+                String messageId = cursor.getString(messageIdIndex);
+                if (operationType == PortalEvent.OperationType.SUBMISSION){
+                    String imageUrl = cursor.getString(imageUrlIndex);
+                    event = new SubmissionEvent(name, operationResult, date, messageId, imageUrl);
+                }
+                else {
+                    if (operationResult != PortalEvent.OperationResult.PROPOSED){
+                        String address = cursor.getString(addressIndex);
+                        String addressUrl = cursor.getString(addressUrlIndex);
+                        event = new EditEvent(name, operationResult, date, messageId, address, addressUrl);
+                    }
+                    else {
+                        event = new EditEvent(name, operationResult, date, messageId);
+                    }
+                }
+                portalEvents.add(event);
+            }
+            cursor.close();
+            database.close();
+            // merge stored events to empty portal detail.
+            MailProcessUtil processUtil = MailProcessUtil.getInstance();
+            processUtil.mergeEvents(totalPortalDetails, portalEvents);
+            //update counts
+            counts = processUtil.getCounts(totalPortalDetails);
+            // sort and filter the portal details
+            processUtil.filterAndSort(
+                    SettingUtil.getFilterMethod(),
+                    SettingUtil.getSortOrder(),
+                    totalPortalDetails,
+                    ((PortalListAdapter)recyclerView.getAdapter()).dataSet
+            );
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void param){
+            // update UI.
+            recyclerView.getAdapter().notifyDataSetChanged();
+            updateCountText(counts);
+            // set the flag, avoid refresh task run before initial done.
+            isInitialed = true;
+
+            if (account != null && totalPortalDetails.size() == 0){
+                showToast(R.string.alert_to_refresh);
+                swipeRefreshLayout.setRefreshing(true);
+                new RefreshTask().execute();
+            }
+        }
+    }
 
     private void showToast(final int resId){
         runOnUiThread(new Runnable() {
@@ -305,45 +326,55 @@ public class MainActivity extends ActionBarActivity{
                 handleException(e);
                 return null;
             }
-            GMailServiceUtil util = GMailServiceUtil.getInstance(token);
+            // Initial Utils
+            GMailServiceUtil fetchUtil = GMailServiceUtil.getInstance(token);
+            MailProcessUtil processUtil = MailProcessUtil.getInstance();
             // query and convert all new messages.
             ArrayList<Message> newMessages;
             try{
-                newMessages = util.getPortalMessages(dbHelper);
+                newMessages = fetchUtil.getPortalMessages(dbHelper);
             }
             catch (Exception e){
                 handleException(e);
                 return null;
             }
             ArrayList<PortalEvent> newEvents = MailProcessUtil.getInstance().analysisMessages(newMessages);
-//
-//            // write new messages to db.
-//            SQLiteDatabase db = dbHelper.getWritableDatabase();
-//            ContentValues values;
-//            for (PortalEvent event : newEvents){
-//                values = new ContentValues();
-//                values.put(PortalEventContract.PortalEvent.COLUMN_NAME_PORTAL_NAME, event.getPortalName());
-//                values.put(PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_TYPE, event.getOperationType().ordinal());
-//                values.put(PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_RESULT, event.getOperationResult().ordinal());
-//                values.put(PortalEventContract.PortalEvent.COLUMN_NAME_DATE, event.getDate().getTime());
-//                values.put(PortalEventContract.PortalEvent.COLUMN_NAME_MESSAGE_ID, event.getMessageId());
-//                db.insert(
-//                        PortalEventContract.PortalEvent.TABLE_NAME,
-//                        null,
-//                        values);
-//            }
-//            db.close();
-//            // merge new events to exist portal details
-//            util.mergeEvents(totalPortalDetails, newEvents);
-//            // update counts
-//            counts = util.getCounts(totalPortalDetails);
-//            // sort and filter the portal details
-//            util.filterAndSort(
-//                    SettingUtil.getFilterMethod(),
-//                    SettingUtil.getSortOrder(),
-//                    totalPortalDetails,
-//                    ((PortalListAdapter) recyclerView.getAdapter()).dataSet
-//            );
+
+            // write new messages to db.
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            ContentValues values;
+            for (PortalEvent event : newEvents){
+                values = new ContentValues();
+                values.put(PortalEventContract.PortalEvent.COLUMN_NAME_PORTAL_NAME, event.getPortalName());
+                values.put(PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_TYPE, event.getOperationType().ordinal());
+                values.put(PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_RESULT, event.getOperationResult().ordinal());
+                values.put(PortalEventContract.PortalEvent.COLUMN_NAME_DATE, event.getDate().getTime());
+                values.put(PortalEventContract.PortalEvent.COLUMN_NAME_MESSAGE_ID, event.getMessageId());
+                if (event instanceof SubmissionEvent)
+                    values.put(PortalEventContract.PortalEvent.COLUMN_NAME_IMAGE_URL, ((SubmissionEvent) event).getPortalImageUrl());
+                else {
+                    if (event.getOperationResult() != PortalEvent.OperationResult.PROPOSED){
+                        values.put(PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS, ((EditEvent)event).getPortalAddress());
+                        values.put(PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS_URL, ((EditEvent)event).getPortalAddressUrl());
+                    }
+                }
+                db.insert(
+                        PortalEventContract.PortalEvent.TABLE_NAME,
+                        null,
+                        values);
+            }
+            db.close();
+            // merge new events to exist portal details
+            processUtil.mergeEvents(totalPortalDetails, newEvents);
+            // update counts
+            counts = processUtil.getCounts(totalPortalDetails);
+            // sort and filter the portal details
+            processUtil.filterAndSort(
+                    SettingUtil.getFilterMethod(),
+                    SettingUtil.getSortOrder(),
+                    totalPortalDetails,
+                    ((PortalListAdapter) recyclerView.getAdapter()).dataSet
+            );
             return null;
         }
 
@@ -386,11 +417,11 @@ public class MainActivity extends ActionBarActivity{
 
         @Override
         protected Void doInBackground(Void... params) {
-//            GMailServiceUtil.getInstance().filterAndSort(
-//                    SettingUtil.getFilterMethod(),
-//                    SettingUtil.getSortOrder(),
-//                    totalPortalDetails,
-//                    ((PortalListAdapter) recyclerView.getAdapter()).dataSet);
+            MailProcessUtil.getInstance().filterAndSort(
+                    SettingUtil.getFilterMethod(),
+                    SettingUtil.getSortOrder(),
+                    totalPortalDetails,
+                    ((PortalListAdapter) recyclerView.getAdapter()).dataSet);
             return null;
         }
 

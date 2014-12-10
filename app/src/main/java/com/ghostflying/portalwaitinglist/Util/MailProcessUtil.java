@@ -19,7 +19,7 @@ import java.util.Comparator;
  */
 public class MailProcessUtil {
     private static MailProcessUtil instance;
-    static final String PARSE_ERROR_TEXT = "Parse error, maybe the mail is too old to contains this part.";
+    static final String PARSE_ERROR_TEXT = "Parse error, maybe the mail is too old to contain this part.";
 
     private MailProcessUtil(){}
 

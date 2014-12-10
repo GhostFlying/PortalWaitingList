@@ -126,8 +126,8 @@ public class GMailServiceUtil {
     /**
      * Get messages by batch request
      * @param messageIds    the id list.
-     * @param start          start index.
-     * @param count          count.
+     * @param start         start index.
+     * @param count         count.
      * @return                the parsed messages.
      * @throws IOException    the response has error.
      */
