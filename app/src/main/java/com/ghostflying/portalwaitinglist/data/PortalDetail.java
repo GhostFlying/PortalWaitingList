@@ -55,6 +55,30 @@ public class PortalDetail implements Comparable<PortalDetail>{
         return null;
     }
 
+    /**
+     * Get the address if exist.
+     * @return  the address if exist, otherwise null.
+     */
+    public String getAddress(){
+        for (PortalEvent event : events)
+            if (event instanceof EditEvent
+                    && ((EditEvent)event).getOperationResult() != PortalEvent.OperationResult.PROPOSED)
+                return ((EditEvent) event).getPortalAddress();
+        return null;
+    }
+
+    /**
+     * Get the address url if exist.
+     * @return  the address if exist, otherwise null.
+     */
+    public String getAddressUrl(){
+        for (PortalEvent event : events)
+            if (event instanceof EditEvent
+                    && ((EditEvent)event).getOperationResult() != PortalEvent.OperationResult.PROPOSED)
+                return ((EditEvent) event).getPortalAddressUrl();
+        return null;
+    }
+
     public ArrayList<PortalEvent> getEvents(){
         return events;
     }
@@ -141,12 +165,20 @@ public class PortalDetail implements Comparable<PortalDetail>{
      * If there is any accept event for the portal, it will be deal as accepted.
      * @return  true if accepted, otherwise false.
      */
-    public boolean isAccepted(){
+    public boolean isEverAccepted(){
         for (PortalEvent eachEvent : events){
             if (eachEvent.getOperationResult() == PortalEvent.OperationResult.ACCEPTED)
                 return true;
         }
         return false;
+    }
+
+    /**
+     * Check if the last operation for this portal is accepted by NIA.
+     * @return  true if accepted, otherwise false.
+     */
+    public boolean isAccepted(){
+        return events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.ACCEPTED;
     }
 
     /**

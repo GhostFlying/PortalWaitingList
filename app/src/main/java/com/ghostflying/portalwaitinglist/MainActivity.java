@@ -1,6 +1,5 @@
 package com.ghostflying.portalwaitinglist;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -14,9 +13,11 @@ import com.ghostflying.portalwaitinglist.fragment.PortalListFragment;
 public class MainActivity extends ActionBarActivity
         implements PortalListFragment.OnFragmentInteractionListener,
                    PortalDetailFragment.OnFragmentInteractionListener{
+    private static final String LIST_FRAGMENT_TAG = "LIST_FRAGMENT";
+    private static final String DETAIL_FRAGMENT_TAG = "DETAIL_FRAGMENT";
 
     String account;
-    Fragment portalListFragment;
+    PortalDetail clickedPortal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +30,9 @@ public class MainActivity extends ActionBarActivity
             doAuth();
         }
         setContentView(R.layout.activity_main);
-        portalListFragment = PortalListFragment.newInstance();
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.content_layout, portalListFragment)
+                .add(R.id.content_layout, PortalListFragment.newInstance(), LIST_FRAGMENT_TAG)
                 .commit();
     }
 
@@ -74,16 +74,24 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void portalItemClicked(PortalDetail clickedPortal) {
+        this.clickedPortal = clickedPortal;
         getFragmentManager()
                 .beginTransaction()
-                .hide(portalListFragment)
-                .add(R.id.content_layout, PortalDetailFragment.newInstance())
+                .hide(getFragmentManager().findFragmentByTag(LIST_FRAGMENT_TAG))
+                .add(R.id.content_layout, PortalDetailFragment.newInstance(), DETAIL_FRAGMENT_TAG)
                 .addToBackStack(null)
                 .commit();
     }
 
     @Override
     public PortalDetail getSelectedPortal() {
-        return null;
+        return clickedPortal;
+    }
+
+    @Override
+    public void onUpButtonClicked() {
+        getFragmentManager()
+                .popBackStack();
+
     }
 }
