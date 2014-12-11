@@ -1,16 +1,22 @@
 package com.ghostflying.portalwaitinglist;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
 import com.ghostflying.portalwaitinglist.Util.SettingUtil;
+import com.ghostflying.portalwaitinglist.data.PortalDetail;
+import com.ghostflying.portalwaitinglist.fragment.PortalDetailFragment;
 import com.ghostflying.portalwaitinglist.fragment.PortalListFragment;
 
 
-public class MainActivity extends ActionBarActivity implements PortalListFragment.OnFragmentInteractionListener{
+public class MainActivity extends ActionBarActivity
+        implements PortalListFragment.OnFragmentInteractionListener,
+                   PortalDetailFragment.OnFragmentInteractionListener{
 
     String account;
+    Fragment portalListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +29,11 @@ public class MainActivity extends ActionBarActivity implements PortalListFragmen
             doAuth();
         }
         setContentView(R.layout.activity_main);
-        getFragmentManager().beginTransaction().add(R.id.content_layout, PortalListFragment.newInstance()).commit();
+        portalListFragment = PortalListFragment.newInstance();
+        getFragmentManager()
+                .beginTransaction()
+                .add(R.id.content_layout, portalListFragment)
+                .commit();
     }
 
     private void doAuth() {
@@ -49,8 +59,31 @@ public class MainActivity extends ActionBarActivity implements PortalListFragmen
     }
 
     @Override
+    public void onBackPressed() {
+        if(getFragmentManager().getBackStackEntryCount() != 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public void doAuthInActivity() {
         doAuth();
     }
 
+    @Override
+    public void portalItemClicked(PortalDetail clickedPortal) {
+        getFragmentManager()
+                .beginTransaction()
+                .hide(portalListFragment)
+                .add(R.id.content_layout, PortalDetailFragment.newInstance())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public PortalDetail getSelectedPortal() {
+        return null;
+    }
 }

@@ -24,6 +24,7 @@ public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.Vi
     public ArrayList<PortalDetail> dataSet;
     DateFormat localeDateFormat;
     Date dateNow;
+    View.OnClickListener onClickListener;
 
     public PortalListAdapter (ArrayList<PortalDetail> dataSet){
         this.dataSet = dataSet;
@@ -41,7 +42,17 @@ public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.Vi
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.portal_list_item, viewGroup, false);
+        if (onClickListener != null)
+            v.setOnClickListener(onClickListener);
         return new ViewHolder(v);
+    }
+
+    /**
+     * Set the callback of clock event.
+     * @param onClickListener   the callback.
+     */
+    public void setOnItemClickListener(View.OnClickListener onClickListener){
+        this.onClickListener = onClickListener;
     }
 
     /**

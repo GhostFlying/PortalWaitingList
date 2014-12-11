@@ -1,12 +1,12 @@
 package com.ghostflying.portalwaitinglist.fragment;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -226,7 +226,14 @@ public class PortalListFragment extends Fragment {
         recyclerView = (RecyclerView)v.findViewById(R.id.portal_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        PortalListAdapter adapter = new PortalListAdapter(new ArrayList<PortalDetail>());
+        final PortalListAdapter adapter = new PortalListAdapter(new ArrayList<PortalDetail>());
+        adapter.setOnItemClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PortalDetail clickedPortal = adapter.dataSet.get(recyclerView.getChildPosition(v));
+                mListener.portalItemClicked(clickedPortal);
+            }
+        });
         recyclerView.setAdapter(adapter);
     }
 
@@ -462,6 +469,7 @@ public class PortalListFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         public void doAuthInActivity();
+        public void portalItemClicked(PortalDetail clickedPortal);
     }
 
 }
