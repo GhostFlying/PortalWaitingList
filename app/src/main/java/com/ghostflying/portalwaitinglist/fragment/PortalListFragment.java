@@ -186,23 +186,23 @@ public class PortalListFragment extends Fragment {
 
     private void setToolbar(View v){
         toolbar = (Toolbar)v.findViewById(R.id.action_bar);
-        ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
         setTitleBySetting(SettingUtil.getFilterMethod());
+        ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
     }
 
     private void setTitleBySetting(SettingUtil.FilterMethod filterMethod){
         switch (filterMethod){
             case EVERYTHING:
-                getActivity().setTitle(R.string.everything);
+                toolbar.setTitle(R.string.everything);
                 break;
             case ACCEPTED:
-                getActivity().setTitle(R.string.accepted);
+                toolbar.setTitle(R.string.accepted);
                 break;
             case REJECTED:
-                getActivity().setTitle(R.string.rejected);
+                toolbar.setTitle(R.string.rejected);
                 break;
             case WAITING:
-                getActivity().setTitle(R.string.waiting);
+                toolbar.setTitle(R.string.waiting);
                 break;
         }
     }
