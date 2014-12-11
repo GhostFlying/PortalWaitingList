@@ -23,6 +23,8 @@
     <color name="filter_drawer_count_text_rejected">#FF3D00</color>
     <color name="filter_drawer_count_text_waiting">#9E9E9E</color>
 
+    <color name="portal_detail_card_title_text_color">#000000</color>
+
     <color name="refresh_circle_color_one">#1DE9B6</color>
     <color name="refresh_circle_color_two">#FF9100</color>
     <color name="refresh_circle_color_three">@color/primary</color>

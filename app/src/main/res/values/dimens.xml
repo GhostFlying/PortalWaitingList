@@ -32,4 +32,10 @@
     <dimen name="filter_drawer_title_margin">20dp</dimen>
     <dimen name="filter_drawer_item_text_margin_left">15dp</dimen>
     <dimen name="filter_drawer_item_item_divider_margin_left">61dp</dimen>
+
+    <!--portal detail fragment -->
+    <dimen name="portal_detail_card_title_margin">10dp</dimen>
+    <dimen name="portal_detail_card_content_margin_left">@dimen/portal_detail_card_title_margin</dimen>
+    <dimen name="portal_detail_card_content_margin_vertical">10dp</dimen>
+
 </resources>

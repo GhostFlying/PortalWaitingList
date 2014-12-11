@@ -296,7 +296,7 @@ public class MailProcessUtil {
         counts[0] = 0;
         counts[1] = 0;
         for (PortalDetail detail : details){
-            if (detail.isAccepted())
+            if (detail.isEverAccepted())
                 counts[0]++;
             else if (detail.isRejected())
                 counts[1]++;
@@ -323,7 +323,7 @@ public class MailProcessUtil {
 
         @Override
         public boolean checkFilterMethod(PortalDetail detail) {
-            return detail.isAccepted();
+            return detail.isEverAccepted();
         }
     }
 
