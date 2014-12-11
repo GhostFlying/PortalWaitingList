@@ -10,12 +10,14 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ghostflying.portalwaitinglist.R;
 import com.ghostflying.portalwaitinglist.data.PortalDetail;
 import com.ghostflying.portalwaitinglist.data.PortalEvent;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -76,6 +78,16 @@ public class PortalDetailFragment extends Fragment {
                     .setText(clickedPortal.getAddress());
         // add the event list view
         addEventViews(clickedPortal, (LinearLayout)view.findViewById(R.id.event_list_in_detail));
+
+        String imageUrl = clickedPortal.getImageUrl();
+        if (imageUrl != null && imageUrl.startsWith("http")){
+            // download and show the image of portal
+            Picasso.with(getActivity())
+                    .load(imageUrl.replaceFirst("http", "https"))
+                    .placeholder(R.drawable.portal_placeholder)
+                    .error(R.drawable.network_error)
+                    .into((ImageView)view.findViewById(R.id.portal_image_in_detail));
+        }
         return view;
     }
 
