@@ -92,9 +92,9 @@ public class PortalDetailFragment extends Fragment {
     }
 
     private void setToolbar(View v, PortalDetail portalDetail){
-        toolbar = (Toolbar)v.findViewById(R.id.action_bar);
+        toolbar = (Toolbar)v.findViewById(R.id.action_bar_in_detail);
         ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitle(portalDetail.getName());
+        getActivity().setTitle(portalDetail.getName());
         ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setHasOptionsMenu(true);
     }

@@ -136,6 +136,13 @@ public class PortalListFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden){
+        super.onHiddenChanged(hidden);
+        if (!hidden)
+            ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
+    }
+
     private void setDrawerLayout(View v){
         drawerLayout = (DrawerLayout)v.findViewById(R.id.drawer_layout);
 
@@ -185,7 +192,7 @@ public class PortalListFragment extends Fragment {
     };
 
     private void setToolbar(View v){
-        toolbar = (Toolbar)v.findViewById(R.id.action_bar);
+        toolbar = (Toolbar)v.findViewById(R.id.action_bar_in_list);
         setTitleBySetting(SettingUtil.getFilterMethod());
         ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
     }

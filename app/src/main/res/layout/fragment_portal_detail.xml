@@ -6,7 +6,9 @@
              android:layout_height="match_parent"
              tools:context="com.ghostflying.portalwaitinglist.fragment.PortalDetailFragment">
 
-    <include layout="@layout/toolbar"/>
+    <include
+        android:id="@+id/action_bar_in_detail"
+        layout="@layout/toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
