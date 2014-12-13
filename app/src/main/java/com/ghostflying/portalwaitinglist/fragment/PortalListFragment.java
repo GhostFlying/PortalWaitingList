@@ -414,6 +414,7 @@ public class PortalListFragment extends Fragment {
          * @param e the exception.
          */
         private void handleException(final Exception e){
+            e.printStackTrace();
             if (e instanceof GoogleAuthException) {
                 showToast(R.string.auth_error);
                 mListener.doAuthInActivity();

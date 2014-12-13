@@ -76,6 +76,8 @@ public class PortalDetailFragment extends Fragment {
         if (address != null)
             ((TextView)view.findViewById(R.id.portal_address_in_detail))
                     .setText(clickedPortal.getAddress());
+        else
+            view.findViewById(R.id.portal_address_view_in_detail).setVisibility(View.GONE);
         // add the event list view
         addEventViews(clickedPortal, (LinearLayout)view.findViewById(R.id.event_list_in_detail));
 
@@ -84,9 +86,11 @@ public class PortalDetailFragment extends Fragment {
             // download and show the image of portal
             Picasso.with(getActivity())
                     .load(imageUrl.replaceFirst("http", "https"))
-                    .placeholder(R.drawable.portal_placeholder)
                     .error(R.drawable.network_error)
                     .into((ImageView)view.findViewById(R.id.portal_image_in_detail));
+        }
+        else {
+            view.findViewById(R.id.portal_image_view_in_detail).setVisibility(View.GONE);
         }
         return view;
     }
