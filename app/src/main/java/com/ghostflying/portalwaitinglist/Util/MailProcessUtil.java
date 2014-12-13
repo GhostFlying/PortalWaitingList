@@ -81,7 +81,9 @@ public class MailProcessUtil {
                     PortalEvent.OperationResult.ACCEPTED,
                     message.getDate(),
                     message.getId(),
-                    getImageUrl(message.getMessageHtml()));
+                    getImageUrl(message.getMessageHtml()),
+                    getPortalAddress(message.getMessageHtml()),
+                    getPortalAddressUrl(message.getMessageHtml()));
         }
 
         if (util.isFound(RegexUtil.PORTAL_SUBMISSION_REJECTED, subject)){

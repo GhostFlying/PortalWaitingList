@@ -11,6 +11,8 @@ public abstract class PortalEvent implements Comparable<PortalEvent>{
     String portalName;
     OperationResult operationResult;
     Date date;
+    String portalAddress;
+    String portalAddressUrl;
     // The message's id related to this event, store to avoid duplicate when update.
     String messageId;
 
@@ -40,6 +42,14 @@ public abstract class PortalEvent implements Comparable<PortalEvent>{
 
     public String getMessageId(){
         return messageId;
+    }
+
+    public String getPortalAddress(){
+        return portalAddress;
+    }
+
+    public String getPortalAddressUrl(){
+        return portalAddressUrl;
     }
 
     @Override

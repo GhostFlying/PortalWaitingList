@@ -85,7 +85,7 @@ public class PortalDetailFragment extends Fragment {
         if (imageUrl != null && imageUrl.startsWith("http")){
             // download and show the image of portal
             Picasso.with(getActivity())
-                    .load(imageUrl.replaceFirst("http", "https"))
+                    .load(imageUrl.replaceFirst("http://", "https://"))
                     .error(R.drawable.network_error)
                     .into((ImageView)view.findViewById(R.id.portal_image_in_detail));
         }

@@ -19,6 +19,19 @@ public class SubmissionEvent extends PortalEvent {
         this.portalImageUrl = portalImageUrl;
     }
 
+    public SubmissionEvent(String portalName,
+                           OperationResult result,
+                           Date date,
+                           String messageId,
+                           String portalImageUrl,
+                           String portalAddress,
+                           String portalAddressUrl){
+        super(portalName, result, date, messageId);
+        this.portalImageUrl = portalImageUrl;
+        this.portalAddress = portalAddress;
+        this.portalAddressUrl = portalAddressUrl;
+    }
+
     public String getPortalImageUrl(){
         return portalImageUrl;
     }

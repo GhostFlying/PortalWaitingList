@@ -6,8 +6,6 @@ import java.util.Date;
  * Created by Ghost on 2014/12/4.
  */
 public class EditEvent extends PortalEvent {
-    String portalAddress;
-    String portalAddressUrl;
 
     public EditEvent(String portalName,
                      OperationResult result,
@@ -27,13 +25,6 @@ public class EditEvent extends PortalEvent {
         this.portalAddressUrl = portalAddressUrl;
     }
 
-    public String getPortalAddress(){
-        return portalAddress;
-    }
-
-    public String getPortalAddressUrl(){
-        return portalAddressUrl;
-    }
 
     @Override
     public OperationType getOperationType() {

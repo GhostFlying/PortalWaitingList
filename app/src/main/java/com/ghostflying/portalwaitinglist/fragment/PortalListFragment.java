@@ -284,7 +284,20 @@ public class PortalListFragment extends Fragment {
                 String messageId = cursor.getString(messageIdIndex);
                 if (operationType == PortalEvent.OperationType.SUBMISSION){
                     String imageUrl = cursor.getString(imageUrlIndex);
-                    event = new SubmissionEvent(name, operationResult, date, messageId, imageUrl);
+                    if (operationResult == PortalEvent.OperationResult.ACCEPTED){
+                        String address = cursor.getString(addressIndex);
+                        String addressUrl = cursor.getString(addressUrlIndex);
+                        event = new SubmissionEvent(name,
+                                operationResult,
+                                date,
+                                messageId,
+                                imageUrl,
+                                address,
+                                addressUrl);
+                    }
+                    else {
+                        event = new SubmissionEvent(name, operationResult, date, messageId, imageUrl);
+                    }
                 }
                 else {
                     if (operationResult != PortalEvent.OperationResult.PROPOSED){
@@ -381,12 +394,13 @@ public class PortalListFragment extends Fragment {
                 values.put(PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_RESULT, event.getOperationResult().ordinal());
                 values.put(PortalEventContract.PortalEvent.COLUMN_NAME_DATE, event.getDate().getTime());
                 values.put(PortalEventContract.PortalEvent.COLUMN_NAME_MESSAGE_ID, event.getMessageId());
-                if (event instanceof SubmissionEvent)
+                if (event instanceof SubmissionEvent && event.getOperationResult() != PortalEvent.OperationResult.ACCEPTED) {
                     values.put(PortalEventContract.PortalEvent.COLUMN_NAME_IMAGE_URL, ((SubmissionEvent) event).getPortalImageUrl());
+                }
                 else {
                     if (event.getOperationResult() != PortalEvent.OperationResult.PROPOSED){
-                        values.put(PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS, ((EditEvent)event).getPortalAddress());
-                        values.put(PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS_URL, ((EditEvent)event).getPortalAddressUrl());
+                        values.put(PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS, event.getPortalAddress());
+                        values.put(PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS_URL, event.getPortalAddressUrl());
                     }
                 }
                 db.insert(

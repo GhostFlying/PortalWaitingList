@@ -61,9 +61,8 @@ public class PortalDetail implements Comparable<PortalDetail>{
      */
     public String getAddress(){
         for (PortalEvent event : events)
-            if (event instanceof EditEvent
-                    && ((EditEvent)event).getOperationResult() != PortalEvent.OperationResult.PROPOSED)
-                return ((EditEvent) event).getPortalAddress();
+            if (event.getPortalAddress() != null)
+                return event.getPortalAddress();
         return null;
     }
 
@@ -73,9 +72,8 @@ public class PortalDetail implements Comparable<PortalDetail>{
      */
     public String getAddressUrl(){
         for (PortalEvent event : events)
-            if (event instanceof EditEvent
-                    && ((EditEvent)event).getOperationResult() != PortalEvent.OperationResult.PROPOSED)
-                return ((EditEvent) event).getPortalAddressUrl();
+            if (event.getPortalAddressUrl() != null)
+                return event.getPortalAddressUrl();
         return null;
     }
 
