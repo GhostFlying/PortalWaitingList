@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ghostflying.portalwaitinglist.AuthActivity;
+import com.ghostflying.portalwaitinglist.MyApp;
 import com.ghostflying.portalwaitinglist.PortalEventContract;
 import com.ghostflying.portalwaitinglist.PortalEventDbHelper;
 import com.ghostflying.portalwaitinglist.PortalListAdapter;
@@ -36,6 +38,8 @@ import com.ghostflying.portalwaitinglist.data.Message;
 import com.ghostflying.portalwaitinglist.data.PortalDetail;
 import com.ghostflying.portalwaitinglist.data.PortalEvent;
 import com.ghostflying.portalwaitinglist.data.SubmissionEvent;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 
@@ -429,6 +433,12 @@ public class PortalListFragment extends Fragment {
          */
         private void handleException(final Exception e){
             e.printStackTrace();
+            Tracker t = ((MyApp)getActivity().getApplication()).getTracker();
+            t.send(new HitBuilders.ExceptionBuilder()
+                .setDescription(Log.getStackTraceString(e))
+                .setFatal(true)
+                .build()
+            );
             if (e instanceof GoogleAuthException) {
                 showToast(R.string.auth_error);
                 mListener.doAuthInActivity();
