@@ -67,8 +67,8 @@ public class GMailServiceUtil {
      * Get an instance of GMailServiceUtil.
      * @return the instance.
      */
-    public static GMailServiceUtil getInstance(final String token){
-        if (instance == null){
+    public static GMailServiceUtil getInstance(final String token, boolean forceRenew){
+        if (instance == null || forceRenew){
             instance = new GMailServiceUtil(token);
         }
         return instance;

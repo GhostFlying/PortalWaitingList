@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -373,14 +374,10 @@ public class PortalListFragment extends Fragment {
         protected Void doInBackground(Void...params) {
             // wait until initial done.
             while (!isInitialed);
-            try{
-                token = GoogleAuthUtil.getToken(getActivity().getApplicationContext(), account, AuthActivity.SCOPE);
-            }catch (Exception e){
-                handleException(e);
+            if (getToken())
                 return null;
-            }
             // Initial Utils
-            GMailServiceUtil fetchUtil = GMailServiceUtil.getInstance(token);
+            GMailServiceUtil fetchUtil = GMailServiceUtil.getInstance(token, false);
             MailProcessUtil processUtil = MailProcessUtil.getInstance();
             // query and convert all new messages.
             ArrayList<Message> newMessages;
@@ -388,8 +385,26 @@ public class PortalListFragment extends Fragment {
                 newMessages = fetchUtil.getPortalMessages(dbHelper);
             }
             catch (Exception e){
-                handleException(e);
-                return null;
+                if (handleException(e))
+                    return null;
+                else {
+                    // if the exception is not fatal, as the invalid token
+                    // handleException will clear the token, and getToken here again.
+                    if (getToken())
+                        return null;
+                    // now the new token is obtained
+                    // regenerate the util
+                    fetchUtil = GMailServiceUtil.getInstance(token, true);
+                    // reFetch the messages
+                   try {
+                       newMessages = fetchUtil.getPortalMessages(dbHelper);
+                   }
+                   catch (Exception e1){
+                       // no matter the exception is fatal, refresh stop.
+                       handleException(e1, true);
+                       return null;
+                   }
+                }
             }
             ArrayList<PortalEvent> newEvents = MailProcessUtil.getInstance().analysisMessages(newMessages);
 
@@ -432,11 +447,22 @@ public class PortalListFragment extends Fragment {
             return null;
         }
 
+        private boolean getToken() {
+            try{
+                token = GoogleAuthUtil.getToken(getActivity().getApplicationContext(), account, AuthActivity.SCOPE);
+            }catch (Exception e){
+                handleException(e);
+                return true;
+            }
+            return false;
+        }
+
         /**
          * Handle the exception during the refresh.
          * @param e the exception.
+         * @return true if the exception is fatal, otherwise false
          */
-        private void handleException(final Exception e){
+        private boolean handleException(final Exception e, boolean retry){
             e.printStackTrace();
             Tracker t = ((MyApp)getActivity().getApplication()).getTracker();
             t.send(new HitBuilders.ExceptionBuilder()
@@ -455,14 +481,23 @@ public class PortalListFragment extends Fragment {
                 }
                 else if (((RetrofitError) e).getResponse().getStatus() == 401) {
                     try {
-                        showToast(R.string.auth_error);
                         GoogleAuthUtil.clearToken(getActivity().getApplicationContext(), token);
-                        mListener.doAuthInActivity();
+                        // if this is the retry, call the auth activity.
+                        if (retry){
+                            showToast(R.string.auth_error);
+                            mListener.doAuthInActivity();
+                        }
+                        return false;
                     } catch (Exception e1) {
                         handleException(e1);
                     }
                 }
             }
+            return true;
+        }
+
+        private boolean handleException(final Exception e){
+            return handleException(e, false);
         }
 
         @Override
