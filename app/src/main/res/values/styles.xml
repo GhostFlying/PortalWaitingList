@@ -28,4 +28,11 @@
     <color name="refresh_circle_color_one">#1DE9B6</color>
     <color name="refresh_circle_color_two">#FF9100</color>
     <color name="refresh_circle_color_three">@color/primary</color>
+
+    <color name="portal_detail_status_bar_bg_accepted">#388E3C</color>
+    <color name="portal_detail_action_bar_bg_accepted">#4CAF50</color>
+    <color name="portal_detail_status_bar_bg_rejected">#D32F2F</color>
+    <color name="portal_detail_action_bar_bg_rejected">#F44336</color>
+    <color name="portal_detail_status_bar_bg_waiting">#F57C00</color>
+    <color name="portal_detail_action_bar_bg_waiting">#FF9800</color>
 </resources>

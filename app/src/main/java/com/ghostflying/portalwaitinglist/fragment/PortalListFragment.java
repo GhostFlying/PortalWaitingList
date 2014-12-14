@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -45,6 +46,7 @@ import com.google.android.gms.auth.GoogleAuthUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Date;
 
 import retrofit.RetrofitError;
@@ -143,8 +145,11 @@ public class PortalListFragment extends Fragment {
     @Override
     public void onHiddenChanged(boolean hidden){
         super.onHiddenChanged(hidden);
-        if (!hidden)
+        if (!hidden){
             ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.primary_dark));
+        }
     }
 
     private void setDrawerLayout(View v){

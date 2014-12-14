@@ -3,6 +3,7 @@ package com.ghostflying.portalwaitinglist.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -67,6 +68,8 @@ public class PortalDetailFragment extends Fragment {
 
         setToolbar(view, clickedPortal);
 
+        setStatusAndActionBarBg(clickedPortal);
+
         // set the text of the view.
         ((TextView)view.findViewById(R.id.last_updated_in_detail))
                 .setText(getDateDiffStr(clickedPortal.getLastUpdated()));
@@ -93,6 +96,27 @@ public class PortalDetailFragment extends Fragment {
             view.findViewById(R.id.portal_image_view_in_detail).setVisibility(View.GONE);
         }
         return view;
+    }
+
+    private void setStatusAndActionBarBg(PortalDetail portal){
+        int actionBarBg;
+        int statusBarBg;
+        if (portal.isAccepted()){
+            actionBarBg = getResources().getColor(R.color.portal_detail_action_bar_bg_accepted);
+            statusBarBg = getResources().getColor(R.color.portal_detail_status_bar_bg_accepted);
+        }
+        else if (portal.isRejected()){
+            actionBarBg = getResources().getColor(R.color.portal_detail_action_bar_bg_rejected);
+            statusBarBg = getResources().getColor(R.color.portal_detail_status_bar_bg_rejected);
+        }
+        else {
+            actionBarBg = getResources().getColor(R.color.portal_detail_action_bar_bg_waiting);
+            statusBarBg = getResources().getColor(R.color.portal_detail_status_bar_bg_waiting);
+        }
+
+        toolbar.setBackgroundColor(actionBarBg);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            getActivity().getWindow().setStatusBarColor(statusBarBg);
     }
 
     private void setToolbar(View v, PortalDetail portalDetail){
