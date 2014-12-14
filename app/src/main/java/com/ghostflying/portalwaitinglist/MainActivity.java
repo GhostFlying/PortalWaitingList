@@ -32,7 +32,7 @@ public class MainActivity extends ActionBarActivity
         setContentView(R.layout.activity_main);
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.content_layout, PortalListFragment.newInstance(), LIST_FRAGMENT_TAG)
+                .replace(R.id.content_layout, PortalListFragment.newInstance(), LIST_FRAGMENT_TAG)
                 .commit();
     }
 

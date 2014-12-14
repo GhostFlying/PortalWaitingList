@@ -445,7 +445,10 @@ public class PortalListFragment extends Fragment {
             } else if (e instanceof IOException) {
                 showToast(R.string.network_error);
             } else if (e instanceof RetrofitError) {
-                if (((RetrofitError) e).getResponse().getStatus() == 401) {
+                if (((RetrofitError) e).getResponse() == null){
+                    handleException(new IOException());
+                }
+                else if (((RetrofitError) e).getResponse().getStatus() == 401) {
                     try {
                         showToast(R.string.auth_error);
                         GoogleAuthUtil.clearToken(getActivity().getApplicationContext(), token);
