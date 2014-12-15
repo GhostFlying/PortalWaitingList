@@ -46,7 +46,8 @@
                 android:layout_marginBottom="@dimen/cardview_vertical_margin"
                 android:layout_marginLeft="@dimen/cardview_horizontal_margin"
                 android:layout_marginRight="@dimen/cardview_horizontal_margin"
-                auto:cardCornerRadius="@dimen/card_corner_radius">
+                auto:cardCornerRadius="@dimen/card_corner_radius"
+                auto:cardElevation="@dimen/card_elevation">
 
                 <com.andexert.library.RippleView
                     android:layout_width="match_parent"
@@ -105,6 +106,7 @@
                 android:layout_marginBottom="@dimen/cardview_vertical_margin"
                 android:layout_marginLeft="@dimen/cardview_horizontal_margin"
                 android:layout_marginRight="@dimen/cardview_horizontal_margin"
+                auto:cardElevation="@dimen/card_elevation"
                 auto:cardCornerRadius="@dimen/card_corner_radius">
 
                 <com.andexert.library.RippleView
@@ -162,6 +164,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/cardview_vertical_margin_ripple_view"
+                    auto:cardElevation="@dimen/card_elevation"
                     auto:cardCornerRadius="@dimen/card_corner_radius">
 
                     <LinearLayout

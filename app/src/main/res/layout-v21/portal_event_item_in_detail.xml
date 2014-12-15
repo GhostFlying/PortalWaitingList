@@ -7,7 +7,8 @@
     android:layout_marginLeft="@dimen/cardview_horizontal_margin"
     android:layout_marginRight="@dimen/cardview_horizontal_margin"
     android:layout_marginBottom="@dimen/cardview_vertical_margin"
-    card_view:cardCornerRadius="@dimen/card_corner_radius">
+    card_view:cardCornerRadius="@dimen/card_corner_radius"
+    card_view:cardElevation="@dimen/card_elevation">
 
     <LinearLayout
         android:clickable="true"
