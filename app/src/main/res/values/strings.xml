@@ -55,5 +55,6 @@
     <string name="operation_result_rejected">rejected</string>
     <string name="operation_result_duplicate">duplicated</string>
     <string name="space">" "</string>
+    <string name="share">Share</string>
 
 </resources>
