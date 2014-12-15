@@ -9,7 +9,7 @@
     <dimen name="summary_list_margin_left">30dp</dimen>
     <dimen name="summary_list_margin_right">50dp</dimen>
     <dimen name="summary_list_last_update_width">140dp</dimen>
-    <dimen name="card_elevation">5dp</dimen>
+    <dimen name="card_elevation">3dp</dimen>
     <dimen name="card_corner_radius">2dp</dimen>
     <dimen name="account_info_title_image_margin">10dp</dimen>
     <dimen name="account_info_title_text_margin">20dp</dimen>
