@@ -109,8 +109,10 @@ public class PortalDetailFragment extends Fragment {
     }
 
     private void openUrl(String url){
-        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(webIntent);
+        if (url.startsWith("http")){
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(webIntent);
+        }
     }
 
     private void setStatusAndActionBarBg(PortalDetail portal){
