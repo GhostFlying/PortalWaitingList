@@ -22,6 +22,8 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/portal_list"
+                android:clipToPadding="false"
+                android:paddingTop="@dimen/cardview_vertical_margin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbars="vertical">
