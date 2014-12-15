@@ -4,6 +4,8 @@ package com.ghostflying.portalwaitinglist.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -161,9 +163,34 @@ public class PortalDetailFragment extends Fragment {
             return true;
         }
         else if (id == R.id.menu_item_share){
+            doShare();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void doShare(){
+        Bitmap generated = getBitmapFromView(getView());
+    }
+
+    private Bitmap getBitmapFromView(View v) {
+        // store the origin state
+        int originWidth = v.getMeasuredWidth();
+        int originHeight = v.getMeasuredHeight();
+        // capture the view
+        int specWidth = View.MeasureSpec.makeMeasureSpec(768, View.MeasureSpec.EXACTLY);
+        int specHeight = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        v.measure(specWidth, specHeight);
+        Bitmap b = Bitmap.createBitmap(v.getMeasuredWidth(), v.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+        Canvas c = new Canvas(b);
+        c.drawColor(getResources().getColor(R.color.default_background));
+        v.draw(c);
+
+        // restore the view
+        v.measure(originWidth, originHeight);
+        v.layout(0, 0, originWidth, originHeight);
+        return b;
     }
 
     private void addEventViews(PortalDetail portalDetail, ViewGroup container){
