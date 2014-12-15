@@ -3,6 +3,8 @@ package com.ghostflying.portalwaitinglist.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -63,7 +65,7 @@ public class PortalDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_portal_detail, container, false);
-        PortalDetail clickedPortal = mListener.getSelectedPortal();
+        final PortalDetail clickedPortal = mListener.getSelectedPortal();
         localDateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
 
         setToolbar(view, clickedPortal);
@@ -76,9 +78,17 @@ public class PortalDetailFragment extends Fragment {
         ((TextView)view.findViewById(R.id.portal_status_in_detail))
                 .setText(getStatusTextResource(clickedPortal));
         String address = clickedPortal.getAddress();
-        if (address != null)
+        if (address != null){
             ((TextView)view.findViewById(R.id.portal_address_in_detail))
                     .setText(clickedPortal.getAddress());
+            view.findViewById(R.id.portal_address_view_in_detail)
+                    .setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            openUrl(clickedPortal.getAddressUrl());
+                        }
+                    });
+        }
         else
             view.findViewById(R.id.portal_address_view_in_detail).setVisibility(View.GONE);
         // add the event list view
@@ -96,6 +106,11 @@ public class PortalDetailFragment extends Fragment {
             view.findViewById(R.id.portal_image_view_in_detail).setVisibility(View.GONE);
         }
         return view;
+    }
+
+    private void openUrl(String url){
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(webIntent);
     }
 
     private void setStatusAndActionBarBg(PortalDetail portal){
