@@ -14,7 +14,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -47,7 +46,6 @@ import com.google.android.gms.auth.GoogleAuthUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Date;
 
 import retrofit.RetrofitError;
@@ -203,25 +201,42 @@ public class PortalListFragment extends Fragment {
 
     private void setToolbar(View v){
         toolbar = (Toolbar)v.findViewById(R.id.action_bar_in_list);
-        setTitleBySetting(SettingUtil.getFilterMethod());
+        setTitleBySetting();
         ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
     }
 
-    private void setTitleBySetting(SettingUtil.FilterMethod filterMethod){
-        switch (filterMethod){
+    private void setTitleBySetting(){
+        String title = "";
+        switch (SettingUtil.getFilterMethod()){
             case EVERYTHING:
-                toolbar.setTitle(R.string.everything);
+                title = getResources().getString(R.string.everything);
                 break;
             case ACCEPTED:
-                toolbar.setTitle(R.string.accepted);
+                title = getResources().getString(R.string.accepted);
                 break;
             case REJECTED:
-                toolbar.setTitle(R.string.rejected);
+                title = getResources().getString(R.string.rejected);
                 break;
             case WAITING:
-                toolbar.setTitle(R.string.waiting);
+                title = getResources().getString(R.string.waiting);
                 break;
         }
+
+        title += " - ";
+
+        switch (SettingUtil.getSortOrder()){
+            case SMART_ORDER:
+                title += getResources().getString(R.string.smart_order);
+                break;
+            case DATE_ASC:
+                title += getResources().getString(R.string.asc_order);
+                break;
+            case DATE_DESC:
+                title += getResources().getString(R.string.desc_order);
+                break;
+        }
+
+        toolbar.setTitle(title);
     }
 
     private void setSwipeRefreshLayout(View v){
@@ -528,7 +543,7 @@ public class PortalListFragment extends Fragment {
         protected void onPostExecute(Void param){
             // update UI
             recyclerView.getAdapter().notifyDataSetChanged();
-            setTitleBySetting(SettingUtil.getFilterMethod());
+            setTitleBySetting();
         }
     }
 
