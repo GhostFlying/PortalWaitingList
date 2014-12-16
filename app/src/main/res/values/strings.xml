@@ -56,5 +56,6 @@
     <string name="operation_result_duplicate">duplicated</string>
     <string name="space">" "</string>
     <string name="share">Share</string>
+    <string name="write_error_toast">Write image file failed.</string>
 
 </resources>

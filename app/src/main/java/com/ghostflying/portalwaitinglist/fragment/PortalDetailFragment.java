@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ghostflying.portalwaitinglist.R;
 import com.ghostflying.portalwaitinglist.data.PortalDetail;
@@ -166,36 +168,50 @@ public class PortalDetailFragment extends Fragment {
             return true;
         }
         else if (id == R.id.menu_item_share){
-            doShare();
+            new ShareTask().execute();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void doShare(){
-        Bitmap generated = getBitmapFromView(getView());
+    private void doShare(Bitmap generated){
+        // save file to external
+        String dir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                + "/ScreenShot-" + Long.toString(new Date().getTime()) + ".png";
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/ScreenShot.png", false);
+            out = new FileOutputStream(dir, false);
             generated.compress(Bitmap.CompressFormat.PNG, 100, out);
         } catch (Exception e) {
-            e.printStackTrace();
+            handleException(e);
+            return;
         } finally {
             try {
                 if (out != null) {
                     out.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                handleException(e);
+                return;
             }
         }
+        // share file to other apps
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("image/*");
-        String dir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/ScreenShot.png";
         Uri uri = Uri.parse("file://" + dir);
         share.putExtra(Intent.EXTRA_STREAM, uri);
         share.putExtra(Intent.EXTRA_TEXT, toolbar.getTitle());
         startActivity(Intent.createChooser(share, "Share Portal"));
+    }
+
+    private void handleException(Exception e){
+        e.printStackTrace();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getActivity(), R.string.write_error_toast, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private Bitmap getBitmapFromView(View v) {
@@ -282,5 +298,18 @@ public class PortalDetailFragment extends Fragment {
         public void onUpButtonClicked();
     }
 
+    public class ShareTask extends AsyncTask<Void, Void, Void>{
+        Bitmap bitmap;
 
+        @Override
+        protected void onPreExecute() {
+            bitmap = getBitmapFromView(getView());
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            doShare(bitmap);
+            return null;
+        }
+    }
 }
