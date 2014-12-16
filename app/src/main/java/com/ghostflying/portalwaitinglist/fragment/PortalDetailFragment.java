@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -29,8 +28,8 @@ import com.ghostflying.portalwaitinglist.data.PortalDetail;
 import com.ghostflying.portalwaitinglist.data.PortalEvent;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -176,29 +175,23 @@ public class PortalDetailFragment extends Fragment {
 
     private void doShare(Bitmap generated){
         // save file to external
-        String dir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                + "/ScreenShot-" + Long.toString(new Date().getTime()) + ".png";
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(dir, false);
-            generated.compress(Bitmap.CompressFormat.PNG, 100, out);
-        } catch (Exception e) {
+        File file = new File(getActivity().getExternalCacheDir(),
+                "ScreenShot-" + Long.toString(new Date().getTime()) + ".png");
+        try{
+            FileOutputStream fOut = new FileOutputStream(file);
+            generated.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+        }
+        catch (Exception e){
             handleException(e);
             return;
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                handleException(e);
-                return;
-            }
         }
+
         // share file to other apps
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("image/*");
-        Uri uri = Uri.parse("file://" + dir);
+        Uri uri = Uri.fromFile(file);
         share.putExtra(Intent.EXTRA_STREAM, uri);
         share.putExtra(Intent.EXTRA_TEXT, toolbar.getTitle());
         startActivity(Intent.createChooser(share, "Share Portal"));
