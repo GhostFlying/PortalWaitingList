@@ -215,14 +215,14 @@ public class PortalDetailFragment extends Fragment {
         int specWidth = View.MeasureSpec.makeMeasureSpec(originWidth, View.MeasureSpec.EXACTLY);
         int specHeight = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         v.measure(specWidth, specHeight);
-        Bitmap b = Bitmap.createBitmap(v.getMeasuredWidth(), v.getMeasuredHeight() + 20, Bitmap.Config.ARGB_8888);
+        Bitmap b = Bitmap.createBitmap(v.getMeasuredWidth(), v.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
         v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
         Canvas c = new Canvas(b);
         c.drawColor(getResources().getColor(R.color.default_background));
         v.draw(c);
 
         // restore the view
-        v.measure(originWidth, originHeight);
+        v.measure(specWidth, originHeight);
         v.layout(0, 0, originWidth, originHeight);
         return b;
     }
