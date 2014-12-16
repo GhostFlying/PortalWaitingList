@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -92,10 +93,10 @@ public class PortalListFragment extends Fragment {
         account = SettingUtil.getAccount();
         dbHelper = new PortalEventDbHelper(getActivity());
         totalPortalDetails = new ArrayList<>();
+        setToolbar(view);
         setDrawerLayout(view);
         setRecyclerView(view);
         setSwipeRefreshLayout(view);
-        setToolbar(view);
         setHasOptionsMenu(true);
         // read stored data.
         new InitialTask().execute();
@@ -145,7 +146,6 @@ public class PortalListFragment extends Fragment {
     public void onHiddenChanged(boolean hidden){
         super.onHiddenChanged(hidden);
         if (!hidden){
-            ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.primary_dark));
         }
@@ -153,6 +153,17 @@ public class PortalListFragment extends Fragment {
 
     private void setDrawerLayout(View v){
         drawerLayout = (DrawerLayout)v.findViewById(R.id.drawer_layout);
+
+        // handle the home button
+        ActionBarDrawerToggle actionBarDrawerToggle =
+                new ActionBarDrawerToggle(getActivity(),
+                        drawerLayout,
+                        toolbar,
+                        R.string.app_name,
+                        R.string.app_name);
+        actionBarDrawerToggle.syncState();
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+
 
         v.findViewById(R.id.item_everything).setOnClickListener(sortAndFilterClickListener);
         v.findViewById(R.id.item_accepted).setOnClickListener(sortAndFilterClickListener);
@@ -203,6 +214,7 @@ public class PortalListFragment extends Fragment {
         toolbar = (Toolbar)v.findViewById(R.id.action_bar_in_list);
         setTitleBySetting();
         ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
+        ((ActionBarActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void setTitleBySetting(){

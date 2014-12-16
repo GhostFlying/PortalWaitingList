@@ -42,4 +42,15 @@
     <dimen name="cardview_vertical_margin_ripple_view">5dp</dimen>
     <dimen name="rippleview_vertical_margin">20dp</dimen>
 
+    <!--navigation drawer-->
+    <dimen name="navigation_drawer_width">300dp</dimen>
+    <dimen name="navigation_drawer_avatar_margin_vertical">30dp</dimen>
+    <dimen name="navigation_drawer_avatar_margin_horizon">20dp</dimen>
+    <dimen name="navigation_drawer_account_margin_vertical">20dp</dimen>
+    <dimen name="navigation_drawer_item_list_padding_vertical">10dp</dimen>
+    <dimen name="navigation_drawer_item_icon_margin_left">20dp</dimen>
+    <dimen name="navigation_drawer_item_count_text_margin_right">20dp</dimen>
+    <dimen name="navigation_drawer_item_text_margin_left">30dp</dimen>
+    <dimen name="navigation_drawer_item_margin_vertical">8dp</dimen>
+
 </resources>
