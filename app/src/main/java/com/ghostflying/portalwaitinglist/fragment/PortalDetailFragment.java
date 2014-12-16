@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -26,6 +27,8 @@ import com.ghostflying.portalwaitinglist.data.PortalDetail;
 import com.ghostflying.portalwaitinglist.data.PortalEvent;
 import com.squareup.picasso.Picasso;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -171,6 +174,28 @@ public class PortalDetailFragment extends Fragment {
 
     private void doShare(){
         Bitmap generated = getBitmapFromView(getView());
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/ScreenShot.png", false);
+            generated.compress(Bitmap.CompressFormat.PNG, 100, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/*");
+        String dir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/ScreenShot.png";
+        Uri uri = Uri.parse("file://" + dir);
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.putExtra(Intent.EXTRA_TEXT, toolbar.getTitle());
+        startActivity(Intent.createChooser(share, "Share Portal"));
     }
 
     private Bitmap getBitmapFromView(View v) {
@@ -178,10 +203,10 @@ public class PortalDetailFragment extends Fragment {
         int originWidth = v.getMeasuredWidth();
         int originHeight = v.getMeasuredHeight();
         // capture the view
-        int specWidth = View.MeasureSpec.makeMeasureSpec(768, View.MeasureSpec.EXACTLY);
+        int specWidth = View.MeasureSpec.makeMeasureSpec(originWidth, View.MeasureSpec.EXACTLY);
         int specHeight = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         v.measure(specWidth, specHeight);
-        Bitmap b = Bitmap.createBitmap(v.getMeasuredWidth(), v.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap b = Bitmap.createBitmap(v.getMeasuredWidth(), v.getMeasuredHeight() + 20, Bitmap.Config.ARGB_8888);
         v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
         Canvas c = new Canvas(b);
         c.drawColor(getResources().getColor(R.color.default_background));
