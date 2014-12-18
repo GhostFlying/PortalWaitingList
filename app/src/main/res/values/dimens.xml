@@ -46,6 +46,7 @@
     <dimen name="navigation_drawer_width">300dp</dimen>
     <dimen name="navigation_drawer_avatar_margin_vertical">30dp</dimen>
     <dimen name="navigation_drawer_avatar_margin_horizon">20dp</dimen>
+    <dimen name="navigation_drawer_avatar_size">60dp</dimen>
     <dimen name="navigation_drawer_account_margin_vertical">20dp</dimen>
     <dimen name="navigation_drawer_item_list_padding_vertical">10dp</dimen>
     <dimen name="navigation_drawer_item_icon_margin_left">20dp</dimen>

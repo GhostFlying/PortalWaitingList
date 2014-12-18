@@ -64,5 +64,6 @@
     <string name="navigation_drawer_default_portal_count">0</string>
     <string name="navigation_drawer_setting">Settings</string>
     <string name="navigation_drawer_feedback">Feedback</string>
+    <string name="navigation_drawer_avatar_default_text">G</string>
 
 </resources>
