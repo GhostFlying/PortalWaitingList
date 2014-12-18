@@ -20,7 +20,7 @@ import com.ghostflying.portalwaitinglist.R;
  */
 public class DaysPickerDialogFragment extends DialogFragment {
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    // the fragment initialization parameters
     private static final String ARG_MIN = "min";
     private static final String ARG_MAX = "max";
     private static final String ARG_CURRENT = "current";
@@ -29,7 +29,7 @@ public class DaysPickerDialogFragment extends DialogFragment {
     private int mMin;
     private int mMax;
     private int mCurrent;
-    private String mTitle;
+    private int mTitle;
     private DialogButtonClickListener mListener;
 
 
@@ -37,18 +37,18 @@ public class DaysPickerDialogFragment extends DialogFragment {
      * Create new instance
      *
      * @param current   current value to be set.
-     * @param min       min value allowed.
-     * @param max       max value allowed.
-     * @param title     the title of the dialog.
+     * @param min       resId of min value allowed.
+     * @param max       resId of max value allowed.
+     * @param title     resId of the title of the dialog.
      * @return A new instance of fragment NumberPickerDialogFragment.
      */
-    public static DaysPickerDialogFragment newInstance(int current, int min, int max, String title) {
+    public static DaysPickerDialogFragment newInstance(int current, int min, int max, int title) {
         DaysPickerDialogFragment fragment = new DaysPickerDialogFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_CURRENT, current);
         args.putInt(ARG_MIN, min);
         args.putInt(ARG_MAX, max);
-        args.putString(ARG_TITLE, title);
+        args.putInt(ARG_TITLE, title);
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,7 +75,7 @@ public class DaysPickerDialogFragment extends DialogFragment {
             mCurrent = getArguments().getInt(ARG_CURRENT);
             mMin = getArguments().getInt(ARG_MIN);
             mMax = getArguments().getInt(ARG_MAX);
-            mTitle = getArguments().getString(ARG_TITLE);
+            mTitle = getArguments().getInt(ARG_TITLE);
         }
     }
 
@@ -84,8 +84,8 @@ public class DaysPickerDialogFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View v = getActivity().getLayoutInflater().inflate(R.layout.fragment_days_picker_dialog, null);
         final NumberPicker numberPicker = (NumberPicker) v.findViewById(R.id.numberPicker);
-        numberPicker.setMaxValue(mMax);
-        numberPicker.setMinValue(mMin);
+        numberPicker.setMaxValue(getResources().getInteger(mMax));
+        numberPicker.setMinValue(getResources().getInteger(mMin));
         numberPicker.setValue(mCurrent);
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -95,7 +95,7 @@ public class DaysPickerDialogFragment extends DialogFragment {
         });
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(getActivity())
-                .setTitle(mTitle)
+                .setTitle(getResources().getString(mTitle))
                 .setView(v)
                 .setPositiveButton(R.string.positive_button, new DialogInterface.OnClickListener() {
                     @Override
@@ -116,7 +116,7 @@ public class DaysPickerDialogFragment extends DialogFragment {
      * Interface to interactive with activity.
      */
     public interface DialogButtonClickListener{
-        public void onPositiveButtonClick(int value, String title);
-        public void onNegativeButtonClick(int value, String title);
+        public void onPositiveButtonClick(int value, int title);
+        public void onNegativeButtonClick(int value, int title);
     }
 }

@@ -48,6 +48,8 @@
 
     <!-- short time setting -->
     <LinearLayout
+        android:id="@+id/setting_short_time_line"
+        android:background="@drawable/setting_item_bg"
         android:orientation="vertical"
         android:paddingTop="@dimen/setting_item_group_title_margin_vertical"
         android:paddingBottom="@dimen/setting_item_group_title_margin_vertical"
@@ -98,6 +100,8 @@
 
     <!-- long time setting -->
     <LinearLayout
+        android:id="@+id/setting_long_time_line"
+        android:background="@drawable/setting_item_bg"
         android:orientation="vertical"
         android:paddingTop="@dimen/setting_item_group_title_margin_vertical"
         android:paddingBottom="@dimen/setting_item_group_title_margin_vertical"

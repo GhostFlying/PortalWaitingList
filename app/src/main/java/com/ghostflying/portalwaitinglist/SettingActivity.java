@@ -8,9 +8,11 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.ghostflying.portalwaitinglist.Util.SettingUtil;
+import com.ghostflying.portalwaitinglist.fragment.DaysPickerDialogFragment;
 
 
-public class SettingActivity extends ActionBarActivity {
+public class SettingActivity extends ActionBarActivity
+        implements DaysPickerDialogFragment.DialogButtonClickListener{
     CheckBox imageToggle;
 
     @Override
@@ -31,6 +33,12 @@ public class SettingActivity extends ActionBarActivity {
         imageToggle.setChecked(SettingUtil.getIfShowImages());
         imageToggle.setOnCheckedChangeListener(onCheckedChangeListener);
         findViewById(R.id.setting_show_image_line).setOnClickListener(onClickListener);
+
+        // short time setting
+        findViewById(R.id.setting_short_time_line).setOnClickListener(onClickListener);
+
+        // long time setting
+        findViewById(R.id.setting_long_time_line).setOnClickListener(onClickListener);
     }
 
     // on click listener for all need
@@ -40,6 +48,28 @@ public class SettingActivity extends ActionBarActivity {
             switch (v.getId()){
                 case R.id.setting_show_image_line:
                     imageToggle.setChecked(!imageToggle.isChecked());
+                    break;
+                case R.id.setting_short_time_line:
+                    DaysPickerDialogFragment shortFragment =
+                            DaysPickerDialogFragment
+                                    .newInstance(
+                                            0,
+                                            R.integer.setting_short_time_min,
+                                            R.integer.setting_short_time_max,
+                                            R.string.setting_short_time_dialog_title
+                                    );
+                    shortFragment.show(getFragmentManager(), null);
+                    break;
+                case R.id.setting_long_time_line:
+                    DaysPickerDialogFragment longFragment =
+                            DaysPickerDialogFragment
+                                    .newInstance(
+                                            0,
+                                            R.integer.setting_long_time_min,
+                                            R.integer.setting_long_time_max,
+                                            R.string.setting_long_time_dialog_title
+                                    );
+                    longFragment.show(getFragmentManager(), null);
                     break;
             }
         }
@@ -56,4 +86,14 @@ public class SettingActivity extends ActionBarActivity {
             }
         }
     };
+
+    @Override
+    public void onPositiveButtonClick(int value, int title) {
+
+    }
+
+    @Override
+    public void onNegativeButtonClick(int value, int title) {
+
+    }
 }

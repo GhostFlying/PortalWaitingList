@@ -83,6 +83,8 @@
     <string name="setting_smart_order_long_time_default_value">365</string>
     <string name="setting_smart_order_waiting_sort_order">Default sort order for waiting</string>
     <string name="setting_smart_order_default_sort_order">@string/asc_order</string>
+    <string name="setting_short_time_dialog_title">Days of short time</string>
+    <string name="setting_long_time_dialog_title">Days of long time</string>
 
     <!-- Days Picker Fragment -->
     <string name="positive_button">@android:string/ok</string>
