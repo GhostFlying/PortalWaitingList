@@ -172,6 +172,8 @@ public class PortalListFragment extends Fragment {
         v.findViewById(R.id.item_smart_order).setOnClickListener(sortAndFilterClickListener);
         v.findViewById(R.id.item_asc_order).setOnClickListener(sortAndFilterClickListener);
         v.findViewById(R.id.item_desc_order).setOnClickListener(sortAndFilterClickListener);
+        // default select the portal
+        v.findViewById(R.id.navigation_item_portal).setSelected(true);
         countEverything = (TextView)v.findViewById(R.id.count_everything);
         countAccepted = (TextView)v.findViewById(R.id.count_accepted);
         countRejected = (TextView)v.findViewById(R.id.count_rejected);

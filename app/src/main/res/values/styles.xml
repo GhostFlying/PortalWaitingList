@@ -43,4 +43,5 @@
     <color name="navigation_drawer_title_bg">@color/primary</color>
     <color name="navigation_drawer_item_text_color">#000000</color>
     <color name="navigation_drawer_item_selected_bg">#F5F5F5</color>
+    <color name="navigation_drawer_item_bg">@color/navigation_drawer_bg</color>
 </resources>
