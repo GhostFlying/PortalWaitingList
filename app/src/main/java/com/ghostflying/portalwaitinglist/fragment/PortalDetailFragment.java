@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ghostflying.portalwaitinglist.R;
+import com.ghostflying.portalwaitinglist.Util.SettingUtil;
 import com.ghostflying.portalwaitinglist.data.PortalDetail;
 import com.ghostflying.portalwaitinglist.data.PortalEvent;
 import com.squareup.picasso.Picasso;
@@ -103,7 +104,7 @@ public class PortalDetailFragment extends Fragment {
         addEventViews(clickedPortal, (LinearLayout)view.findViewById(R.id.event_list_in_detail));
 
         String imageUrl = clickedPortal.getImageUrl();
-        if (imageUrl != null && imageUrl.startsWith("http")){
+        if (SettingUtil.getIfShowImages() && imageUrl != null && imageUrl.startsWith("http")){
             // download and show the image of portal
             Picasso.with(getActivity())
                     .load(imageUrl.replaceFirst("http://", "https://"))

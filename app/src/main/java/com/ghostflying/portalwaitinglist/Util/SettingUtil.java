@@ -14,11 +14,14 @@ public class SettingUtil {
     static final String SORT_ORDER_NAME = "SortOrder";
     static final String FILTER_METHOD_NAME = "FilterMethod";
     static final String ACCOUNT_NAME = "account";
+    static final String IF_SHOW_IMAGES = "IfShowImages";
     static final String READ_FIRST_EXCEPTION = "You must read all settings first.";
+    static final boolean DEFAULT_IF_SHOW_IMAGES = true;
     private static SharedPreferences options;
     private static FilterMethod filterMethod;
     private static SortOrder sortOrder;
     private static String account;
+    private static boolean ifShowImages;
     private static boolean isModified = false;
 
     /**
@@ -33,6 +36,7 @@ public class SettingUtil {
                     FilterMethod.EVERYTHING.ordinal())];
             sortOrder = SortOrder.values()[options.getInt(SORT_ORDER_NAME,
                     SortOrder.SMART_ORDER.ordinal())];
+            ifShowImages = options.getBoolean(IF_SHOW_IMAGES, DEFAULT_IF_SHOW_IMAGES);
             isModified = false;
         }
     }
@@ -107,6 +111,25 @@ public class SettingUtil {
         checkRead();
         isModified = true;
         SettingUtil.sortOrder = sortOrder;
+    }
+
+    /**
+     * Get the setting ifShowImages.
+     * @return  true if the images should be showed, otherwise false.
+     */
+    public static Boolean getIfShowImages(){
+        checkRead();
+        return ifShowImages;
+    }
+
+    /**
+     * Set the setting ifShowImages
+     * @param ifShowImages  the ifShowImages to set.
+     */
+    public static void setIfShowImages(boolean ifShowImages){
+        checkRead();
+        isModified = true;
+        SettingUtil.ifShowImages = ifShowImages;
     }
 
     /**

@@ -49,4 +49,6 @@
     <!-- setting activity -->
     <color name="setting_item_group_title_text">@color/primary</color>
     <color name="setting_item_text">#000000</color>
+    <color name="setting_item_bg">@color/default_background</color>
+    <color name="setting_item_pressed">#9E9E9E</color>
 </resources>
