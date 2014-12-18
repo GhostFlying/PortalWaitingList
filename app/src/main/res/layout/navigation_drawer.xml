@@ -108,6 +108,8 @@
 
         <!-- Setting -->
         <LinearLayout
+            android:id="@+id/navigation_item_setting"
+            android:background="@drawable/navigation_item_bg"
             android:orientation="horizontal"
             android:paddingTop="@dimen/navigation_drawer_item_margin_vertical"
             android:paddingBottom="@dimen/navigation_drawer_item_margin_vertical"

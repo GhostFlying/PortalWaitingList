@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:context="com.ghostflying.portalwaitinglist.SettingActivity">
+
+    <include android:id="@+id/action_bar_in_setting"
+             layout="@layout/toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <!-- image settings -->
+            <include layout="@layout/setting_image"/>
+
+
+            <!-- smart order  -->
+            <include layout = "@layout/setting_smart_order"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="@dimen/setting_item_separator_margin_horizon"
+                android:layout_marginRight="@dimen/setting_item_separator_margin_horizon"
+                android:background="@android:color/darker_gray"/>
+
+            <!-- About -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="@string/setting_about"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/setting_item_group_title_margin_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+
+                <TextView
+                    android:text="@string/setting_thank"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/setting_about_text_margin_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/version_name"
+                    android:text="@string/setting_default_version_name"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/setting_about_text_margin_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

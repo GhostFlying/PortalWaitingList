@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".MyApp"
         android:allowBackup="true"
@@ -16,17 +17,26 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="com.ghostflying.portalwaitinglist.MainActivity"
-            android:launchMode="singleTask">
+            android:name=".MainActivity"
+            android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.ghostflying.portalwaitinglist.AuthActivity"
+            android:name=".AuthActivity"
             android:label="@string/title_activity_auth" >
         </activity>
+        <activity
+            android:name=".SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ghostflying.portalwaitinglist.MainActivity" />
+        </activity>
     </application>
+
 </manifest>

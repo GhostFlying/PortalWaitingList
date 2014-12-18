@@ -54,4 +54,12 @@
     <dimen name="navigation_drawer_item_text_margin_left">30dp</dimen>
     <dimen name="navigation_drawer_item_margin_vertical">10dp</dimen>
 
+    <!-- setting activity -->
+    <dimen name="setting_item_group_title_margin_vertical">20dp</dimen>
+    <dimen name="setting_item_group_title_margin_horizon">20dp</dimen>
+    <dimen name="setting_about_text_margin_vertical">5dp</dimen>
+    <dimen name="setting_item_text_size">16sp</dimen>
+    <dimen name="setting_item_sub_text_margin_vertical">5dp</dimen>
+    <dimen name="setting_item_separator_margin_horizon">10dp</dimen>
+
 </resources>

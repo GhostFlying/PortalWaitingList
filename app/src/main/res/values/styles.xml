@@ -45,4 +45,8 @@
     <color name="navigation_drawer_item_selected_bg">#F5F5F5</color>
     <color name="navigation_drawer_item_bg">@color/navigation_drawer_bg</color>
     <color name="navigation_drawer_avatar_bg_color">#F44336</color>
+
+    <!-- setting activity -->
+    <color name="setting_item_group_title_text">@color/primary</color>
+    <color name="setting_item_text">#000000</color>
 </resources>

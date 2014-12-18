@@ -20,10 +20,9 @@
     <string name="day_ago">" day(s) ago"</string>
     <string name="default_date_diff">10</string>
     <string name="last_update">"Last update:  "</string>
-
     <string name="alert_no_choose_account">You must pick an account to continue.</string>
 
-    <!--filter drawer-->
+    <!-- filter drawer -->
     <string name="filter_drawer_title">Portals Filter</string>
     <string name="everything">Everything</string>
     <string name="accepted">Accepted</string>
@@ -33,12 +32,11 @@
     <string name="smart_order">Smart</string>
     <string name="asc_order">Asc</string>
     <string name="desc_order">Desc</string>
-
     <string name="alert_to_refresh">First time? Please wait refreshing.</string>
     <string name="network_error">Network error, please make sure a reliable connection.</string>
     <string name="auth_error">Authorization Error, need to grant again.</string>
 
-    <!--portal detail fragment -->
+    <!-- portal detail fragment -->
     <string name="last_update_in_detail">Last update</string>
     <string name="status">Status</string>
     <string name="default_status">Default status</string>
@@ -58,12 +56,32 @@
     <string name="share">Share</string>
     <string name="write_error_toast">Write image file failed.</string>
 
-    <!--navigation drawer -->
+    <!-- navigation drawer -->
     <string name="navigation_drawer_default_account">default@ghostflying.com</string>
     <string name="navigation_drawer_portal_list">Portal List</string>
     <string name="navigation_drawer_default_portal_count">0</string>
     <string name="navigation_drawer_setting">Settings</string>
     <string name="navigation_drawer_feedback">Feedback</string>
     <string name="navigation_drawer_avatar_default_text">G</string>
+    <string name="title_activity_setting">SettingActivity</string>
+
+    <!-- setting activity -->
+    <string name="setting_about">Made by a member of Hangzhou Resistance, China</string>
+    <string name="setting_thank">Thank you for all your support!</string>
+    <string name="setting_default_version_name">version 0.1</string>
+    <string name="setting_image">Portal image</string>
+    <string name="setting_image_toggle">Show portal image if exist</string>
+    <string name="setting_smart_order">Smart order settings</string>
+    <string name="setting_smart_order_short_time">Days of short time</string>
+    <string name="setting_smart_order_short_time_describe">
+        The reviewed portals in the short time will be showed on the top.</string>
+    <string name="setting_smart_order_time_days">" days"</string>
+    <string name="setting_smart_order_short_time_default_value">7</string>
+    <string name="setting_smart_order_long_time">Days of long time</string>
+    <string name="setting_smart_order_long_time_describe">
+        The portals have no response over the long time will be showed on the end.</string>
+    <string name="setting_smart_order_long_time_default_value">365</string>
+    <string name="setting_smart_order_waiting_sort_order">Default sort order for waiting</string>
+    <string name="setting_smart_order_default_sort_order">@string/asc_order</string>
 
 </resources>

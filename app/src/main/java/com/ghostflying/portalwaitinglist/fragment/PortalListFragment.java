@@ -3,6 +3,7 @@ package com.ghostflying.portalwaitinglist.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -32,6 +33,7 @@ import com.ghostflying.portalwaitinglist.PortalEventContract;
 import com.ghostflying.portalwaitinglist.PortalEventDbHelper;
 import com.ghostflying.portalwaitinglist.PortalListAdapter;
 import com.ghostflying.portalwaitinglist.R;
+import com.ghostflying.portalwaitinglist.SettingActivity;
 import com.ghostflying.portalwaitinglist.Util.GMailServiceUtil;
 import com.ghostflying.portalwaitinglist.Util.MailProcessUtil;
 import com.ghostflying.portalwaitinglist.Util.SettingUtil;
@@ -174,11 +176,28 @@ public class PortalListFragment extends Fragment {
         v.findViewById(R.id.item_desc_order).setOnClickListener(sortAndFilterClickListener);
         // default select the portal
         v.findViewById(R.id.navigation_item_portal).setSelected(true);
+        v.findViewById(R.id.navigation_item_portal).setOnClickListener(navigationDrawerClickListener);
+        v.findViewById(R.id.navigation_item_setting).setOnClickListener(navigationDrawerClickListener);
         countEverything = (TextView)v.findViewById(R.id.count_everything);
         countAccepted = (TextView)v.findViewById(R.id.count_accepted);
         countRejected = (TextView)v.findViewById(R.id.count_rejected);
         countWaiting = (TextView)v.findViewById(R.id.count_waiting);
     }
+
+    View.OnClickListener navigationDrawerClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.navigation_item_portal:
+                    drawerLayout.closeDrawer(Gravity.LEFT);
+                    break;
+                case R.id.navigation_item_setting:
+                    Intent setting = new Intent(getActivity(), SettingActivity.class);
+                    startActivity(setting);
+                    break;
+            }
+        }
+    };
 
     View.OnClickListener sortAndFilterClickListener = new View.OnClickListener() {
         @Override
