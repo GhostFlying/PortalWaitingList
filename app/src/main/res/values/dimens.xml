@@ -62,4 +62,7 @@
     <dimen name="setting_item_sub_text_margin_vertical">5dp</dimen>
     <dimen name="setting_item_separator_margin_horizon">10dp</dimen>
 
+    <!-- Days Picker Fragment -->
+    <dimen name="days_picker_text_margin_left">10dp</dimen>
+
 </resources>

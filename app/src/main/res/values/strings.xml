@@ -84,4 +84,9 @@
     <string name="setting_smart_order_waiting_sort_order">Default sort order for waiting</string>
     <string name="setting_smart_order_default_sort_order">@string/asc_order</string>
 
+    <!-- Days Picker Fragment -->
+    <string name="positive_button">@android:string/ok</string>
+    <string name="negative_button">@android:string/cancel</string>
+    <string name="days_picker_fragment_days">Days</string>
+
 </resources>
