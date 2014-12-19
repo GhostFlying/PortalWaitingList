@@ -1,5 +1,6 @@
 package com.ghostflying.portalwaitinglist;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,11 +10,14 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.ghostflying.portalwaitinglist.Util.SettingUtil;
+import com.ghostflying.portalwaitinglist.fragment.BaseAlertDialogFragment;
 import com.ghostflying.portalwaitinglist.fragment.DaysPickerDialogFragment;
+import com.ghostflying.portalwaitinglist.fragment.SingleChooseDialogFragment;
 
 
 public class SettingActivity extends ActionBarActivity
-        implements DaysPickerDialogFragment.DialogButtonClickListener{
+        implements BaseAlertDialogFragment.OnFragmentInteractionListener{
+    public static final int REQUEST_SETTING = 1;
     CheckBox imageToggle;
     TextView shortTimeValue;
     TextView longTimeValue;
@@ -37,6 +41,9 @@ public class SettingActivity extends ActionBarActivity
         imageToggle.setOnCheckedChangeListener(onCheckedChangeListener);
         findViewById(R.id.setting_show_image_line).setOnClickListener(onClickListener);
 
+        // default sort
+        findViewById(R.id.setting_default_sort_line).setOnClickListener(onClickListener);
+
         // short time setting
         findViewById(R.id.setting_short_time_line).setOnClickListener(onClickListener);
         updateShortTimeValue();
@@ -44,6 +51,16 @@ public class SettingActivity extends ActionBarActivity
         // long time setting
         findViewById(R.id.setting_long_time_line).setOnClickListener(onClickListener);
         updateLongTimeValue();
+
+        // version code
+        try{
+            ((TextView)findViewById(R.id.version_name)).setText(
+                    getResources().getString(R.string.setting_version) +
+                    getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
+        }
+        catch (PackageManager.NameNotFoundException e){
+            e.printStackTrace();
+        }
     }
 
     private void updateShortTimeValue(){
@@ -88,6 +105,16 @@ public class SettingActivity extends ActionBarActivity
                                     );
                     longFragment.show(getFragmentManager(), null);
                     break;
+                case R.id.setting_default_sort_line:
+                    SingleChooseDialogFragment sortFragment =
+                            SingleChooseDialogFragment
+                                    .newInstance(
+                                            R.string.setting_default_sort_dialog_title,
+                                            R.array.sort_method_exclude_smart,
+                                            0
+                                    );
+                    sortFragment.show(getFragmentManager(), null);
+                    break;
             }
         }
     };
@@ -110,10 +137,14 @@ public class SettingActivity extends ActionBarActivity
             case R.string.setting_short_time_dialog_title:
                 SettingUtil.setShortTime(value);
                 updateShortTimeValue();
+                // set result to filter or sort date in main activity
+                setResult(RESULT_OK);
                 break;
             case R.string.setting_long_time_dialog_title:
                 SettingUtil.setLongTime(value);
                 updateLongTimeValue();
+                // set result to filter or sort date in main activity
+                setResult(RESULT_OK);
                 break;
         }
     }

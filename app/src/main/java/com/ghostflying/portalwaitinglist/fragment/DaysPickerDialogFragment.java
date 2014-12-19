@@ -1,10 +1,8 @@
 package com.ghostflying.portalwaitinglist.fragment;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -18,7 +16,7 @@ import com.ghostflying.portalwaitinglist.R;
  * Use the {@link DaysPickerDialogFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DaysPickerDialogFragment extends DialogFragment {
+public class DaysPickerDialogFragment extends BaseAlertDialogFragment {
 
     // the fragment initialization parameters
     private static final String ARG_MIN = "min";
@@ -30,7 +28,6 @@ public class DaysPickerDialogFragment extends DialogFragment {
     private int mMax;
     private int mCurrent;
     private int mTitle;
-    private DialogButtonClickListener mListener;
 
 
     /**
@@ -55,17 +52,6 @@ public class DaysPickerDialogFragment extends DialogFragment {
 
     public DaysPickerDialogFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (DialogButtonClickListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement DialogButtonClickListener");
-        }
     }
 
     @Override
@@ -95,11 +81,12 @@ public class DaysPickerDialogFragment extends DialogFragment {
         });
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(getActivity())
-                .setTitle(getResources().getString(mTitle))
+                .setTitle(mTitle)
                 .setView(v)
                 .setPositiveButton(R.string.positive_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        numberPicker.clearFocus();
                         mListener.onPositiveButtonClick(numberPicker.getValue(), mTitle);
                     }
                 })
@@ -110,13 +97,5 @@ public class DaysPickerDialogFragment extends DialogFragment {
                     }
                 });
         return builder.create();
-    }
-
-    /**
-     * Interface to interactive with activity.
-     */
-    public interface DialogButtonClickListener{
-        public void onPositiveButtonClick(int value, int title);
-        public void onNegativeButtonClick(int value, int title);
     }
 }

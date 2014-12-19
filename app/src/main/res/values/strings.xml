@@ -68,6 +68,7 @@
     <string name="title_activity_setting">Settings</string>
     <string name="setting_about">Made by a member of Hangzhou Resistance, China</string>
     <string name="setting_thank">Thank you for all your support!</string>
+    <string name="setting_version">"version "</string>
     <string name="setting_default_version_name">version 0.1</string>
     <string name="setting_image">Portal image</string>
     <string name="setting_image_toggle">Show portal images</string>
@@ -85,6 +86,11 @@
     <string name="setting_smart_order_default_sort_order">@string/asc_order</string>
     <string name="setting_short_time_dialog_title">Days of short time</string>
     <string name="setting_long_time_dialog_title">Days of long time</string>
+    <string name="setting_default_sort_dialog_title">Choose default sort method</string>
+    <string-array name="sort_method_exclude_smart">
+        <item>@string/desc_order</item>
+        <item>@string/asc_order</item>
+    </string-array>
 
     <!-- Days Picker Fragment -->
     <string name="positive_button">@android:string/ok</string>

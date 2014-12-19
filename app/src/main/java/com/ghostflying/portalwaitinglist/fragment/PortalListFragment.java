@@ -193,7 +193,7 @@ public class PortalListFragment extends Fragment {
                     break;
                 case R.id.navigation_item_setting:
                     Intent setting = new Intent(getActivity(), SettingActivity.class);
-                    startActivity(setting);
+                    startActivityForResult(setting, SettingActivity.REQUEST_SETTING);
                     break;
             }
         }
@@ -301,6 +301,17 @@ public class PortalListFragment extends Fragment {
         });
         recyclerView.setAdapter(adapter);
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // when return from setting activity and the filter or sort related
+        // params are changed, do filter and sort.
+        if (requestCode == SettingActivity.REQUEST_SETTING
+                && resultCode == SettingActivity.RESULT_OK)
+            new SortAndFilterTask().execute();
+    }
+
 
     /**
      * The initial task once the activity start.
