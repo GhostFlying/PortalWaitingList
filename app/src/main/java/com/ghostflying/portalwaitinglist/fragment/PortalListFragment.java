@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -178,6 +179,7 @@ public class PortalListFragment extends Fragment {
         v.findViewById(R.id.navigation_item_portal).setSelected(true);
         v.findViewById(R.id.navigation_item_portal).setOnClickListener(navigationDrawerClickListener);
         v.findViewById(R.id.navigation_item_setting).setOnClickListener(navigationDrawerClickListener);
+        v.findViewById(R.id.navigation_item_feedback).setOnClickListener(navigationDrawerClickListener);
         countEverything = (TextView)v.findViewById(R.id.count_everything);
         countAccepted = (TextView)v.findViewById(R.id.count_accepted);
         countRejected = (TextView)v.findViewById(R.id.count_rejected);
@@ -194,6 +196,16 @@ public class PortalListFragment extends Fragment {
                 case R.id.navigation_item_setting:
                     Intent setting = new Intent(getActivity(), SettingActivity.class);
                     startActivityForResult(setting, SettingActivity.REQUEST_SETTING);
+                    break;
+                case R.id.navigation_item_feedback:
+                    Intent mailIntent = new Intent(
+                            Intent.ACTION_SENDTO,
+                            Uri.fromParts("mailto", getString(R.string.author_mail), null)
+                    );
+                    mailIntent.putExtra(Intent.EXTRA_SUBJECT,
+                            getString(R.string.navigation_drawer_feedback_subject));
+                    startActivity(Intent.createChooser(
+                            mailIntent, getString(R.string.navigation_drawer_send)));
                     break;
             }
         }
