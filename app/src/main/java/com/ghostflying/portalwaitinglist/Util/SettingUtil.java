@@ -14,14 +14,20 @@ public class SettingUtil {
     static final String SORT_ORDER_NAME = "SortOrder";
     static final String FILTER_METHOD_NAME = "FilterMethod";
     static final String ACCOUNT_NAME = "account";
-    static final String IF_SHOW_IMAGES = "IfShowImages";
+    static final String IF_SHOW_IMAGES_NAME = "IfShowImages";
+    static final String SHORT_TIME_NAME = "ShortTime";
+    static final String LONG_TIME_NAME = "LongTime";
     static final String READ_FIRST_EXCEPTION = "You must read all settings first.";
     static final boolean DEFAULT_IF_SHOW_IMAGES = true;
+    static final int DEFAULT_SHORT_TIME = 7;
+    static final int DEFAULT_LONG_TIME = 365;
     private static SharedPreferences options;
     private static FilterMethod filterMethod;
     private static SortOrder sortOrder;
     private static String account;
     private static boolean ifShowImages;
+    private static int shortTime;
+    private static int longTime;
     private static boolean isModified = false;
 
     /**
@@ -36,8 +42,9 @@ public class SettingUtil {
                     FilterMethod.EVERYTHING.ordinal())];
             sortOrder = SortOrder.values()[options.getInt(SORT_ORDER_NAME,
                     SortOrder.SMART_ORDER.ordinal())];
-            ifShowImages = options.getBoolean(IF_SHOW_IMAGES, DEFAULT_IF_SHOW_IMAGES);
-            isModified = false;
+            ifShowImages = options.getBoolean(IF_SHOW_IMAGES_NAME, DEFAULT_IF_SHOW_IMAGES);
+            shortTime = options.getInt(SHORT_TIME_NAME, DEFAULT_SHORT_TIME);
+            longTime = options.getInt(LONG_TIME_NAME, DEFAULT_LONG_TIME);
         }
     }
 
@@ -123,13 +130,51 @@ public class SettingUtil {
     }
 
     /**
-     * Set the setting ifShowImages
-     * @param ifShowImages  the ifShowImages to set.
+     * Set the setting ifShowImagesName
+     * @param ifShowImages  the ifShowImagesName to set.
      */
     public static void setIfShowImages(boolean ifShowImages){
         checkRead();
         isModified = true;
         SettingUtil.ifShowImages = ifShowImages;
+    }
+
+    /**
+     * Get the setting short time.
+     * @return  the short time saved.
+     */
+    public static int getShortTime(){
+        checkRead();
+        return shortTime;
+    }
+
+    /**
+     * Set the setting short time.
+     * @param shortTime the short time to set.
+     */
+    public static void setShortTime(int shortTime){
+        checkRead();
+        isModified = true;
+        SettingUtil.shortTime = shortTime;
+    }
+
+    /**
+     * Get the setting long time.
+     * @return  the long time saved.
+     */
+    public static int getLongTime(){
+        checkRead();
+        return longTime;
+    }
+
+    /**
+     * Set the setting long time.
+     * @param longTime  the long time to set.
+     */
+    public static void setLongTime(int longTime){
+        checkRead();
+        isModified = true;
+        SettingUtil.longTime = longTime;
     }
 
     /**

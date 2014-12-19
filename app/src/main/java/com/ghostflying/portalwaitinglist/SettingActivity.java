@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.ghostflying.portalwaitinglist.Util.SettingUtil;
 import com.ghostflying.portalwaitinglist.fragment.DaysPickerDialogFragment;
@@ -14,6 +15,8 @@ import com.ghostflying.portalwaitinglist.fragment.DaysPickerDialogFragment;
 public class SettingActivity extends ActionBarActivity
         implements DaysPickerDialogFragment.DialogButtonClickListener{
     CheckBox imageToggle;
+    TextView shortTimeValue;
+    TextView longTimeValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +39,23 @@ public class SettingActivity extends ActionBarActivity
 
         // short time setting
         findViewById(R.id.setting_short_time_line).setOnClickListener(onClickListener);
+        updateShortTimeValue();
 
         // long time setting
         findViewById(R.id.setting_long_time_line).setOnClickListener(onClickListener);
+        updateLongTimeValue();
+    }
+
+    private void updateShortTimeValue(){
+        if (shortTimeValue == null)
+            shortTimeValue = (TextView)findViewById(R.id.setting_smart_order_short_time_value);
+        shortTimeValue.setText(Integer.toString(SettingUtil.getShortTime()));
+    }
+
+    private void updateLongTimeValue(){
+        if (longTimeValue == null)
+            longTimeValue = (TextView)findViewById(R.id.setting_smart_order_long_time_value);
+        longTimeValue.setText(Integer.toString(SettingUtil.getLongTime()));
     }
 
     // on click listener for all need
@@ -53,7 +70,7 @@ public class SettingActivity extends ActionBarActivity
                     DaysPickerDialogFragment shortFragment =
                             DaysPickerDialogFragment
                                     .newInstance(
-                                            0,
+                                            SettingUtil.getShortTime(),
                                             R.integer.setting_short_time_min,
                                             R.integer.setting_short_time_max,
                                             R.string.setting_short_time_dialog_title
@@ -64,7 +81,7 @@ public class SettingActivity extends ActionBarActivity
                     DaysPickerDialogFragment longFragment =
                             DaysPickerDialogFragment
                                     .newInstance(
-                                            0,
+                                            SettingUtil.getLongTime(),
                                             R.integer.setting_long_time_min,
                                             R.integer.setting_long_time_max,
                                             R.string.setting_long_time_dialog_title
@@ -89,7 +106,16 @@ public class SettingActivity extends ActionBarActivity
 
     @Override
     public void onPositiveButtonClick(int value, int title) {
-
+        switch (title){
+            case R.string.setting_short_time_dialog_title:
+                SettingUtil.setShortTime(value);
+                updateShortTimeValue();
+                break;
+            case R.string.setting_long_time_dialog_title:
+                SettingUtil.setLongTime(value);
+                updateLongTimeValue();
+                break;
+        }
     }
 
     @Override
