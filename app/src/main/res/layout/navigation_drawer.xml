@@ -92,7 +92,8 @@
                         android:layout_marginRight="@dimen/navigation_drawer_item_count_text_margin_right"
                         android:layout_gravity="center_vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:id="@+id/navigation_drawer_total_portals"/>
 
                 </LinearLayout>
             </LinearLayout>

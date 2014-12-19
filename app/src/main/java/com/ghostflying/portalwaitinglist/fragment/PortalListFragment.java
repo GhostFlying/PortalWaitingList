@@ -71,6 +71,7 @@ public class PortalListFragment extends Fragment {
     TextView countAccepted;
     TextView countRejected;
     TextView countWaiting;
+    TextView totalPortals;
     boolean isInitialed = false;
 
     public static PortalListFragment newInstance() {
@@ -175,11 +176,22 @@ public class PortalListFragment extends Fragment {
         v.findViewById(R.id.item_smart_order).setOnClickListener(sortAndFilterClickListener);
         v.findViewById(R.id.item_asc_order).setOnClickListener(sortAndFilterClickListener);
         v.findViewById(R.id.item_desc_order).setOnClickListener(sortAndFilterClickListener);
+
         // default select the portal
         v.findViewById(R.id.navigation_item_portal).setSelected(true);
         v.findViewById(R.id.navigation_item_portal).setOnClickListener(navigationDrawerClickListener);
         v.findViewById(R.id.navigation_item_setting).setOnClickListener(navigationDrawerClickListener);
         v.findViewById(R.id.navigation_item_feedback).setOnClickListener(navigationDrawerClickListener);
+        totalPortals = (TextView)v.findViewById(R.id.navigation_drawer_total_portals);
+        // set the user avatar and account name
+        if (SettingUtil.getAccount() != null){
+            ((TextView)v.findViewById(R.id.account_name)).setText(SettingUtil.getAccount());
+            ((TextView)v.findViewById(R.id.user_avatar)).setText(
+                    SettingUtil.getAccount().toUpperCase().substring(0 ,1)
+            );
+        }
+
+
         countEverything = (TextView)v.findViewById(R.id.count_everything);
         countAccepted = (TextView)v.findViewById(R.id.count_accepted);
         countRejected = (TextView)v.findViewById(R.id.count_rejected);
@@ -607,6 +619,7 @@ public class PortalListFragment extends Fragment {
         if (counts!= null){
             int total = totalPortalDetails.size();
             countEverything.setText(Integer.toString(total));
+            totalPortals.setText(Integer.toString(total));
             countAccepted.setText(Integer.toString(counts[0]));
             countRejected.setText(Integer.toString(counts[1]));
             countWaiting.setText(Integer.toString(total - counts[0] - counts[1]));
