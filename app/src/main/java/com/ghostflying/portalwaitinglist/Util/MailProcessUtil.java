@@ -273,7 +273,10 @@ public class MailProcessUtil {
                         int rhsPri = rhs.getOrderPrior();
                         if (lhsPri == rhsPri){
                             // asc for waiting portal, desc for others
-                            if (lhsPri == PortalDetail.PRIORITY_WAITING_FOR_REVIEW)
+                            // if if inverse waiting in smart set to true
+                            // all is desc
+                            if (lhsPri == PortalDetail.PRIORITY_WAITING_FOR_REVIEW
+                                    && !SettingUtil.getIfInverseWaitingInSmart())
                                 return lhs.compareTo(rhs);
                             else
                                 return rhs.compareTo(lhs);

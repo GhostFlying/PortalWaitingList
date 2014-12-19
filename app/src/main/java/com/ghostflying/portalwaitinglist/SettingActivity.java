@@ -12,15 +12,16 @@ import android.widget.TextView;
 import com.ghostflying.portalwaitinglist.Util.SettingUtil;
 import com.ghostflying.portalwaitinglist.fragment.BaseAlertDialogFragment;
 import com.ghostflying.portalwaitinglist.fragment.DaysPickerDialogFragment;
-import com.ghostflying.portalwaitinglist.fragment.SingleChooseDialogFragment;
 
 
 public class SettingActivity extends ActionBarActivity
         implements BaseAlertDialogFragment.OnFragmentInteractionListener{
     public static final int REQUEST_SETTING = 1;
     CheckBox imageToggle;
+    CheckBox inverseToggle;
     TextView shortTimeValue;
     TextView longTimeValue;
+    TextView smartOrderSortValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,11 @@ public class SettingActivity extends ActionBarActivity
         findViewById(R.id.setting_show_image_line).setOnClickListener(onClickListener);
 
         // default sort
-        findViewById(R.id.setting_default_sort_line).setOnClickListener(onClickListener);
+        inverseToggle = (CheckBox)findViewById(R.id.setting_smart_order_inverse_toggle);
+        inverseToggle.setChecked(SettingUtil.getIfInverseWaitingInSmart());
+        inverseToggle.setOnCheckedChangeListener(onCheckedChangeListener);
+        updateSmartOrderSortValue();
+        findViewById(R.id.setting_inverse_sort_line).setOnClickListener(onClickListener);
 
         // short time setting
         findViewById(R.id.setting_short_time_line).setOnClickListener(onClickListener);
@@ -75,6 +80,15 @@ public class SettingActivity extends ActionBarActivity
         longTimeValue.setText(Integer.toString(SettingUtil.getLongTime()));
     }
 
+    private void updateSmartOrderSortValue(){
+        if (smartOrderSortValue == null)
+            smartOrderSortValue = (TextView)findViewById(R.id.setting_smart_order_sort_value);
+        if (SettingUtil.getIfInverseWaitingInSmart())
+            smartOrderSortValue.setText(R.string.desc_order);
+        else
+            smartOrderSortValue.setText(R.string.asc_order);
+    }
+
     // on click listener for all need
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -105,15 +119,8 @@ public class SettingActivity extends ActionBarActivity
                                     );
                     longFragment.show(getFragmentManager(), null);
                     break;
-                case R.id.setting_default_sort_line:
-                    SingleChooseDialogFragment sortFragment =
-                            SingleChooseDialogFragment
-                                    .newInstance(
-                                            R.string.setting_default_sort_dialog_title,
-                                            R.array.sort_method_exclude_smart,
-                                            0
-                                    );
-                    sortFragment.show(getFragmentManager(), null);
+                case R.id.setting_inverse_sort_line:
+                    inverseToggle.setChecked(!inverseToggle.isChecked());
                     break;
             }
         }
@@ -127,6 +134,11 @@ public class SettingActivity extends ActionBarActivity
                 case R.id.setting_image_toggle:
                     SettingUtil.setIfShowImages(isChecked);
                     break;
+                case R.id.setting_smart_order_inverse_toggle:
+                    SettingUtil.setIfInverseWaitingInSmart(isChecked);
+                    updateSmartOrderSortValue();
+                    setNeedFilterOrSort();
+                    break;
             }
         }
     };
@@ -137,16 +149,19 @@ public class SettingActivity extends ActionBarActivity
             case R.string.setting_short_time_dialog_title:
                 SettingUtil.setShortTime(value);
                 updateShortTimeValue();
-                // set result to filter or sort date in main activity
-                setResult(RESULT_OK);
+                setNeedFilterOrSort();
                 break;
             case R.string.setting_long_time_dialog_title:
                 SettingUtil.setLongTime(value);
                 updateLongTimeValue();
-                // set result to filter or sort date in main activity
-                setResult(RESULT_OK);
+                setNeedFilterOrSort();
                 break;
         }
+    }
+
+    private void setNeedFilterOrSort() {
+        // set result to filter or sort date in main activity
+        setResult(RESULT_OK);
     }
 
     @Override
