@@ -3,24 +3,23 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         release {
-            keyAlias 'keyAlias'
-            keyPassword 'password'
-            storeFile file('key.jks')
-            storePassword 'storepassword'
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
         }
     }
     compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    buildToolsVersion "21.1.2"
     defaultConfig {
         applicationId "com.ghostflying.portalwaitinglist"
         minSdkVersion 16
         targetSdkVersion 21
         versionCode 8
-        versionName "1.2c"
+        versionName "0.3b"
     }
     buildTypes {
         release {
-            runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
@@ -34,11 +33,12 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:21.+'
     compile 'com.android.support:recyclerview-v7:21.0.+'
-    compile 'com.android.support:cardview-v7:21.0.+'
-    compile 'com.google.android.gms:play-services:6.1.+'
+    compile 'com.android.support:cardview-v7:21.+'
+    compile 'com.google.android.gms:play-services:6.5.+'
     compile 'com.squareup.retrofit:retrofit:1.8.0'
-    compile 'com.github.traex.rippleeffect:library:1.2.2'
+    compile 'com.squareup.picasso:picasso:2.4.0'
     compile 'com.squareup.okhttp:okhttp:2.1.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
+    compile 'com.github.traex.rippleeffect:library:1.2.3'
     compile 'com.google.code.gson:gson:2.3.1'
 }

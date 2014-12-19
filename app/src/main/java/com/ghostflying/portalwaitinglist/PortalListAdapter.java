@@ -21,9 +21,10 @@ import java.util.Date;
  * Adapter for RecyclerView
  */
 public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.ViewHolder>{
-    ArrayList<PortalDetail> dataSet;
+    public ArrayList<PortalDetail> dataSet;
     DateFormat localeDateFormat;
     Date dateNow;
+    View.OnClickListener onClickListener;
 
     public PortalListAdapter (ArrayList<PortalDetail> dataSet){
         this.dataSet = dataSet;
@@ -41,7 +42,17 @@ public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.Vi
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.portal_list_item, viewGroup, false);
+        if (onClickListener != null)
+            v.setOnClickListener(onClickListener);
         return new ViewHolder(v);
+    }
+
+    /**
+     * Set the callback of clock event.
+     * @param onClickListener   the callback.
+     */
+    public void setOnItemClickListener(View.OnClickListener onClickListener){
+        this.onClickListener = onClickListener;
     }
 
     /**
@@ -79,15 +90,19 @@ public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.Vi
      */
     private int getEventIcon(PortalEvent.OperationType operationType, PortalEvent.OperationResult operationResult){
         switch (operationResult){
-            case PASSED:
+            case ACCEPTED:
                 return R.drawable.ic_accepted;
             case REJECTED:
+                return R.drawable.ic_rejected;
+            case DUPLICATE:
                 return R.drawable.ic_rejected;
             case PROPOSED:
                 switch (operationType){
                     case EDIT:
                         return R.drawable.ic_edit;
-                    case SUBMIT:
+                    case SUBMISSION:
+                        return R.drawable.ic_proposed;
+                    case INVALID:
                         return R.drawable.ic_proposed;
                 }
             default:

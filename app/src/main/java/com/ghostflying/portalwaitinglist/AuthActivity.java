@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.ghostflying.portalwaitinglist.Util.SettingUtil;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
@@ -27,7 +28,7 @@ public class AuthActivity extends Activity {
     static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
     static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1001;
     // The scope used, read all mails
-    static final String SCOPE =
+    public static final String SCOPE =
             "oauth2:https://www.googleapis.com/auth/gmail.readonly";
     String mEmail;
 

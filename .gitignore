@@ -5,6 +5,6 @@
 .DS_Store
 /build
 .idea/
-IngressMailAnalysis.iml
+gradle.properties
 app/app.iml
 PortalWaitingList.iml

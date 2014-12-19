@@ -33,6 +33,7 @@
                 android:id="@+id/item_everything"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                ripple:rv_rippleDuration="@integer/ripple_effect_duration"
                 ripple:rv_type="rectangle"
                 ripple:rv_color="@color/ripple_material_light">
 
@@ -44,8 +45,8 @@
 
                     <ImageView
                         android:src = "@drawable/ic_all"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
@@ -57,7 +58,7 @@
                         android:layout_height="wrap_content" />
 
                     <Space
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"/>
 
@@ -85,6 +86,7 @@
                 android:id="@+id/item_accepted"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                ripple:rv_rippleDuration="@integer/ripple_effect_duration"
                 ripple:rv_type="rectangle"
                 ripple:rv_color="@color/ripple_material_light">
 
@@ -96,8 +98,8 @@
 
                     <ImageView
                         android:src = "@drawable/ic_accepted"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
@@ -109,7 +111,7 @@
                         android:layout_height="wrap_content" />
 
                     <Space
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"/>
 
@@ -137,6 +139,7 @@
                 android:id="@+id/item_rejected"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                ripple:rv_rippleDuration="@integer/ripple_effect_duration"
                 ripple:rv_type="rectangle"
                 ripple:rv_color="@color/ripple_material_light">
 
@@ -148,8 +151,8 @@
 
                     <ImageView
                         android:src = "@drawable/ic_rejected"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
@@ -161,7 +164,7 @@
                         android:layout_height="wrap_content"/>
 
                     <Space
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"/>
 
@@ -187,6 +190,7 @@
                 android:id="@+id/item_waiting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                ripple:rv_rippleDuration="@integer/ripple_effect_duration"
                 ripple:rv_type="rectangle"
                 ripple:rv_color="@color/ripple_material_light">
 
@@ -198,8 +202,8 @@
 
                     <ImageView
                         android:src = "@drawable/ic_waiting"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
@@ -211,7 +215,7 @@
                         android:layout_height="wrap_content"/>
 
                     <Space
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"/>
 
@@ -243,6 +247,7 @@
                 android:id="@+id/item_smart_order"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                ripple:rv_rippleDuration="@integer/ripple_effect_duration"
                 ripple:rv_type="rectangle"
                 ripple:rv_color="@color/ripple_material_light">
 
@@ -254,8 +259,8 @@
 
                     <ImageView
                         android:src = "@drawable/ic_smart_order"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
@@ -279,6 +284,7 @@
                 android:id="@+id/item_asc_order"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                ripple:rv_rippleDuration="@integer/ripple_effect_duration"
                 ripple:rv_type="rectangle"
                 ripple:rv_color="@color/ripple_material_light">
 
@@ -290,8 +296,8 @@
 
                     <ImageView
                         android:src = "@drawable/ic_all"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
@@ -315,6 +321,7 @@
                 android:id="@+id/item_desc_order"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                ripple:rv_rippleDuration="@integer/ripple_effect_duration"
                 ripple:rv_type="rectangle"
                 ripple:rv_color="@color/ripple_material_light">
 
@@ -326,8 +333,8 @@
 
                     <ImageView
                         android:src = "@drawable/ic_desc"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"

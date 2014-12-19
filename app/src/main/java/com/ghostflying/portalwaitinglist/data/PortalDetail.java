@@ -9,8 +9,13 @@ import java.util.Date;
  * The data structure of portal detail, the class used to create adapter finally.
  */
 public class PortalDetail implements Comparable<PortalDetail>{
-    private static final long LONG_TIME_THRESHOLD = 3600L * 24 * 7 * 1000;
-    private static final long LONG_TIME_NO_RESPONSE_THRESHOLD = 3600L * 24 * 1000 * 365;
+    public static final int PRIORITY_REVIEWED_IN_SHORT_TIME = 4;
+    public static final int PRIORITY_WAITING_FOR_REVIEW = 3;
+    public static final int PRIORITY_NO_RESPONSE_FOR_LONG_TIME = 2;
+    public static final int PRIORITY_REVIEWED_BEFORE_SHORT_TIME = 1;
+
+    private static final long SHORT_TIME_THRESHOLD_IN_MILLISECONDS = 3600L * 24 * 7 * 1000;
+    private static final long LONG_TIME_NO_RESPONSE_THRESHOLD_IN_MILLISECONDS = 3600L * 24 * 1000 * 365;
     private String name;
     private ArrayList<PortalEvent> events;
 
@@ -36,6 +41,40 @@ public class PortalDetail implements Comparable<PortalDetail>{
 
     public String getName(){
         return name;
+    }
+
+    /**
+     * Get the image url if exist.
+     * @return  the url if exist, otherwise null.
+     */
+    public String getImageUrl(){
+        for(PortalEvent event : events){
+            if (event instanceof SubmissionEvent)
+                return ((SubmissionEvent) event).getPortalImageUrl();
+        }
+        return null;
+    }
+
+    /**
+     * Get the address if exist.
+     * @return  the address if exist, otherwise null.
+     */
+    public String getAddress(){
+        for (PortalEvent event : events)
+            if (event.getPortalAddress() != null)
+                return event.getPortalAddress();
+        return null;
+    }
+
+    /**
+     * Get the address url if exist.
+     * @return  the address if exist, otherwise null.
+     */
+    public String getAddressUrl(){
+        for (PortalEvent event : events)
+            if (event.getPortalAddressUrl() != null)
+                return event.getPortalAddressUrl();
+        return null;
     }
 
     public ArrayList<PortalEvent> getEvents(){
@@ -71,15 +110,52 @@ public class PortalDetail implements Comparable<PortalDetail>{
     }
 
     /**
-     * Check if the portal edit/submit reviewed for a long time or has no response for a long time.
-     * @return  true if it is reviewed before a long time or has no response for a long time, otherwise false.
+     * Check if the portal edit/submit has no response for a long time.
+     * @return  true if it has no response for a long time, otherwise false.
      */
-    public boolean isReviewedOrNoResponseForLongTime(){
-        if ((isReviewed() && (new Date().getTime() - getLastUpdated().getTime()) > LONG_TIME_THRESHOLD)
-                || (new Date().getTime() - getLastUpdated().getTime()) > LONG_TIME_NO_RESPONSE_THRESHOLD)
+    public boolean isNoResponseForLongTime(){
+        if ((!isReviewed())
+                && (new Date().getTime() - getLastUpdated().getTime()) >
+                LONG_TIME_NO_RESPONSE_THRESHOLD_IN_MILLISECONDS )
             return true;
         else
             return false;
+    }
+
+    /**
+     * Check if the portal edit/submit reviewed in a short time.
+     * @return  true if it is reviewed in a short time, otherwise false.
+     */
+    public boolean isReviewedInShortTime(){
+        return isReviewed() && isUpdatedInShortTime();
+    }
+
+    /**
+     * Check if the portal edit/submit reviewed before a short time.
+     * @return  true if it is reviewed before a short time, otherwise false.
+     */
+    public boolean isReviewedBeforeShortTime(){
+        return isReviewed() && (!isUpdatedInShortTime());
+    }
+
+    private boolean isUpdatedInShortTime(){
+        return (new Date().getTime() - getLastUpdated().getTime()) <
+                SHORT_TIME_THRESHOLD_IN_MILLISECONDS;
+    }
+
+    /**
+     * Get the priority to use in smart order.
+     * @return  the order priority.
+     */
+    public int getOrderPrior(){
+        if (isNoResponseForLongTime())
+            return PRIORITY_NO_RESPONSE_FOR_LONG_TIME;
+        else if (!isReviewed())
+            return PRIORITY_WAITING_FOR_REVIEW;
+        else if (isReviewedBeforeShortTime())
+            return PRIORITY_REVIEWED_BEFORE_SHORT_TIME;
+        else
+            return PRIORITY_REVIEWED_IN_SHORT_TIME;
     }
 
     /**
@@ -87,12 +163,20 @@ public class PortalDetail implements Comparable<PortalDetail>{
      * If there is any accept event for the portal, it will be deal as accepted.
      * @return  true if accepted, otherwise false.
      */
-    public boolean isAccepted(){
+    public boolean isEverAccepted(){
         for (PortalEvent eachEvent : events){
-            if (eachEvent.getOperationResult() == PortalEvent.OperationResult.PASSED)
+            if (eachEvent.getOperationResult() == PortalEvent.OperationResult.ACCEPTED)
                 return true;
         }
         return false;
+    }
+
+    /**
+     * Check if the last operation for this portal is accepted by NIA.
+     * @return  true if accepted, otherwise false.
+     */
+    public boolean isAccepted(){
+        return events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.ACCEPTED;
     }
 
     /**
@@ -100,6 +184,7 @@ public class PortalDetail implements Comparable<PortalDetail>{
      * @return  true if rejected, otherwise false.
      */
     public boolean isRejected(){
-        return events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.REJECTED;
+        return events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.REJECTED
+                || events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.DUPLICATE;
     }
 }

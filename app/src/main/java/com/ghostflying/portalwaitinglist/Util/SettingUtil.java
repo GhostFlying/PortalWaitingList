@@ -1,7 +1,9 @@
-package com.ghostflying.portalwaitinglist;
+package com.ghostflying.portalwaitinglist.Util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.ghostflying.portalwaitinglist.R;
 
 /**
  * Created by ghostflying on 11/22/14.
