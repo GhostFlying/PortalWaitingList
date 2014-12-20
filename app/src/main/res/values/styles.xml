@@ -8,7 +8,9 @@
     </style>
 
     <style name="AppTheme" parent="AppBaseTheme">
+    </style>
 
+    <style name="AppTheme.Transparent" parent="AppTheme">
     </style>
 
     <color name="primary">#2196F3</color>
