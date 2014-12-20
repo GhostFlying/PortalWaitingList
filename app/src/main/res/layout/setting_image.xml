@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:ripple="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
@@ -13,35 +14,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <LinearLayout
+    <com.andexert.library.RippleView
         android:id="@+id/setting_show_image_line"
-        android:background="@drawable/setting_item_bg"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/setting_item_group_title_margin_horizon"
-        android:paddingRight="@dimen/setting_item_group_title_margin_horizon"
-        android:paddingTop="@dimen/setting_about_text_margin_vertical"
-        android:paddingBottom="@dimen/setting_about_text_margin_vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        ripple:rv_rippleDuration="@integer/ripple_effect_duration"
+        ripple:rv_type="rectangle"
+        ripple:rv_color="@color/ripple_material_light">
 
-        <TextView
-            android:text="@string/setting_image_toggle"
-            android:textSize="@dimen/setting_item_text_size"
-            android:textColor="@color/setting_item_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/setting_item_group_title_margin_horizon"
+            android:paddingRight="@dimen/setting_item_group_title_margin_horizon"
+            android:paddingTop="@dimen/setting_about_text_margin_vertical"
+            android:paddingBottom="@dimen/setting_about_text_margin_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <Space
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"/>
+            <TextView
+                android:text="@string/setting_image_toggle"
+                android:textSize="@dimen/setting_item_text_size"
+                android:textColor="@color/setting_item_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-        <CheckBox
-            android:id="@+id/setting_image_toggle"
-            android:checked="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <Space
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
 
-    </LinearLayout>
+            <CheckBox
+                android:id="@+id/setting_image_toggle"
+                android:checked="true"
+                android:clickable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </com.andexert.library.RippleView>
 
 </LinearLayout>
