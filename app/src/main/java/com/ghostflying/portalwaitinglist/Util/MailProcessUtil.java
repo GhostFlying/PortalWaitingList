@@ -19,6 +19,9 @@ import java.util.Comparator;
 public class MailProcessUtil {
     private static MailProcessUtil instance;
     static final String PARSE_ERROR_TEXT = "Parse error, maybe the mail is too old to contain this part.";
+    int acceptedCount;
+    int rejectedCount;
+    int proposedCount;
 
     private MailProcessUtil(){}
 
@@ -35,7 +38,10 @@ public class MailProcessUtil {
      */
     public ArrayList<PortalEvent> analysisMessages(ArrayList<Message> messages){
         ArrayList<PortalEvent> portalEvents = new ArrayList<>();
-
+        // reset all counts
+        acceptedCount = 0;
+        rejectedCount = 0;
+        proposedCount = 0;
 
         for (Message message : messages){
             PortalEvent portalEvent = analysisMessage(message);
@@ -56,6 +62,7 @@ public class MailProcessUtil {
         String subject = message.getSubject();
         RegexUtil util = RegexUtil.getInstance();
         if (util.isFound(RegexUtil.PORTAL_SUBMISSION, subject)){
+            proposedCount ++;
             return new SubmissionEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.PROPOSED,
                     message.getDate(),
@@ -64,11 +71,13 @@ public class MailProcessUtil {
         }
 
         if (util.isFound(RegexUtil.PORTAL_EDIT, subject)){
+            proposedCount ++;
             return new EditEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.PROPOSED, message.getDate(), message.getId());
         }
 
         if (util.isFound(RegexUtil.INVALID_REPORT, subject)){
+            proposedCount ++;
             return new InvalidEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.PROPOSED,
                     message.getDate(),
@@ -77,6 +86,7 @@ public class MailProcessUtil {
         }
 
         if (util.isFound(RegexUtil.PORTAL_SUBMISSION_PASSED, subject)){
+            acceptedCount ++;
             return new SubmissionEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.ACCEPTED,
                     message.getDate(),
@@ -87,6 +97,7 @@ public class MailProcessUtil {
         }
 
         if (util.isFound(RegexUtil.PORTAL_SUBMISSION_REJECTED, subject)){
+            rejectedCount ++;
             return new SubmissionEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.REJECTED,
                     message.getDate(),
@@ -95,6 +106,7 @@ public class MailProcessUtil {
         }
 
         if (util.isFound(RegexUtil.PORTAL_SUBMISSION_DUPLICATE, subject)){
+            rejectedCount ++;
             return new SubmissionEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.DUPLICATE,
                     message.getDate(),
@@ -103,6 +115,7 @@ public class MailProcessUtil {
         }
 
         if (util.isFound(RegexUtil.PORTAL_EDIT_PASSED, subject)){
+            acceptedCount ++;
             return new EditEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.ACCEPTED,
                     message.getDate(), message.getId(),
@@ -111,6 +124,7 @@ public class MailProcessUtil {
         }
 
         if (util.isFound(RegexUtil.PORTAL_EDIT_REJECTED, subject)){
+            rejectedCount ++;
             return new EditEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.REJECTED,
                     message.getDate(), message.getId(),
@@ -307,6 +321,18 @@ public class MailProcessUtil {
                 counts[1]++;
         }
         return counts;
+    }
+
+    /**
+     * Get the counts in last process action.
+     * @return  the array of counts, int order proposed, accepted, rejected.
+     */
+    public int[] getEventCountsInLastProcess(){
+        return new int[]{
+                proposedCount,
+                acceptedCount,
+                rejectedCount
+        };
     }
 
     private abstract class DoCheck {

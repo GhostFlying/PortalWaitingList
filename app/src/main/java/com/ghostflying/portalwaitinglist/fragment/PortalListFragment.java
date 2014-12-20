@@ -413,7 +413,7 @@ public class PortalListFragment extends Fragment {
             // merge stored events to empty portal detail.
             MailProcessUtil processUtil = MailProcessUtil.getInstance();
             processUtil.mergeEvents(totalPortalDetails, portalEvents);
-            //update counts
+            //update portalCounts
             counts = processUtil.getCounts(totalPortalDetails);
             // sort and filter the portal details
             processUtil.filterAndSort(
@@ -450,12 +450,12 @@ public class PortalListFragment extends Fragment {
         });
     }
 
-
     /**
      * The refresh task to run once user calls to refresh data.
      */
     private class RefreshTask extends AsyncTask<Void, Void, Void>{
-        int[] counts;
+        int[] portalCounts;
+        String refreshResult;
 
         @Override
         protected Void doInBackground(Void...params) {
@@ -522,8 +522,11 @@ public class PortalListFragment extends Fragment {
             db.close();
             // merge new events to exist portal details
             processUtil.mergeEvents(totalPortalDetails, newEvents);
-            // update counts
-            counts = processUtil.getCounts(totalPortalDetails);
+            // update Counts
+            portalCounts = processUtil.getCounts(totalPortalDetails);
+            int[] eventCounts = processUtil.getEventCountsInLastProcess();
+            generateRefreshResultSummary(eventCounts);
+
             // sort and filter the portal details
             processUtil.filterAndSort(
                     SettingUtil.getFilterMethod(),
@@ -532,6 +535,34 @@ public class PortalListFragment extends Fragment {
                     ((PortalListAdapter) recyclerView.getAdapter()).dataSet
             );
             return null;
+        }
+
+        private void generateRefreshResultSummary(int[] eventCounts) {
+            // generate the refresh result text
+            refreshResult = getString(R.string.refresh_done);
+            boolean anythingNew = false;
+            if (eventCounts[0] != 0){
+                anythingNew = true;
+                refreshResult += "\n"
+                        + Integer.toString(eventCounts[0])
+                        + getString(R.string.refresh_result_proposed);
+            }
+            if (eventCounts[1] != 0){
+                anythingNew = true;
+                refreshResult += "\n"
+                        + Integer.toString(eventCounts[1])
+                        + getString(R.string.refresh_result_accepted);
+            }
+            if (eventCounts[2] != 0){
+                anythingNew = true;
+                refreshResult += "\n"
+                        + Integer.toString(eventCounts[2])
+                        + getString(R.string.refresh_result_rejected);
+            }
+            if (!anythingNew){
+                refreshResult += "\n"
+                        + getString(R.string.refresh_result_nothing);
+            }
         }
 
         private boolean getToken() {
@@ -587,12 +618,22 @@ public class PortalListFragment extends Fragment {
             return handleException(e, false);
         }
 
+        private void showRefreshResult(String result){
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                    result,
+                    Toast.LENGTH_LONG);
+            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+            v.setGravity(Gravity.CENTER);
+            toast.show();
+        }
+
         @Override
         protected void onPostExecute(Void param){
             // update UI
             recyclerView.getAdapter().notifyDataSetChanged();
             swipeRefreshLayout.setRefreshing(false);
-            updateCountText(counts);
+            updateCountText(portalCounts);
+            showRefreshResult(refreshResult);
         }
     }
 

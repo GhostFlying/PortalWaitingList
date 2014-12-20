@@ -22,6 +22,11 @@
     <string name="default_date_diff">10</string>
     <string name="last_update">"Last update:  "</string>
     <string name="alert_no_choose_account">You must pick an account to continue.</string>
+    <string name="refresh_done">Refresh done.</string>
+    <string name="refresh_result_nothing">Nothing updated.</string>
+    <string name="refresh_result_proposed">" new proposed events."</string>
+    <string name="refresh_result_accepted">" new accepted events."</string>
+    <string name="refresh_result_rejected">" new rejected events."</string>
 
     <!-- filter drawer -->
     <string name="filter_drawer_title">Portals Filter</string>
