@@ -37,4 +37,18 @@
     <color name="portal_detail_action_bar_bg_waiting">#FF9800</color>
 
     <color name="default_background">@color/background_material_light</color>
+
+    <!-- navigation drawer -->
+    <color name="navigation_drawer_bg">@color/filter_drawer_bg</color>
+    <color name="navigation_drawer_title_bg">@color/primary</color>
+    <color name="navigation_drawer_item_text_color">#000000</color>
+    <color name="navigation_drawer_item_selected_bg">#F5F5F5</color>
+    <color name="navigation_drawer_item_bg">@color/navigation_drawer_bg</color>
+    <color name="navigation_drawer_avatar_bg_color">#F44336</color>
+
+    <!-- setting activity -->
+    <color name="setting_item_group_title_text">@color/primary</color>
+    <color name="setting_item_text">#000000</color>
+    <color name="setting_item_bg">@color/default_background</color>
+    <color name="setting_item_pressed">#9E9E9E</color>
 </resources>

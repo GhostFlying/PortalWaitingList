@@ -3,14 +3,17 @@ package com.ghostflying.portalwaitinglist.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +34,7 @@ import com.ghostflying.portalwaitinglist.PortalEventContract;
 import com.ghostflying.portalwaitinglist.PortalEventDbHelper;
 import com.ghostflying.portalwaitinglist.PortalListAdapter;
 import com.ghostflying.portalwaitinglist.R;
+import com.ghostflying.portalwaitinglist.SettingActivity;
 import com.ghostflying.portalwaitinglist.Util.GMailServiceUtil;
 import com.ghostflying.portalwaitinglist.Util.MailProcessUtil;
 import com.ghostflying.portalwaitinglist.Util.SettingUtil;
@@ -67,6 +71,7 @@ public class PortalListFragment extends Fragment {
     TextView countAccepted;
     TextView countRejected;
     TextView countWaiting;
+    TextView totalPortals;
     boolean isInitialed = false;
 
     public static PortalListFragment newInstance() {
@@ -92,10 +97,10 @@ public class PortalListFragment extends Fragment {
         account = SettingUtil.getAccount();
         dbHelper = new PortalEventDbHelper(getActivity());
         totalPortalDetails = new ArrayList<>();
+        setToolbar(view);
         setDrawerLayout(view);
         setRecyclerView(view);
         setSwipeRefreshLayout(view);
-        setToolbar(view);
         setHasOptionsMenu(true);
         // read stored data.
         new InitialTask().execute();
@@ -145,7 +150,6 @@ public class PortalListFragment extends Fragment {
     public void onHiddenChanged(boolean hidden){
         super.onHiddenChanged(hidden);
         if (!hidden){
-            ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.primary_dark));
         }
@@ -154,6 +158,17 @@ public class PortalListFragment extends Fragment {
     private void setDrawerLayout(View v){
         drawerLayout = (DrawerLayout)v.findViewById(R.id.drawer_layout);
 
+        // handle the home button
+        ActionBarDrawerToggle actionBarDrawerToggle =
+                new ActionBarDrawerToggle(getActivity(),
+                        drawerLayout,
+                        toolbar,
+                        R.string.app_name,
+                        R.string.app_name);
+        actionBarDrawerToggle.syncState();
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+
+
         v.findViewById(R.id.item_everything).setOnClickListener(sortAndFilterClickListener);
         v.findViewById(R.id.item_accepted).setOnClickListener(sortAndFilterClickListener);
         v.findViewById(R.id.item_rejected).setOnClickListener(sortAndFilterClickListener);
@@ -161,11 +176,52 @@ public class PortalListFragment extends Fragment {
         v.findViewById(R.id.item_smart_order).setOnClickListener(sortAndFilterClickListener);
         v.findViewById(R.id.item_asc_order).setOnClickListener(sortAndFilterClickListener);
         v.findViewById(R.id.item_desc_order).setOnClickListener(sortAndFilterClickListener);
+
+        // default select the portal
+        v.findViewById(R.id.navigation_item_portal).setSelected(true);
+        v.findViewById(R.id.navigation_item_portal).setOnClickListener(navigationDrawerClickListener);
+        v.findViewById(R.id.navigation_item_setting).setOnClickListener(navigationDrawerClickListener);
+        v.findViewById(R.id.navigation_item_feedback).setOnClickListener(navigationDrawerClickListener);
+        totalPortals = (TextView)v.findViewById(R.id.navigation_drawer_total_portals);
+        // set the user avatar and account name
+        if (SettingUtil.getAccount() != null){
+            ((TextView)v.findViewById(R.id.account_name)).setText(SettingUtil.getAccount());
+            ((TextView)v.findViewById(R.id.user_avatar)).setText(
+                    SettingUtil.getAccount().toUpperCase().substring(0 ,1)
+            );
+        }
+
+
         countEverything = (TextView)v.findViewById(R.id.count_everything);
         countAccepted = (TextView)v.findViewById(R.id.count_accepted);
         countRejected = (TextView)v.findViewById(R.id.count_rejected);
         countWaiting = (TextView)v.findViewById(R.id.count_waiting);
     }
+
+    View.OnClickListener navigationDrawerClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.navigation_item_portal:
+                    drawerLayout.closeDrawer(Gravity.LEFT);
+                    break;
+                case R.id.navigation_item_setting:
+                    Intent setting = new Intent(getActivity(), SettingActivity.class);
+                    startActivityForResult(setting, SettingActivity.REQUEST_SETTING);
+                    break;
+                case R.id.navigation_item_feedback:
+                    Intent mailIntent = new Intent(
+                            Intent.ACTION_SENDTO,
+                            Uri.fromParts("mailto", getString(R.string.author_mail), null)
+                    );
+                    mailIntent.putExtra(Intent.EXTRA_SUBJECT,
+                            getString(R.string.navigation_drawer_feedback_subject));
+                    startActivity(Intent.createChooser(
+                            mailIntent, getString(R.string.navigation_drawer_send)));
+                    break;
+            }
+        }
+    };
 
     View.OnClickListener sortAndFilterClickListener = new View.OnClickListener() {
         @Override
@@ -203,6 +259,7 @@ public class PortalListFragment extends Fragment {
         toolbar = (Toolbar)v.findViewById(R.id.action_bar_in_list);
         setTitleBySetting();
         ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
+        ((ActionBarActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void setTitleBySetting(){
@@ -268,6 +325,17 @@ public class PortalListFragment extends Fragment {
         });
         recyclerView.setAdapter(adapter);
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // when return from setting activity and the filter or sort related
+        // params are changed, do filter and sort.
+        if (requestCode == SettingActivity.REQUEST_SETTING
+                && resultCode == SettingActivity.RESULT_OK)
+            new SortAndFilterTask().execute();
+    }
+
 
     /**
      * The initial task once the activity start.
@@ -551,6 +619,7 @@ public class PortalListFragment extends Fragment {
         if (counts!= null){
             int total = totalPortalDetails.size();
             countEverything.setText(Integer.toString(total));
+            totalPortals.setText(Integer.toString(total));
             countAccepted.setText(Integer.toString(counts[0]));
             countRejected.setText(Integer.toString(counts[1]));
             countWaiting.setText(Integer.toString(total - counts[0] - counts[1]));

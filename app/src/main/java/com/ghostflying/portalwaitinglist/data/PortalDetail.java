@@ -1,5 +1,7 @@
 package com.ghostflying.portalwaitinglist.data;
 
+import com.ghostflying.portalwaitinglist.Util.SettingUtil;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,8 +16,7 @@ public class PortalDetail implements Comparable<PortalDetail>{
     public static final int PRIORITY_NO_RESPONSE_FOR_LONG_TIME = 2;
     public static final int PRIORITY_REVIEWED_BEFORE_SHORT_TIME = 1;
 
-    private static final long SHORT_TIME_THRESHOLD_IN_MILLISECONDS = 3600L * 24 * 7 * 1000;
-    private static final long LONG_TIME_NO_RESPONSE_THRESHOLD_IN_MILLISECONDS = 3600L * 24 * 1000 * 365;
+    private static final long ONE_DAY_TIME_IN_MILLISECONDS = 24 * 3600 * 1000;
     private String name;
     private ArrayList<PortalEvent> events;
 
@@ -116,7 +117,7 @@ public class PortalDetail implements Comparable<PortalDetail>{
     public boolean isNoResponseForLongTime(){
         if ((!isReviewed())
                 && (new Date().getTime() - getLastUpdated().getTime()) >
-                LONG_TIME_NO_RESPONSE_THRESHOLD_IN_MILLISECONDS )
+                ONE_DAY_TIME_IN_MILLISECONDS * SettingUtil.getLongTime())
             return true;
         else
             return false;
@@ -140,7 +141,7 @@ public class PortalDetail implements Comparable<PortalDetail>{
 
     private boolean isUpdatedInShortTime(){
         return (new Date().getTime() - getLastUpdated().getTime()) <
-                SHORT_TIME_THRESHOLD_IN_MILLISECONDS;
+                ONE_DAY_TIME_IN_MILLISECONDS * SettingUtil.getShortTime();
     }
 
     /**

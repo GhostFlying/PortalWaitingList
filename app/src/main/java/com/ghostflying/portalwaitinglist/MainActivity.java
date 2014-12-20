@@ -37,7 +37,7 @@ public class MainActivity extends ActionBarActivity
     }
 
     private void doAuth() {
-        Intent authIntent = new Intent(new Intent(this, AuthActivity.class));
+        Intent authIntent = new Intent(this, AuthActivity.class);
         authIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(authIntent);
     }

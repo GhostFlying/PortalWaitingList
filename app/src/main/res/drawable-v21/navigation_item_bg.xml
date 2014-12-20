@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/ripple_material_light">
+    <item>
+        <selector>
+            <item android:state_selected="true">
+                <color android:color="@color/navigation_drawer_item_selected_bg" />
+            </item>
+
+            <item>
+                <color android:color="@color/navigation_drawer_item_bg" />
+            </item>
+        </selector>
+    </item>
+</ripple>
