@@ -68,6 +68,11 @@ public class SettingUtil {
             editor.putString(ACCOUNT_NAME, account);
             editor.putInt(FILTER_METHOD_NAME, filterMethod.ordinal());
             editor.putInt(SORT_ORDER_NAME, sortOrder.ordinal());
+            editor.putBoolean(IF_SHOW_IMAGES_NAME, ifShowImages);
+            editor.putInt(SHORT_TIME_NAME, shortTime);
+            editor.putInt(LONG_TIME_NAME, longTime);
+            editor.putBoolean(IF_INVERSE_WAITING_IN_SMART_NAME, ifInverseWaitingInSmart);
+            editor.putBoolean(FORCE_CHINESE_NAME, forceChinese);
             editor.apply();
         }
     }
