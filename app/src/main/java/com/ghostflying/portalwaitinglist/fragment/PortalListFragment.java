@@ -180,6 +180,7 @@ public class PortalListFragment extends Fragment {
         v.findViewById(R.id.item_smart_order).setOnClickListener(sortAndFilterClickListener);
         v.findViewById(R.id.item_asc_order).setOnClickListener(sortAndFilterClickListener);
         v.findViewById(R.id.item_desc_order).setOnClickListener(sortAndFilterClickListener);
+        v.findViewById(R.id.item_alphabetical_order).setOnClickListener(sortAndFilterClickListener);
 
         // default select the portal
         v.findViewById(R.id.navigation_item_portal).setSelected(true);
@@ -252,6 +253,9 @@ public class PortalListFragment extends Fragment {
                 case R.id.item_desc_order:
                     SettingUtil.setSortOrder(SettingUtil.SortOrder.DATE_DESC);
                     break;
+                case R.id.item_alphabetical_order:
+                    SettingUtil.setSortOrder(SettingUtil.SortOrder.ALPHABETICAL);
+                    break;
                 default:
             }
             new SortAndFilterTask().execute();
@@ -287,13 +291,16 @@ public class PortalListFragment extends Fragment {
 
         switch (SettingUtil.getSortOrder()){
             case SMART_ORDER:
-                title += getResources().getString(R.string.smart_order);
+                title += getString(R.string.smart_order);
                 break;
             case DATE_ASC:
-                title += getResources().getString(R.string.asc_order);
+                title += getString(R.string.asc_order);
                 break;
             case DATE_DESC:
-                title += getResources().getString(R.string.desc_order);
+                title += getString(R.string.desc_order);
+                break;
+            case ALPHABETICAL:
+                title += getString(R.string.alphabetical_order);
                 break;
         }
 

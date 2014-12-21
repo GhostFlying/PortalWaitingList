@@ -38,6 +38,7 @@
     <string name="smart_order">Smart</string>
     <string name="asc_order">Asc</string>
     <string name="desc_order">Desc</string>
+    <string name="alphabetical_order">AlphaBet</string>
     <string name="alert_to_refresh">First time? Please wait refreshing.</string>
     <string name="network_error">Network error, please make sure a reliable connection.</string>
     <string name="auth_error">Authorization Error, need to grant again.</string>

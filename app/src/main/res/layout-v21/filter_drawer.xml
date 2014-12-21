@@ -322,6 +322,39 @@
                 android:layout_height="0.5dp"
                 android:background="@android:color/darker_gray"/>
 
+            <!-- alphabetical order -->
+            <LinearLayout
+                android:id="@+id/item_alphabetical_order"
+                android:background="@drawable/ripple_drawable"
+                android:padding="@dimen/filter_drawer_title_margin"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:clickable="false"
+                    android:src = "@drawable/ic_desc"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+
+                <TextView
+                    android:clickable="false"
+                    android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
+                    android:text="@string/alphabetical_order"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/filter_drawer_item_text_color"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/darker_gray"/>
+
         </LinearLayout>
 
     </ScrollView>

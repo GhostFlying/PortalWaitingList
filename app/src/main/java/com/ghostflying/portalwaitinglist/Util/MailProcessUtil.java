@@ -9,9 +9,11 @@ import com.ghostflying.portalwaitinglist.data.PortalDetail;
 import com.ghostflying.portalwaitinglist.data.PortalEvent;
 import com.ghostflying.portalwaitinglist.data.SubmissionEvent;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
 
 /**
  * Created by Ghost on 2014/12/4.
@@ -300,6 +302,17 @@ public class MailProcessUtil {
                             return rhsPri - lhsPri;
                     }
                 });
+                break;
+            case ALPHABETICAL:
+                // get the comparator by locale
+                final Comparator comparator = Collator.getInstance(Locale.getDefault());
+                Collections.sort(portalDetails, new Comparator<PortalDetail>() {
+                    @Override
+                    public int compare(PortalDetail lhs, PortalDetail rhs) {
+                        return comparator.compare(lhs.getName(), rhs.getName());
+                    }
+                });
+                break;
         }
     }
 
