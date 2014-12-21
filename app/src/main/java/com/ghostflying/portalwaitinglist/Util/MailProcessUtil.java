@@ -305,7 +305,13 @@ public class MailProcessUtil {
                 break;
             case ALPHABETICAL:
                 // get the comparator by locale
-                final Comparator comparator = Collator.getInstance(Locale.getDefault());
+                final Comparator comparator;
+                if (SettingUtil.getForceChinese()){
+                    comparator = Collator.getInstance(Locale.CHINA);
+                }
+                else {
+                    comparator = Collator.getInstance();
+                }
                 Collections.sort(portalDetails, new Comparator<PortalDetail>() {
                     @Override
                     public int compare(PortalDetail lhs, PortalDetail rhs) {

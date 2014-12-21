@@ -18,11 +18,13 @@ public class SettingUtil {
     static final String SHORT_TIME_NAME = "ShortTime";
     static final String LONG_TIME_NAME = "LongTime";
     static final String IF_INVERSE_WAITING_IN_SMART_NAME = "IfInverseWaitingInSmart";
+    static final String FORCE_CHINESE_NAME = "ForceChinese";
     static final String READ_FIRST_EXCEPTION = "You must read all settings first.";
     static final boolean DEFAULT_IF_SHOW_IMAGES = true;
     static final int DEFAULT_SHORT_TIME = 7;
     static final int DEFAULT_LONG_TIME = 365;
     static final boolean DEFAULT_IF_INVERSE_WAITING_IN_SMART = false;
+    static final boolean DEFAULT_FORCE_CHINESE = false;
     private static SharedPreferences options;
     private static FilterMethod filterMethod;
     private static SortOrder sortOrder;
@@ -31,6 +33,7 @@ public class SettingUtil {
     private static int shortTime;
     private static int longTime;
     private static boolean ifInverseWaitingInSmart;
+    private static boolean forceChinese;
     private static boolean isModified = false;
 
     /**
@@ -50,6 +53,7 @@ public class SettingUtil {
             longTime = options.getInt(LONG_TIME_NAME, DEFAULT_LONG_TIME);
             ifInverseWaitingInSmart = options.getBoolean(
                     IF_INVERSE_WAITING_IN_SMART_NAME, DEFAULT_IF_INVERSE_WAITING_IN_SMART);
+            forceChinese = options.getBoolean(FORCE_CHINESE_NAME, DEFAULT_FORCE_CHINESE);
         }
     }
 
@@ -199,6 +203,25 @@ public class SettingUtil {
         checkRead();
         isModified = true;
         SettingUtil.ifInverseWaitingInSmart = ifInverseWaitingInSmart;
+    }
+
+    /**
+     * Get the setting if treat all names of portals as Chinese..
+     * @return  true if treat as Chinese, otherwise false.
+     */
+    public static boolean getForceChinese(){
+        checkRead();
+        return forceChinese;
+    }
+
+    /**
+     * Set the setting if treat all names of portals as Chinese..
+     * @param forceChinese   the value to set.
+     */
+    public static void setForceChinese(boolean forceChinese){
+        checkRead();
+        isModified = true;
+        SettingUtil.forceChinese = forceChinese;
     }
 
     /**

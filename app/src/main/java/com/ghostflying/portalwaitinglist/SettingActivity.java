@@ -19,6 +19,7 @@ public class SettingActivity extends ActionBarActivity
     public static final int REQUEST_SETTING = 1;
     CheckBox imageToggle;
     CheckBox inverseToggle;
+    CheckBox forceChineseToggle;
     TextView shortTimeValue;
     TextView longTimeValue;
     TextView smartOrderSortValue;
@@ -56,6 +57,12 @@ public class SettingActivity extends ActionBarActivity
         // long time setting
         findViewById(R.id.setting_long_time_line).setOnClickListener(onClickListener);
         updateLongTimeValue();
+
+        // other sort
+        findViewById(R.id.setting_force_chinese_line).setOnClickListener(onClickListener);
+        forceChineseToggle = (CheckBox)findViewById(R.id.setting_force_chinese_toggle);
+        forceChineseToggle.setChecked(SettingUtil.getForceChinese());
+        forceChineseToggle.setOnCheckedChangeListener(onCheckedChangeListener);
 
         // version code
         try{
@@ -122,6 +129,9 @@ public class SettingActivity extends ActionBarActivity
                 case R.id.setting_inverse_sort_line:
                     inverseToggle.setChecked(!inverseToggle.isChecked());
                     break;
+                case R.id.setting_force_chinese_line:
+                    forceChineseToggle.setChecked(!forceChineseToggle.isChecked());
+                    break;
             }
         }
     };
@@ -137,6 +147,10 @@ public class SettingActivity extends ActionBarActivity
                 case R.id.setting_smart_order_inverse_toggle:
                     SettingUtil.setIfInverseWaitingInSmart(isChecked);
                     updateSmartOrderSortValue();
+                    setNeedFilterOrSort();
+                    break;
+                case R.id.setting_force_chinese_toggle:
+                    SettingUtil.setForceChinese(isChecked);
                     setNeedFilterOrSort();
                     break;
             }

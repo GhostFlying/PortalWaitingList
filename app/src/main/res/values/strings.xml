@@ -83,6 +83,9 @@
     <string name="setting_image_toggle">Show portal images</string>
     <string name="setting_smart_order">Smart order settings</string>
     <string name="setting_smart_order_short_time">Days of short time</string>
+    <string name="setting_other_sort">Other sort</string>
+    <string name="setting_force_chinese">Treat locale as Chinese</string>
+
     <string name="setting_smart_order_short_time_describe">
         The reviewed portals in the short time will be showed on the top.</string>
     <string name="setting_smart_order_time_days">" days"</string>
@@ -90,6 +93,7 @@
     <string name="setting_smart_order_long_time">Days of long time</string>
     <string name="setting_smart_order_long_time_describe">
         The portals have no response over the long time will be showed on the end.</string>
+
     <string name="setting_smart_order_long_time_default_value">365</string>
     <string name="setting_smart_order_waiting_sort_order">Inverse the sort of waiting portals</string>
     <string name="setting_smart_order_default_sort_order">@string/asc_order</string>
