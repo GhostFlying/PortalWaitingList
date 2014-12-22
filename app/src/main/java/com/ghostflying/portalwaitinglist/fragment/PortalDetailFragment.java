@@ -81,6 +81,17 @@ public class PortalDetailFragment extends Fragment {
 
         setStatusAndActionBarBg(clickedPortal);
 
+        // if using the layout-21, the root view should add margin
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams)view.getLayoutParams();
+            int result = 0;
+            int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                result = getResources().getDimensionPixelSize(resourceId);
+            }
+            params.setMargins(0, result, 0 , 0);
+        }
+
         // set the text of the view.
         ((TextView)view.findViewById(R.id.last_updated_in_detail))
                 .setText(getDateDiffStr(clickedPortal.getLastUpdated()));
@@ -141,8 +152,9 @@ public class PortalDetailFragment extends Fragment {
         }
 
         toolbar.setBackgroundColor(actionBarBg);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             getActivity().getWindow().setStatusBarColor(statusBarBg);
+        }
     }
 
     private void setToolbar(View v, PortalDetail portalDetail){
