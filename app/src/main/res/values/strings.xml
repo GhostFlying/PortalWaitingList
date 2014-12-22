@@ -85,21 +85,18 @@
     <string name="setting_smart_order_short_time">Days of short time</string>
     <string name="setting_other_sort">Other sort</string>
     <string name="setting_force_chinese">Treat locale as Chinese</string>
-
-    <string name="setting_smart_order_short_time_describe">
-        The reviewed portals in the short time will be showed on the top.</string>
+    <string name="setting_smart_order_short_time_describe">        The reviewed portals in the short time will be showed on the top.</string>
     <string name="setting_smart_order_time_days">" days"</string>
     <string name="setting_smart_order_short_time_default_value">7</string>
     <string name="setting_smart_order_long_time">Days of long time</string>
-    <string name="setting_smart_order_long_time_describe">
-        The portals have no response over the long time will be showed on the end.</string>
-
+    <string name="setting_smart_order_long_time_describe">        The portals have no response over the long time will be showed on the end.</string>
     <string name="setting_smart_order_long_time_default_value">365</string>
     <string name="setting_smart_order_waiting_sort_order">Inverse the sort of waiting portals</string>
     <string name="setting_smart_order_default_sort_order">@string/asc_order</string>
     <string name="setting_short_time_dialog_title">Days of short time</string>
     <string name="setting_long_time_dialog_title">Days of long time</string>
     <string name="setting_default_sort_dialog_title">Choose default sort method</string>
+
     <string-array name="sort_method_exclude_smart">
         <item>@string/desc_order</item>
         <item>@string/asc_order</item>
@@ -109,5 +106,6 @@
     <string name="positive_button">@android:string/ok</string>
     <string name="negative_button">@android:string/cancel</string>
     <string name="days_picker_fragment_days">Days</string>
+    <string name="title_activity_detail">DetailActivity</string>
 
 </resources>

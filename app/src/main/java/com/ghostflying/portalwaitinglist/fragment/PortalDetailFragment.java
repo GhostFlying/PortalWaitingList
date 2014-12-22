@@ -1,7 +1,6 @@
 package com.ghostflying.portalwaitinglist.fragment;
 
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,6 +30,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -40,12 +40,17 @@ import java.util.Date;
  * create an instance of this fragment.
  */
 public class PortalDetailFragment extends Fragment {
-    private OnFragmentInteractionListener mListener;
+    static final String ARG_CLICKED_PORTAL_NAME = "clickedPortal";
+
     DateFormat localDateFormat;
     Toolbar toolbar;
+    PortalDetail clickedPortal;
 
-    public static PortalDetailFragment newInstance() {
+    public static PortalDetailFragment newInstance(Serializable clickedPortal) {
         PortalDetailFragment fragment = new PortalDetailFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CLICKED_PORTAL_NAME, clickedPortal);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -54,19 +59,9 @@ public class PortalDetailFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        clickedPortal = (PortalDetail)getArguments().getSerializable(ARG_CLICKED_PORTAL_NAME);
     }
 
     @Override
@@ -74,23 +69,11 @@ public class PortalDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_portal_detail, container, false);
-        final PortalDetail clickedPortal = mListener.getSelectedPortal();
         localDateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
 
         setToolbar(view, clickedPortal);
 
         setStatusAndActionBarBg(clickedPortal);
-
-        // if using the layout-21, the root view should add margin
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams)view.getLayoutParams();
-            int result = 0;
-            int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-            if (resourceId > 0) {
-                result = getResources().getDimensionPixelSize(resourceId);
-            }
-            params.setMargins(0, result, 0 , 0);
-        }
 
         // set the text of the view.
         ((TextView)view.findViewById(R.id.last_updated_in_detail))
@@ -175,11 +158,7 @@ public class PortalDetailFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == android.R.id.home){
-            mListener.onUpButtonClicked();
-            return true;
-        }
-        else if (id == R.id.menu_item_share){
+        if (id == R.id.menu_item_share){
             new ShareTask().execute();
             return true;
         }
@@ -297,11 +276,6 @@ public class PortalDetailFragment extends Fragment {
         long diff = new Date().getTime() - date.getTime();
         int dayDiff = Math.round(diff / 1000 / 3600 / 24);
         return Integer.toString(dayDiff);
-    }
-
-    public interface OnFragmentInteractionListener {
-        public PortalDetail getSelectedPortal();
-        public void onUpButtonClicked();
     }
 
     public class ShareTask extends AsyncTask<Void, Void, Void>{

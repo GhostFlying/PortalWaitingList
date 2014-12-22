@@ -2,6 +2,7 @@ package com.ghostflying.portalwaitinglist.data;
 
 import com.ghostflying.portalwaitinglist.Util.SettingUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,7 +11,7 @@ import java.util.Date;
  * <br>
  * The data structure of portal detail, the class used to create adapter finally.
  */
-public class PortalDetail implements Comparable<PortalDetail>{
+public class PortalDetail implements Comparable<PortalDetail>, Serializable{
     public static final int PRIORITY_REVIEWED_IN_SHORT_TIME = 4;
     public static final int PRIORITY_WAITING_FOR_REVIEW = 3;
     public static final int PRIORITY_NO_RESPONSE_FOR_LONG_TIME = 2;

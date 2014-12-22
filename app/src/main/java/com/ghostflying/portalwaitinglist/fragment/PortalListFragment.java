@@ -146,16 +146,6 @@ public class PortalListFragment extends Fragment {
         mListener = null;
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden){
-        super.onHiddenChanged(hidden);
-        if (!hidden){
-            // set the status bar to transparent again.
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                getActivity().getWindow().setStatusBarColor(getResources().getColor(android.R.color.transparent));
-        }
-    }
-
     private void setDrawerLayout(View v){
         drawerLayout = (DrawerLayout)v.findViewById(R.id.drawer_layout);
         // set the status bar bg when nav do not open

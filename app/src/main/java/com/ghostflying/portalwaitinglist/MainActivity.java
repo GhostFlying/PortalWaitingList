@@ -6,13 +6,11 @@ import android.support.v7.app.ActionBarActivity;
 
 import com.ghostflying.portalwaitinglist.Util.SettingUtil;
 import com.ghostflying.portalwaitinglist.data.PortalDetail;
-import com.ghostflying.portalwaitinglist.fragment.PortalDetailFragment;
 import com.ghostflying.portalwaitinglist.fragment.PortalListFragment;
 
 
 public class MainActivity extends ActionBarActivity
-        implements PortalListFragment.OnFragmentInteractionListener,
-                   PortalDetailFragment.OnFragmentInteractionListener{
+        implements PortalListFragment.OnFragmentInteractionListener{
     private static final String LIST_FRAGMENT_TAG = "LIST_FRAGMENT";
     private static final String DETAIL_FRAGMENT_TAG = "DETAIL_FRAGMENT";
 
@@ -75,23 +73,8 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void portalItemClicked(PortalDetail clickedPortal) {
         this.clickedPortal = clickedPortal;
-        getFragmentManager()
-                .beginTransaction()
-                .hide(getFragmentManager().findFragmentByTag(LIST_FRAGMENT_TAG))
-                .add(R.id.content_layout, PortalDetailFragment.newInstance(), DETAIL_FRAGMENT_TAG)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    @Override
-    public PortalDetail getSelectedPortal() {
-        return clickedPortal;
-    }
-
-    @Override
-    public void onUpButtonClicked() {
-        getFragmentManager()
-                .popBackStack();
-
+        Intent detail = new Intent(this, DetailActivity.class);
+        detail.putExtra(DetailActivity.ARG_CLICKED_PORTAL, clickedPortal);
+        startActivity(detail);
     }
 }
