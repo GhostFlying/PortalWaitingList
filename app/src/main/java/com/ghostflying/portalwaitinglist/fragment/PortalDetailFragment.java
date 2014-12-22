@@ -214,8 +214,9 @@ public class PortalDetailFragment extends Fragment {
         v.draw(c);
 
         // restore the view
-        v.measure(specWidth, originHeight);
-        v.layout(0, 0, originWidth, originHeight);
+        specHeight = View.MeasureSpec.makeMeasureSpec(originHeight, View.MeasureSpec.EXACTLY);
+        v.measure(specWidth, specHeight);
+        v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
         return b;
     }
 
