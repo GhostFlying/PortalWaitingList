@@ -334,7 +334,7 @@
 
                 <ImageView
                     android:clickable="false"
-                    android:src = "@drawable/ic_desc"
+                    android:src = "@drawable/ic_alphabet_order"
                     android:layout_width="24dp"
                     android:layout_height="24dp" />
 
