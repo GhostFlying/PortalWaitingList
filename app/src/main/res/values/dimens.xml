@@ -37,6 +37,8 @@
     <dimen name="portal_detail_card_title_margin">10dp</dimen>
     <dimen name="portal_detail_card_content_margin_left">@dimen/portal_detail_card_title_margin</dimen>
     <dimen name="portal_detail_card_content_margin_vertical">10dp</dimen>
+    <dimen name="portal_detail_image_width">300dp</dimen>
+    <dimen name="portal_detail_image_height">0dp</dimen>
 
     <!--for ripple effect for API 21- -->
     <dimen name="cardview_vertical_margin_ripple_view">5dp</dimen>

@@ -103,6 +103,7 @@ public class PortalDetailFragment extends Fragment {
             Picasso.with(getActivity())
                     .load(imageUrl.replaceFirst("http://", "https://"))
                     .error(R.drawable.network_error)
+                    .resizeDimen(R.dimen.portal_detail_image_width, R.dimen.portal_detail_image_height)
                     .into((ImageView)view.findViewById(R.id.portal_image_in_detail));
         }
         else {
