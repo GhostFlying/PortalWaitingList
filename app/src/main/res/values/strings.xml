@@ -36,8 +36,10 @@
     <string name="waiting">Waiting</string>
     <string name="order">Order</string>
     <string name="smart_order">Smart</string>
-    <string name="asc_order">Asc</string>
-    <string name="desc_order">Desc</string>
+    <string name="last_asc_order">Asc by last</string>
+    <string name="last_desc_order">Desc by last</string>
+    <string name="proposed_asc_order">Asc by propose</string>
+    <string name="proposed_desc_order">Desc by propose</string>
     <string name="alphabetical_order">AlphaBet</string>
     <string name="alert_to_refresh">First time? Please wait refreshing.</string>
     <string name="network_error">Network error, please make sure a reliable connection.</string>
@@ -92,14 +94,14 @@
     <string name="setting_smart_order_long_time_describe">        The portals have no response over the long time will be showed on the end.</string>
     <string name="setting_smart_order_long_time_default_value">365</string>
     <string name="setting_smart_order_waiting_sort_order">Inverse the sort of waiting portals</string>
-    <string name="setting_smart_order_default_sort_order">@string/asc_order</string>
+    <string name="setting_smart_order_default_sort_order">@string/last_asc_order</string>
     <string name="setting_short_time_dialog_title">Days of short time</string>
     <string name="setting_long_time_dialog_title">Days of long time</string>
     <string name="setting_default_sort_dialog_title">Choose default sort method</string>
 
     <string-array name="sort_method_exclude_smart">
-        <item>@string/desc_order</item>
-        <item>@string/asc_order</item>
+        <item>@string/last_desc_order</item>
+        <item>@string/last_asc_order</item>
     </string-array>
 
     <!-- Days Picker Fragment -->

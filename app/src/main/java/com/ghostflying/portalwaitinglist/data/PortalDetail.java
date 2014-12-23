@@ -18,6 +18,7 @@ public class PortalDetail implements Comparable<PortalDetail>, Serializable{
     public static final int PRIORITY_REVIEWED_BEFORE_SHORT_TIME = 1;
 
     private static final long ONE_DAY_TIME_IN_MILLISECONDS = 24 * 3600 * 1000;
+    private static final long DEFAULT_EARLY_TIME_TIME_STAMP = 805176000;
     private String name;
     private ArrayList<PortalEvent> events;
 
@@ -101,6 +102,19 @@ public class PortalDetail implements Comparable<PortalDetail>, Serializable{
      */
     public Date getLastUpdated(){
         return events.get(events.size() - 1).date;
+    }
+
+    /**
+     * Get the last proposed event's date of this portal.
+     * @return  the newest proposed event' update date, if there are no proposed event,
+     *           return default date.
+     */
+    public Date getLastProposedUpdated(){
+        for (int i = events.size() - 1; i >= 0; i--){
+            if (events.get(i).getOperationResult() == PortalEvent.OperationResult.PROPOSED)
+                return events.get(i).getDate();
+        }
+        return new Date(DEFAULT_EARLY_TIME_TIME_STAMP);
     }
 
     /**

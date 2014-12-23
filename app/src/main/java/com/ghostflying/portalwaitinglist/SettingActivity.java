@@ -91,9 +91,9 @@ public class SettingActivity extends ActionBarActivity
         if (smartOrderSortValue == null)
             smartOrderSortValue = (TextView)findViewById(R.id.setting_smart_order_sort_value);
         if (SettingUtil.getIfInverseWaitingInSmart())
-            smartOrderSortValue.setText(R.string.desc_order);
+            smartOrderSortValue.setText(R.string.last_desc_order);
         else
-            smartOrderSortValue.setText(R.string.asc_order);
+            smartOrderSortValue.setText(R.string.last_asc_order);
     }
 
     // on click listener for all need

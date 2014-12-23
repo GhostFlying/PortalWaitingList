@@ -256,7 +256,12 @@ public class SettingUtil {
     }
 
     public static enum SortOrder{
-        DATE_ASC, DATE_DESC, SMART_ORDER, ALPHABETICAL
+        LAST_DATE_ASC,
+        LAST_DATE_DESC,
+        SMART_ORDER,
+        ALPHABETICAL,
+        PROPOSED_DATE_ASC,
+        PROPOSED_DATE_DESC
     }
 
     public static enum FilterMethod{

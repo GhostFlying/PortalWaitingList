@@ -275,10 +275,10 @@ public class MailProcessUtil {
      */
     private void sortPortalDetails(SettingUtil.SortOrder sortOrder, ArrayList<PortalDetail> portalDetails){
         switch (sortOrder){
-            case DATE_ASC:
+            case LAST_DATE_ASC:
                 Collections.sort(portalDetails);
                 break;
-            case DATE_DESC:
+            case LAST_DATE_DESC:
                 Collections.sort(portalDetails, Collections.reverseOrder());
                 break;
             case SMART_ORDER:
@@ -316,6 +316,24 @@ public class MailProcessUtil {
                     @Override
                     public int compare(PortalDetail lhs, PortalDetail rhs) {
                         return comparator.compare(lhs.getName(), rhs.getName());
+                    }
+                });
+                break;
+            case PROPOSED_DATE_ASC:
+                Collections.sort(portalDetails, new Comparator<PortalDetail>() {
+                    @Override
+                    public int compare(PortalDetail lhs, PortalDetail rhs) {
+                        return lhs.getLastProposedUpdated()
+                                .compareTo(rhs.getLastProposedUpdated());
+                    }
+                });
+                break;
+            case PROPOSED_DATE_DESC:
+                Collections.sort(portalDetails, new Comparator<PortalDetail>() {
+                    @Override
+                    public int compare(PortalDetail lhs, PortalDetail rhs) {
+                        return rhs.getLastProposedUpdated()
+                                .compareTo(lhs.getLastProposedUpdated());
                     }
                 });
                 break;

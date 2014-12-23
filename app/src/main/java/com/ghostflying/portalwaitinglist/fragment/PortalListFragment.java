@@ -168,8 +168,10 @@ public class PortalListFragment extends Fragment {
         v.findViewById(R.id.item_rejected).setOnClickListener(sortAndFilterClickListener);
         v.findViewById(R.id.item_waiting).setOnClickListener(sortAndFilterClickListener);
         v.findViewById(R.id.item_smart_order).setOnClickListener(sortAndFilterClickListener);
-        v.findViewById(R.id.item_asc_order).setOnClickListener(sortAndFilterClickListener);
-        v.findViewById(R.id.item_desc_order).setOnClickListener(sortAndFilterClickListener);
+        v.findViewById(R.id.item_last_asc_order).setOnClickListener(sortAndFilterClickListener);
+        v.findViewById(R.id.item_last_desc_order).setOnClickListener(sortAndFilterClickListener);
+        v.findViewById(R.id.item_proposed_asc_order).setOnClickListener(sortAndFilterClickListener);
+        v.findViewById(R.id.item_proposed_desc_order).setOnClickListener(sortAndFilterClickListener);
         v.findViewById(R.id.item_alphabetical_order).setOnClickListener(sortAndFilterClickListener);
 
         // default select the portal
@@ -237,14 +239,20 @@ public class PortalListFragment extends Fragment {
                 case R.id.item_smart_order:
                     SettingUtil.setSortOrder(SettingUtil.SortOrder.SMART_ORDER);
                     break;
-                case R.id.item_asc_order:
-                    SettingUtil.setSortOrder(SettingUtil.SortOrder.DATE_ASC);
+                case R.id.item_last_asc_order:
+                    SettingUtil.setSortOrder(SettingUtil.SortOrder.LAST_DATE_ASC);
                     break;
-                case R.id.item_desc_order:
-                    SettingUtil.setSortOrder(SettingUtil.SortOrder.DATE_DESC);
+                case R.id.item_last_desc_order:
+                    SettingUtil.setSortOrder(SettingUtil.SortOrder.LAST_DATE_DESC);
                     break;
                 case R.id.item_alphabetical_order:
                     SettingUtil.setSortOrder(SettingUtil.SortOrder.ALPHABETICAL);
+                    break;
+                case R.id.item_proposed_asc_order:
+                    SettingUtil.setSortOrder(SettingUtil.SortOrder.PROPOSED_DATE_ASC);
+                    break;
+                case R.id.item_proposed_desc_order:
+                    SettingUtil.setSortOrder(SettingUtil.SortOrder.PROPOSED_DATE_DESC);
                     break;
                 default:
             }
@@ -283,14 +291,20 @@ public class PortalListFragment extends Fragment {
             case SMART_ORDER:
                 title += getString(R.string.smart_order);
                 break;
-            case DATE_ASC:
-                title += getString(R.string.asc_order);
+            case LAST_DATE_ASC:
+                title += getString(R.string.last_asc_order);
                 break;
-            case DATE_DESC:
-                title += getString(R.string.desc_order);
+            case LAST_DATE_DESC:
+                title += getString(R.string.last_desc_order);
                 break;
             case ALPHABETICAL:
                 title += getString(R.string.alphabetical_order);
+                break;
+            case PROPOSED_DATE_ASC:
+                title += getString(R.string.proposed_asc_order);
+                break;
+            case PROPOSED_DATE_DESC:
+                title += getString(R.string.proposed_desc_order);
                 break;
         }
 
