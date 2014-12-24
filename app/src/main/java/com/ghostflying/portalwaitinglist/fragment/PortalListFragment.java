@@ -72,6 +72,9 @@ public class PortalListFragment extends Fragment {
     TextView countRejected;
     TextView countWaiting;
     TextView totalPortals;
+    TextView totalSubmission;
+    TextView totalEdit;
+    View selectedType;
     boolean isInitialed = false;
 
     public static PortalListFragment newInstance() {
@@ -176,12 +179,35 @@ public class PortalListFragment extends Fragment {
         v.findViewById(R.id.item_proposed_desc_order).setOnClickListener(sortClickListener);
         v.findViewById(R.id.item_alphabetical_order).setOnClickListener(sortClickListener);
 
-        // default select the portal
-        v.findViewById(R.id.navigation_item_all).setSelected(true);
-        v.findViewById(R.id.navigation_item_all).setOnClickListener(navigationDrawerClickListener);
-        v.findViewById(R.id.navigation_item_all).setOnClickListener(navigationDrawerClickListener);
+        // type filter
+        v.findViewById(R.id.navigation_item_all).setOnClickListener(typeFilterClickListener);
+        v.findViewById(R.id.navigation_item_submission).setOnClickListener(typeFilterClickListener);
+        v.findViewById(R.id.navigation_item_edit).setOnClickListener(typeFilterClickListener);
+
+
+        // select from setting
+        switch (SettingUtil.getTypeFilterMethod()){
+            case ALL:
+                selectedType = v.findViewById(R.id.navigation_item_all);
+                break;
+            case SUBMISSION:
+                selectedType = v.findViewById(R.id.navigation_item_submission);
+                break;
+            case EDIT:
+                selectedType = v.findViewById(R.id.navigation_item_edit);
+                break;
+            default:
+                selectedType = v.findViewById(R.id.navigation_item_all);
+        }
+        selectedType.setSelected(true);
+
+        // other in navigation
+        v.findViewById(R.id.navigation_item_setting).setOnClickListener(navigationDrawerClickListener);
         v.findViewById(R.id.navigation_item_feedback).setOnClickListener(navigationDrawerClickListener);
         totalPortals = (TextView)v.findViewById(R.id.navigation_drawer_total_portals);
+        totalEdit = (TextView)v.findViewById(R.id.navigation_drawer_total_edit);
+        totalSubmission = (TextView)v.findViewById(R.id.navigation_drawer_total_submission);
+
         // set the user avatar and account name
         if (SettingUtil.getAccount() != null){
             ((TextView)v.findViewById(R.id.account_name)).setText(SettingUtil.getAccount());
@@ -201,9 +227,6 @@ public class PortalListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             switch (v.getId()){
-                case R.id.navigation_item_all:
-                    drawerLayout.closeDrawer(Gravity.LEFT);
-                    break;
                 case R.id.navigation_item_setting:
                     Intent setting = new Intent(getActivity(), SettingActivity.class);
                     startActivityForResult(setting, SettingActivity.REQUEST_SETTING);
@@ -256,21 +279,47 @@ public class PortalListFragment extends Fragment {
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.item_everything:
-                    SettingUtil.setFilterMethod(SettingUtil.FilterMethod.EVERYTHING);
+                    SettingUtil.setResultFilterMethod(SettingUtil.ResultFilterMethod.EVERYTHING);
                     break;
                 case R.id.item_accepted:
-                    SettingUtil.setFilterMethod(SettingUtil.FilterMethod.ACCEPTED);
+                    SettingUtil.setResultFilterMethod(SettingUtil.ResultFilterMethod.ACCEPTED);
                     break;
                 case R.id.item_rejected:
-                    SettingUtil.setFilterMethod(SettingUtil.FilterMethod.REJECTED);
+                    SettingUtil.setResultFilterMethod(SettingUtil.ResultFilterMethod.REJECTED);
                     break;
                 case R.id.item_waiting:
-                    SettingUtil.setFilterMethod(SettingUtil.FilterMethod.WAITING);
+                    SettingUtil.setResultFilterMethod(SettingUtil.ResultFilterMethod.WAITING);
                     break;
                 default:
             }
-            new ResultFilterTask().execute();
+            new FilterTask().execute();
             drawerLayout.closeDrawer(Gravity.RIGHT);
+        }
+    };
+
+    View.OnClickListener typeFilterClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.navigation_item_all:
+                    SettingUtil.setTypeFilterMethod(SettingUtil.TypeFilterMethod.ALL);
+                    break;
+                case R.id.navigation_item_submission:
+                    SettingUtil.setTypeFilterMethod(SettingUtil.TypeFilterMethod.SUBMISSION);
+                    break;
+                case R.id.navigation_item_edit:
+                    SettingUtil.setTypeFilterMethod(SettingUtil.TypeFilterMethod.EDIT);
+                    break;
+                default:
+            }
+            // reset selected before
+            if (selectedType != null)
+                selectedType.setSelected(false);
+            // select this
+            v.setSelected(true);
+            selectedType = v;
+            new FilterTask().execute();
+            drawerLayout.closeDrawer(Gravity.LEFT);
         }
     };
 
@@ -283,7 +332,7 @@ public class PortalListFragment extends Fragment {
 
     private void setTitleBySetting(){
         String title = "";
-        switch (SettingUtil.getFilterMethod()){
+        switch (SettingUtil.getResultFilterMethod()){
             case EVERYTHING:
                 title = getResources().getString(R.string.everything);
                 break;
@@ -441,7 +490,8 @@ public class PortalListFragment extends Fragment {
             counts = processUtil.getCounts(totalPortalDetails);
             // sort and filter the portal details
             processUtil.filterAndSort(
-                    SettingUtil.getFilterMethod(),
+                    SettingUtil.getTypeFilterMethod(),
+                    SettingUtil.getResultFilterMethod(),
                     SettingUtil.getSortOrder(),
                     totalPortalDetails,
                     ((PortalListAdapter) recyclerView.getAdapter()).dataSet
@@ -553,7 +603,8 @@ public class PortalListFragment extends Fragment {
 
             // sort and filter the portal details
             processUtil.filterAndSort(
-                    SettingUtil.getFilterMethod(),
+                    SettingUtil.getTypeFilterMethod(),
+                    SettingUtil.getResultFilterMethod(),
                     SettingUtil.getSortOrder(),
                     totalPortalDetails,
                     ((PortalListAdapter) recyclerView.getAdapter()).dataSet
@@ -677,12 +728,13 @@ public class PortalListFragment extends Fragment {
         }
     }
 
-    private class ResultFilterTask extends SortAndFilterBaseTask{
+    private class FilterTask extends SortAndFilterBaseTask{
 
         @Override
         protected Void doInBackground(Void... params) {
             MailProcessUtil.getInstance().filterAndSort(
-                    SettingUtil.getFilterMethod(),
+                    SettingUtil.getTypeFilterMethod(),
+                    SettingUtil.getResultFilterMethod(),
                     SettingUtil.getSortOrder(),
                     totalPortalDetails,
                     ((PortalListAdapter) recyclerView.getAdapter()).dataSet);
@@ -707,10 +759,14 @@ public class PortalListFragment extends Fragment {
         if (counts!= null){
             int total = totalPortalDetails.size();
             countEverything.setText(Integer.toString(total));
-            totalPortals.setText(Integer.toString(total));
             countAccepted.setText(Integer.toString(counts[0]));
             countRejected.setText(Integer.toString(counts[1]));
             countWaiting.setText(Integer.toString(total - counts[0] - counts[1]));
+
+            // navigation
+            totalPortals.setText(Integer.toString(total));
+            totalSubmission.setText(Integer.toString(counts[2]));
+            totalEdit.setText(Integer.toString(counts[3]));
         }
     }
 

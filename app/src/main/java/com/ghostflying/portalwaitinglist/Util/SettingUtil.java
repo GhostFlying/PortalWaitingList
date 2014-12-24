@@ -12,21 +12,23 @@ import com.ghostflying.portalwaitinglist.R;
  */
 public class SettingUtil {
     static final String SORT_ORDER_NAME = "SortOrder";
-    static final String FILTER_METHOD_NAME = "FilterMethod";
+    static final String RESULT_FILTER_METHOD_NAME = "FilterMethod";
     static final String ACCOUNT_NAME = "account";
     static final String IF_SHOW_IMAGES_NAME = "IfShowImages";
     static final String SHORT_TIME_NAME = "ShortTime";
     static final String LONG_TIME_NAME = "LongTime";
     static final String IF_INVERSE_WAITING_IN_SMART_NAME = "IfInverseWaitingInSmart";
     static final String FORCE_CHINESE_NAME = "ForceChinese";
+    static final String TYPE_FILTER_METHOD_NAME = "TypeFilterMethod";
     static final String READ_FIRST_EXCEPTION = "You must read all settings first.";
     static final boolean DEFAULT_IF_SHOW_IMAGES = true;
     static final int DEFAULT_SHORT_TIME = 7;
     static final int DEFAULT_LONG_TIME = 365;
     static final boolean DEFAULT_IF_INVERSE_WAITING_IN_SMART = false;
     static final boolean DEFAULT_FORCE_CHINESE = false;
+    static final int DEFAULT_TYPE_FILTER_METHOD = 0;
     private static SharedPreferences options;
-    private static FilterMethod filterMethod;
+    private static ResultFilterMethod resultFilterMethod;
     private static SortOrder sortOrder;
     private static String account;
     private static boolean ifShowImages;
@@ -34,6 +36,7 @@ public class SettingUtil {
     private static int longTime;
     private static boolean ifInverseWaitingInSmart;
     private static boolean forceChinese;
+    private static TypeFilterMethod typeFilterMethod;
     private static boolean isModified = false;
 
     /**
@@ -44,8 +47,8 @@ public class SettingUtil {
         createSharedPreferences(context);
         if (!isModified){
             account = options.getString(ACCOUNT_NAME, null);
-            filterMethod = FilterMethod.values()[options.getInt(FILTER_METHOD_NAME,
-                    FilterMethod.EVERYTHING.ordinal())];
+            resultFilterMethod = ResultFilterMethod.values()[options.getInt(RESULT_FILTER_METHOD_NAME,
+                    ResultFilterMethod.EVERYTHING.ordinal())];
             sortOrder = SortOrder.values()[options.getInt(SORT_ORDER_NAME,
                     SortOrder.SMART_ORDER.ordinal())];
             ifShowImages = options.getBoolean(IF_SHOW_IMAGES_NAME, DEFAULT_IF_SHOW_IMAGES);
@@ -54,6 +57,8 @@ public class SettingUtil {
             ifInverseWaitingInSmart = options.getBoolean(
                     IF_INVERSE_WAITING_IN_SMART_NAME, DEFAULT_IF_INVERSE_WAITING_IN_SMART);
             forceChinese = options.getBoolean(FORCE_CHINESE_NAME, DEFAULT_FORCE_CHINESE);
+            typeFilterMethod = TypeFilterMethod.values()[
+                    options.getInt(TYPE_FILTER_METHOD_NAME, DEFAULT_TYPE_FILTER_METHOD)];
         }
     }
 
@@ -66,13 +71,14 @@ public class SettingUtil {
         if (isModified){
             SharedPreferences.Editor editor = options.edit();
             editor.putString(ACCOUNT_NAME, account);
-            editor.putInt(FILTER_METHOD_NAME, filterMethod.ordinal());
+            editor.putInt(RESULT_FILTER_METHOD_NAME, resultFilterMethod.ordinal());
             editor.putInt(SORT_ORDER_NAME, sortOrder.ordinal());
             editor.putBoolean(IF_SHOW_IMAGES_NAME, ifShowImages);
             editor.putInt(SHORT_TIME_NAME, shortTime);
             editor.putInt(LONG_TIME_NAME, longTime);
             editor.putBoolean(IF_INVERSE_WAITING_IN_SMART_NAME, ifInverseWaitingInSmart);
             editor.putBoolean(FORCE_CHINESE_NAME, forceChinese);
+            editor.putInt(TYPE_FILTER_METHOD_NAME, typeFilterMethod.ordinal());
             editor.apply();
         }
     }
@@ -100,19 +106,19 @@ public class SettingUtil {
      * Get the setting filterMethod.
      * @return  filterMethod.
      */
-    public static FilterMethod getFilterMethod(){
+    public static ResultFilterMethod getResultFilterMethod(){
         checkRead();
-        return filterMethod;
+        return resultFilterMethod;
     }
 
     /**
      * Set the setting filterMethod.
-     * @param filterMethod  filterMethod to be set.
+     * @param resultFilterMethod  filterMethod to be set.
      */
-    public static void setFilterMethod(FilterMethod filterMethod){
+    public static void setResultFilterMethod(ResultFilterMethod resultFilterMethod){
         checkRead();
         isModified = true;
-        SettingUtil.filterMethod = filterMethod;
+        SettingUtil.resultFilterMethod = resultFilterMethod;
     }
 
     /**
@@ -230,6 +236,25 @@ public class SettingUtil {
     }
 
     /**
+     * Get the setting type filter method.
+     * @return  the type filter method.
+     */
+    public static TypeFilterMethod getTypeFilterMethod(){
+        checkRead();
+        return typeFilterMethod;
+    }
+
+    /**
+     * Set the setting type filter method.
+     * @param typeFilterMethod  the method set to filter by type.
+     */
+    public static void setTypeFilterMethod(TypeFilterMethod typeFilterMethod){
+        checkRead();
+        isModified = true;
+        SettingUtil.typeFilterMethod = typeFilterMethod;
+    }
+
+    /**
      * Check if setting is read first.
      */
     private static void checkRead(){
@@ -264,7 +289,11 @@ public class SettingUtil {
         PROPOSED_DATE_DESC
     }
 
-    public static enum FilterMethod{
+    public static enum ResultFilterMethod {
         EVERYTHING, ACCEPTED, REJECTED, WAITING
+    }
+
+    public static enum TypeFilterMethod {
+        ALL, SUBMISSION, EDIT
     }
 }

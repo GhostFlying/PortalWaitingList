@@ -203,4 +203,29 @@ public class PortalDetail implements Comparable<PortalDetail>, Serializable{
         return events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.REJECTED
                 || events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.DUPLICATE;
     }
+
+    /**
+     * Check if the portal has submission event.
+     * @return  true if there is one submission event at least, otherwise false.
+     */
+    public boolean hasSubmission(){
+        for (PortalEvent event : events){
+            if (event.getOperationType() == PortalEvent.OperationType.SUBMISSION)
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if the portal has edit/invalid event.
+     * @return  true if there is one edit/invalid event at least, otherwise false.
+     */
+    public boolean hasEdit(){
+        for (PortalEvent event : events){
+            if (event.getOperationType() == PortalEvent.OperationType.EDIT
+                    || event.getOperationType() == PortalEvent.OperationType.INVALID)
+                return true;
+        }
+        return false;
+    }
 }
