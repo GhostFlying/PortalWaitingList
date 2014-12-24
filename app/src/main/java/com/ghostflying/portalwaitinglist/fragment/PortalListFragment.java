@@ -300,17 +300,27 @@ public class PortalListFragment extends Fragment {
     View.OnClickListener typeFilterClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            int actionBarBg;
+            int statusBarBg;
             switch (v.getId()){
                 case R.id.navigation_item_all:
                     SettingUtil.setTypeFilterMethod(SettingUtil.TypeFilterMethod.ALL);
+                    actionBarBg = R.color.type_filter_action_bar_bg_all;
+                    statusBarBg = R.color.type_filter_status_bar_bg_all;
                     break;
                 case R.id.navigation_item_submission:
                     SettingUtil.setTypeFilterMethod(SettingUtil.TypeFilterMethod.SUBMISSION);
+                    actionBarBg = R.color.type_filter_action_bar_bg_submission;
+                    statusBarBg = R.color.type_filter_status_bar_bg_submission;
                     break;
                 case R.id.navigation_item_edit:
                     SettingUtil.setTypeFilterMethod(SettingUtil.TypeFilterMethod.EDIT);
+                    actionBarBg = R.color.type_filter_action_bar_bg_edit;
+                    statusBarBg = R.color.type_filter_status_bar_bg_edit;
                     break;
                 default:
+                    actionBarBg = R.color.type_filter_action_bar_bg_all;
+                    statusBarBg = R.color.type_filter_status_bar_bg_all;
             }
             // reset selected before
             if (selectedType != null)
@@ -320,6 +330,10 @@ public class PortalListFragment extends Fragment {
             selectedType = v;
             new FilterTask().execute();
             drawerLayout.closeDrawer(Gravity.LEFT);
+            // change the color of action bar / status bar
+            toolbar.setBackgroundResource(actionBarBg);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                drawerLayout.setStatusBarBackground(statusBarBg);
         }
     };
 
