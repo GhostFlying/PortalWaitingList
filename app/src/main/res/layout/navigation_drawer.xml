@@ -7,40 +7,8 @@
               android:layout_width="@dimen/navigation_drawer_width"
               android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:background="@drawable/nav_drawer_title_bg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/user_avatar"
-            android:text="@string/navigation_drawer_avatar_default_text"
-            android:background="@drawable/user_avatar_bg"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLargeInverse"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="@dimen/navigation_drawer_avatar_margin_horizon"
-            android:layout_marginTop="@dimen/navigation_drawer_avatar_margin_vertical"
-            android:layout_width="@dimen/navigation_drawer_avatar_size"
-            android:layout_height="@dimen/navigation_drawer_avatar_size"/>
-
-        <TextView
-            android:id="@+id/account_name"
-            android:text="@string/navigation_drawer_default_account"
-            android:textAppearance="?android:attr/textAppearanceSmallInverse"
-            android:layout_marginTop="@dimen/navigation_drawer_account_margin_vertical"
-            android:layout_marginBottom="@dimen/navigation_drawer_account_margin_vertical"
-            android:layout_alignLeft="@+id/user_avatar"
-            android:layout_below="@+id/user_avatar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </RelativeLayout>
-
-
     <LinearLayout
         android:orientation="vertical"
-        android:paddingTop="@dimen/navigation_drawer_item_list_padding_vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -53,10 +21,41 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <!-- drawer title -->
+                <RelativeLayout
+                    android:background="@drawable/nav_drawer_title_bg"
+                    android:layout_marginBottom="@dimen/navigation_drawer_item_list_padding_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <!-- Portal List -->
+                    <TextView
+                        android:id="@+id/user_avatar"
+                        android:text="@string/navigation_drawer_avatar_default_text"
+                        android:background="@drawable/user_avatar_bg"
+                        android:gravity="center"
+                        android:textAppearance="?android:attr/textAppearanceLargeInverse"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="@dimen/navigation_drawer_avatar_margin_horizon"
+                        android:layout_marginTop="@dimen/navigation_drawer_avatar_margin_vertical"
+                        android:layout_width="@dimen/navigation_drawer_avatar_size"
+                        android:layout_height="@dimen/navigation_drawer_avatar_size"/>
+
+                    <TextView
+                        android:id="@+id/account_name"
+                        android:text="@string/navigation_drawer_default_account"
+                        android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                        android:layout_marginTop="@dimen/navigation_drawer_account_margin_vertical"
+                        android:layout_marginBottom="@dimen/navigation_drawer_account_margin_vertical"
+                        android:layout_alignLeft="@+id/user_avatar"
+                        android:layout_below="@+id/user_avatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+                <!-- All portals -->
                 <com.andexert.library.RippleView
-                    android:id="@+id/navigation_item_portal"
+                    android:id="@+id/navigation_item_all"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     ripple:rv_rippleDuration="@integer/ripple_effect_duration"
@@ -79,7 +78,7 @@
                             android:layout_height="wrap_content"/>
 
                         <TextView
-                            android:text="@string/navigation_drawer_portal_list"
+                            android:text="@string/navigation_drawer_all_portals"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/navigation_drawer_item_text_color"
                             android:layout_marginLeft="@dimen/navigation_drawer_item_text_margin_left"
@@ -101,6 +100,110 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/navigation_drawer_total_portals"/>
+
+                    </LinearLayout>
+
+                </com.andexert.library.RippleView>
+
+                <!-- Submission portals -->
+                <com.andexert.library.RippleView
+                    android:id="@+id/navigation_item_submission"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    ripple:rv_rippleDuration="@integer/ripple_effect_duration"
+                    ripple:rv_type="rectangle"
+                    ripple:rv_color="@color/ripple_material_light">
+
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:paddingTop="@dimen/navigation_drawer_item_margin_vertical"
+                        android:paddingBottom="@dimen/navigation_drawer_item_margin_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:src="@drawable/ic_email"
+                            android:layout_marginLeft="@dimen/navigation_drawer_item_icon_margin_left"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:text="@string/navigation_drawer_submission_portals"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/navigation_drawer_item_text_color"
+                            android:layout_marginLeft="@dimen/navigation_drawer_item_text_margin_left"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <Space
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"/>
+
+                        <TextView
+                            android:text="@string/navigation_drawer_default_portal_count"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/navigation_drawer_item_text_color"
+                            android:layout_marginRight="@dimen/navigation_drawer_item_count_text_margin_right"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/navigation_drawer_total_submission"/>
+
+                    </LinearLayout>
+
+                </com.andexert.library.RippleView>
+
+                <!-- Edit portals -->
+                <com.andexert.library.RippleView
+                    android:id="@+id/navigation_item_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    ripple:rv_rippleDuration="@integer/ripple_effect_duration"
+                    ripple:rv_type="rectangle"
+                    ripple:rv_color="@color/ripple_material_light">
+
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:paddingTop="@dimen/navigation_drawer_item_margin_vertical"
+                        android:paddingBottom="@dimen/navigation_drawer_item_margin_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:src="@drawable/ic_email"
+                            android:layout_marginLeft="@dimen/navigation_drawer_item_icon_margin_left"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:text="@string/navigation_drawer_edit_portals"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/navigation_drawer_item_text_color"
+                            android:layout_marginLeft="@dimen/navigation_drawer_item_text_margin_left"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <Space
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"/>
+
+                        <TextView
+                            android:text="@string/navigation_drawer_default_portal_count"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/navigation_drawer_item_text_color"
+                            android:layout_marginRight="@dimen/navigation_drawer_item_count_text_margin_right"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/navigation_drawer_total_edit"/>
 
                     </LinearLayout>
 

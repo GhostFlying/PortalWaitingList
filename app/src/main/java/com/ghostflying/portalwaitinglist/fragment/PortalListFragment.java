@@ -175,9 +175,9 @@ public class PortalListFragment extends Fragment {
         v.findViewById(R.id.item_alphabetical_order).setOnClickListener(sortAndFilterClickListener);
 
         // default select the portal
-        v.findViewById(R.id.navigation_item_portal).setSelected(true);
-        v.findViewById(R.id.navigation_item_portal).setOnClickListener(navigationDrawerClickListener);
-        v.findViewById(R.id.navigation_item_setting).setOnClickListener(navigationDrawerClickListener);
+        v.findViewById(R.id.navigation_item_all).setSelected(true);
+        v.findViewById(R.id.navigation_item_all).setOnClickListener(navigationDrawerClickListener);
+        v.findViewById(R.id.navigation_item_all).setOnClickListener(navigationDrawerClickListener);
         v.findViewById(R.id.navigation_item_feedback).setOnClickListener(navigationDrawerClickListener);
         totalPortals = (TextView)v.findViewById(R.id.navigation_drawer_total_portals);
         // set the user avatar and account name
@@ -199,7 +199,7 @@ public class PortalListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             switch (v.getId()){
-                case R.id.navigation_item_portal:
+                case R.id.navigation_item_all:
                     drawerLayout.closeDrawer(Gravity.LEFT);
                     break;
                 case R.id.navigation_item_setting:

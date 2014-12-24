@@ -2,175 +2,253 @@
 <com.ghostflying.portalwaitinglist.ScrimInsetsFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:insetForeground="#4000"
-    android:fitsSystemWindows="true"
-    android:layout_gravity="start"
+    android:layout_width="@dimen/navigation_drawer_width"
     android:layout_height="match_parent"
-    android:layout_width="@dimen/navigation_drawer_width">
+    android:layout_gravity="start"
+    android:fitsSystemWindows="true"
+    app:insetForeground="#4000">
 
     <LinearLayout
-                  android:orientation="vertical"
-                  android:background="@color/navigation_drawer_bg"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/navigation_drawer_bg"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:background="@drawable/nav_drawer_title_bg"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/user_avatar"
-                android:text="@string/navigation_drawer_avatar_default_text"
-                android:background="@drawable/user_avatar_bg"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLargeInverse"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="@dimen/navigation_drawer_avatar_margin_horizon"
-                android:layout_marginTop="@dimen/navigation_drawer_avatar_margin_vertical"
-                android:layout_width="@dimen/navigation_drawer_avatar_size"
-                android:layout_height="@dimen/navigation_drawer_avatar_size"/>
-
-            <TextView
-                android:id="@+id/account_name"
-                android:text="@string/navigation_drawer_default_account"
-                android:textAppearance="?android:attr/textAppearanceSmallInverse"
-                android:layout_marginTop="@dimen/navigation_drawer_account_margin_vertical"
-                android:layout_marginBottom="@dimen/navigation_drawer_account_margin_vertical"
-                android:layout_alignLeft="@+id/user_avatar"
-                android:layout_below="@+id/user_avatar"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:paddingTop="@dimen/navigation_drawer_item_list_padding_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ScrollView
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:orientation="vertical"
+                <!-- drawer title -->
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/navigation_drawer_item_list_padding_vertical"
+                    android:background="@drawable/nav_drawer_title_bg">
 
+                    <TextView
+                        android:id="@+id/user_avatar"
+                        android:layout_width="@dimen/navigation_drawer_avatar_size"
+                        android:layout_height="@dimen/navigation_drawer_avatar_size"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="@dimen/navigation_drawer_avatar_margin_horizon"
+                        android:layout_marginTop="@dimen/navigation_drawer_avatar_margin_vertical"
+                        android:background="@drawable/user_avatar_bg"
+                        android:gravity="center"
+                        android:text="@string/navigation_drawer_avatar_default_text"
+                        android:textAppearance="?android:attr/textAppearanceLargeInverse"/>
 
-                    <!-- Portal List -->
-                    <LinearLayout
-                        android:id="@+id/navigation_item_portal"
-                        android:background="@drawable/navigation_item_bg"
-                        android:orientation="horizontal"
-                        android:paddingTop="@dimen/navigation_drawer_item_margin_vertical"
-                        android:paddingBottom="@dimen/navigation_drawer_item_margin_vertical"
+                    <TextView
+                        android:id="@+id/account_name"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/user_avatar"
+                        android:layout_below="@+id/user_avatar"
+                        android:layout_marginBottom="@dimen/navigation_drawer_account_margin_vertical"
+                        android:layout_marginTop="@dimen/navigation_drawer_account_margin_vertical"
+                        android:text="@string/navigation_drawer_default_account"
+                        android:textAppearance="?android:attr/textAppearanceSmallInverse"/>
+                </RelativeLayout>
 
-                        <ImageView
-                            android:src="@drawable/ic_email"
-                            android:layout_marginLeft="@dimen/navigation_drawer_item_icon_margin_left"
-                            android:layout_gravity="center_vertical"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                <!-- all portals -->
+                <LinearLayout
+                    android:id="@+id/navigation_item_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/navigation_item_bg"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/navigation_drawer_item_margin_vertical"
+                    android:paddingTop="@dimen/navigation_drawer_item_margin_vertical">
 
-                        <TextView
-                            android:text="@string/navigation_drawer_portal_list"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/navigation_drawer_item_text_color"
-                            android:layout_marginLeft="@dimen/navigation_drawer_item_text_margin_left"
-                            android:layout_gravity="center_vertical"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/navigation_drawer_item_icon_margin_left"
+                        android:src="@drawable/ic_email"/>
 
-                        <Space
-                            android:layout_weight="1"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/navigation_drawer_item_text_margin_left"
+                        android:text="@string/navigation_drawer_all_portals"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/navigation_drawer_item_text_color"/>
 
-                        <TextView
-                            android:text="@string/navigation_drawer_default_portal_count"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/navigation_drawer_item_text_color"
-                            android:layout_marginRight="@dimen/navigation_drawer_item_count_text_margin_right"
-                            android:layout_gravity="center_vertical"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/navigation_drawer_total_portals"/>
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
 
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/navigation_drawer_total_portals"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/navigation_drawer_item_count_text_margin_right"
+                        android:text="@string/navigation_drawer_default_portal_count"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/navigation_drawer_item_text_color"/>
+
                 </LinearLayout>
 
-            </ScrollView>
+                <!-- Submission -->
+                <LinearLayout
+                    android:id="@+id/navigation_item_submission"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/navigation_item_bg"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/navigation_drawer_item_margin_vertical"
+                    android:paddingTop="@dimen/navigation_drawer_item_margin_vertical">
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/navigation_drawer_item_icon_margin_left"
+                        android:src="@drawable/ic_email"/>
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/navigation_drawer_item_text_margin_left"
+                        android:text="@string/navigation_drawer_submission_portals"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/navigation_drawer_item_text_color"/>
 
-            <View
-                android:background="@android:color/darker_gray"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"/>
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
 
-            <!-- Setting -->
-            <LinearLayout
-                android:id="@+id/navigation_item_setting"
-                android:background="@drawable/navigation_item_bg"
-                android:orientation="horizontal"
-                android:paddingTop="@dimen/navigation_drawer_item_margin_vertical"
-                android:paddingBottom="@dimen/navigation_drawer_item_margin_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/navigation_drawer_total_submission"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/navigation_drawer_item_count_text_margin_right"
+                        android:text="@string/navigation_drawer_default_portal_count"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/navigation_drawer_item_text_color"/>
 
-                <ImageView
-                    android:src="@drawable/ic_settings"
-                    android:layout_marginLeft="@dimen/navigation_drawer_item_icon_margin_left"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                </LinearLayout>
 
-                <TextView
-                    android:text="@string/navigation_drawer_setting"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/navigation_drawer_item_text_color"
-                    android:layout_marginLeft="@dimen/navigation_drawer_item_text_margin_left"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                <!-- Edit -->
+                <LinearLayout
+                    android:id="@+id/navigation_item_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/navigation_item_bg"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/navigation_drawer_item_margin_vertical"
+                    android:paddingTop="@dimen/navigation_drawer_item_margin_vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/navigation_drawer_item_icon_margin_left"
+                        android:src="@drawable/ic_email"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/navigation_drawer_item_text_margin_left"
+                        android:text="@string/navigation_drawer_edit_portals"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/navigation_drawer_item_text_color"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/navigation_drawer_total_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/navigation_drawer_item_count_text_margin_right"
+                        android:text="@string/navigation_drawer_default_portal_count"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/navigation_drawer_item_text_color"/>
+
+                </LinearLayout>
             </LinearLayout>
 
-            <!-- Feedback -->
-            <LinearLayout
-                android:id="@+id/navigation_item_feedback"
-                android:background="@drawable/navigation_item_bg"
-                android:orientation="horizontal"
-                android:paddingTop="@dimen/navigation_drawer_item_margin_vertical"
-                android:paddingBottom="@dimen/navigation_drawer_item_margin_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        </ScrollView>
 
-                <ImageView
-                    android:src="@drawable/ic_send"
-                    android:layout_marginLeft="@dimen/navigation_drawer_item_icon_margin_left"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
 
-                <TextView
-                    android:text="@string/navigation_drawer_feedback"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/navigation_drawer_item_text_color"
-                    android:layout_marginLeft="@dimen/navigation_drawer_item_text_margin_left"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@android:color/darker_gray"/>
 
+        <!-- Setting -->
+        <LinearLayout
+            android:id="@+id/navigation_item_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/navigation_item_bg"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/navigation_drawer_item_margin_vertical"
+            android:paddingTop="@dimen/navigation_drawer_item_margin_vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/navigation_drawer_item_icon_margin_left"
+                android:src="@drawable/ic_settings"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/navigation_drawer_item_text_margin_left"
+                android:text="@string/navigation_drawer_setting"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/navigation_drawer_item_text_color"/>
         </LinearLayout>
 
+        <!-- Feedback -->
+        <LinearLayout
+            android:id="@+id/navigation_item_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/navigation_item_bg"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/navigation_drawer_item_margin_vertical"
+            android:paddingTop="@dimen/navigation_drawer_item_margin_vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/navigation_drawer_item_icon_margin_left"
+                android:src="@drawable/ic_send"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/navigation_drawer_item_text_margin_left"
+                android:text="@string/navigation_drawer_feedback"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/navigation_drawer_item_text_color"/>
+        </LinearLayout>
 
     </LinearLayout>
+
+
 </com.ghostflying.portalwaitinglist.ScrimInsetsFrameLayout>

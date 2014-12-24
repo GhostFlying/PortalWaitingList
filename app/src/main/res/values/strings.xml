@@ -68,6 +68,9 @@
     <!-- navigation drawer -->
     <string name="navigation_drawer_default_account">default@ghostflying.com</string>
     <string name="navigation_drawer_portal_list">Portal List</string>
+    <string name="navigation_drawer_all_portals">All</string>
+    <string name="navigation_drawer_submission_portals">Submission</string>
+    <string name="navigation_drawer_edit_portals">Edit</string>
     <string name="navigation_drawer_default_portal_count">0</string>
     <string name="navigation_drawer_setting">Settings</string>
     <string name="navigation_drawer_feedback">Feedback</string>
