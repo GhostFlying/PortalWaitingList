@@ -273,7 +273,7 @@ public class MailProcessUtil {
      * @param sortOrder     the order set.
      * @param portalDetails the sorted list.
      */
-    private void sortPortalDetails(SettingUtil.SortOrder sortOrder, ArrayList<PortalDetail> portalDetails){
+    public void sortPortalDetails(SettingUtil.SortOrder sortOrder, ArrayList<PortalDetail> portalDetails){
         switch (sortOrder){
             case LAST_DATE_ASC:
                 Collections.sort(portalDetails);

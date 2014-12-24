@@ -162,17 +162,19 @@ public class PortalListFragment extends Fragment {
         actionBarDrawerToggle.syncState();
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
+        // result filter
+        v.findViewById(R.id.item_everything).setOnClickListener(resultFilterClickListener);
+        v.findViewById(R.id.item_accepted).setOnClickListener(resultFilterClickListener);
+        v.findViewById(R.id.item_rejected).setOnClickListener(resultFilterClickListener);
+        v.findViewById(R.id.item_waiting).setOnClickListener(resultFilterClickListener);
 
-        v.findViewById(R.id.item_everything).setOnClickListener(sortAndFilterClickListener);
-        v.findViewById(R.id.item_accepted).setOnClickListener(sortAndFilterClickListener);
-        v.findViewById(R.id.item_rejected).setOnClickListener(sortAndFilterClickListener);
-        v.findViewById(R.id.item_waiting).setOnClickListener(sortAndFilterClickListener);
-        v.findViewById(R.id.item_smart_order).setOnClickListener(sortAndFilterClickListener);
-        v.findViewById(R.id.item_last_asc_order).setOnClickListener(sortAndFilterClickListener);
-        v.findViewById(R.id.item_last_desc_order).setOnClickListener(sortAndFilterClickListener);
-        v.findViewById(R.id.item_proposed_asc_order).setOnClickListener(sortAndFilterClickListener);
-        v.findViewById(R.id.item_proposed_desc_order).setOnClickListener(sortAndFilterClickListener);
-        v.findViewById(R.id.item_alphabetical_order).setOnClickListener(sortAndFilterClickListener);
+        // sort
+        v.findViewById(R.id.item_smart_order).setOnClickListener(sortClickListener);
+        v.findViewById(R.id.item_last_asc_order).setOnClickListener(sortClickListener);
+        v.findViewById(R.id.item_last_desc_order).setOnClickListener(sortClickListener);
+        v.findViewById(R.id.item_proposed_asc_order).setOnClickListener(sortClickListener);
+        v.findViewById(R.id.item_proposed_desc_order).setOnClickListener(sortClickListener);
+        v.findViewById(R.id.item_alphabetical_order).setOnClickListener(sortClickListener);
 
         // default select the portal
         v.findViewById(R.id.navigation_item_all).setSelected(true);
@@ -220,22 +222,10 @@ public class PortalListFragment extends Fragment {
         }
     };
 
-    View.OnClickListener sortAndFilterClickListener = new View.OnClickListener() {
+    View.OnClickListener sortClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             switch (v.getId()){
-                case R.id.item_everything:
-                    SettingUtil.setFilterMethod(SettingUtil.FilterMethod.EVERYTHING);
-                    break;
-                case R.id.item_accepted:
-                    SettingUtil.setFilterMethod(SettingUtil.FilterMethod.ACCEPTED);
-                    break;
-                case R.id.item_rejected:
-                    SettingUtil.setFilterMethod(SettingUtil.FilterMethod.REJECTED);
-                    break;
-                case R.id.item_waiting:
-                    SettingUtil.setFilterMethod(SettingUtil.FilterMethod.WAITING);
-                    break;
                 case R.id.item_smart_order:
                     SettingUtil.setSortOrder(SettingUtil.SortOrder.SMART_ORDER);
                     break;
@@ -256,7 +246,30 @@ public class PortalListFragment extends Fragment {
                     break;
                 default:
             }
-            new SortAndFilterTask().execute();
+            new SortTask().execute();
+            drawerLayout.closeDrawer(Gravity.RIGHT);
+        }
+    };
+
+    View.OnClickListener resultFilterClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.item_everything:
+                    SettingUtil.setFilterMethod(SettingUtil.FilterMethod.EVERYTHING);
+                    break;
+                case R.id.item_accepted:
+                    SettingUtil.setFilterMethod(SettingUtil.FilterMethod.ACCEPTED);
+                    break;
+                case R.id.item_rejected:
+                    SettingUtil.setFilterMethod(SettingUtil.FilterMethod.REJECTED);
+                    break;
+                case R.id.item_waiting:
+                    SettingUtil.setFilterMethod(SettingUtil.FilterMethod.WAITING);
+                    break;
+                default:
+            }
+            new ResultFilterTask().execute();
             drawerLayout.closeDrawer(Gravity.RIGHT);
         }
     };
@@ -348,7 +361,7 @@ public class PortalListFragment extends Fragment {
         // params are changed, do filter and sort.
         if (requestCode == SettingActivity.REQUEST_SETTING
                 && resultCode == SettingActivity.RESULT_OK)
-            new SortAndFilterTask().execute();
+            new SortTask().execute();
     }
 
 
@@ -651,7 +664,20 @@ public class PortalListFragment extends Fragment {
     /**
      * Async Task for sort or filter action.
      */
-    private class SortAndFilterTask extends AsyncTask<Void, Void, Void> {
+    private abstract class SortAndFilterBaseTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected abstract Void doInBackground(Void... params);
+
+        @Override
+        protected void onPostExecute(Void param){
+            // update UI
+            recyclerView.getAdapter().notifyDataSetChanged();
+            setTitleBySetting();
+        }
+    }
+
+    private class ResultFilterTask extends SortAndFilterBaseTask{
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -662,12 +688,18 @@ public class PortalListFragment extends Fragment {
                     ((PortalListAdapter) recyclerView.getAdapter()).dataSet);
             return null;
         }
+    }
+
+    private class SortTask extends SortAndFilterBaseTask{
 
         @Override
-        protected void onPostExecute(Void param){
-            // update UI
-            recyclerView.getAdapter().notifyDataSetChanged();
-            setTitleBySetting();
+        protected Void doInBackground(Void... params) {
+            MailProcessUtil.getInstance()
+                    .sortPortalDetails(
+                            SettingUtil.getSortOrder(),
+                            ((PortalListAdapter) recyclerView.getAdapter()).dataSet
+                    );
+            return null;
         }
     }
 
