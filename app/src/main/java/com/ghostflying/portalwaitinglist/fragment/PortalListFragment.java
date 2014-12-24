@@ -321,30 +321,32 @@ public class PortalListFragment extends Fragment {
             selectedType = v;
             new FilterTask().execute();
             drawerLayout.closeDrawer(Gravity.LEFT);
-            // change the color of action bar / status bar
-            switchActionBarColorBySetting();
         }
     };
 
     private void switchActionBarColorBySetting(){
         int actionBarBg;
         int statusBarBg;
-        switch (SettingUtil.getTypeFilterMethod()){
-            case ALL:
-                actionBarBg = R.color.type_filter_action_bar_bg_all;
-                statusBarBg = R.color.type_filter_status_bar_bg_all;
+        switch (SettingUtil.getResultFilterMethod()){
+            case EVERYTHING:
+                actionBarBg = R.color.portal_list_action_bar_bg_everything;
+                statusBarBg = R.color.portal_list_status_bar_bg_everything;
                 break;
-            case SUBMISSION:
-                actionBarBg = R.color.type_filter_action_bar_bg_submission;
-                statusBarBg = R.color.type_filter_status_bar_bg_submission;
+            case ACCEPTED:
+                actionBarBg = R.color.portal_list_action_bar_bg_accepted;
+                statusBarBg = R.color.portal_list_status_bar_bg_accepted;
                 break;
-            case EDIT:
-                actionBarBg = R.color.type_filter_action_bar_bg_edit;
-                statusBarBg = R.color.type_filter_status_bar_bg_edit;
+            case REJECTED:
+                actionBarBg = R.color.portal_list_action_bar_bg_rejected;
+                statusBarBg = R.color.portal_list_status_bar_bg_rejected;
+                break;
+            case WAITING:
+                actionBarBg = R.color.portal_list_action_bar_bg_waiting;
+                statusBarBg = R.color.portal_list_status_bar_bg_waiting;
                 break;
             default:
-                actionBarBg = R.color.type_filter_action_bar_bg_all;
-                statusBarBg = R.color.type_filter_status_bar_bg_all;
+                actionBarBg = R.color.primary;
+                statusBarBg = R.color.primary_dark;
         }
         toolbar.setBackgroundResource(actionBarBg);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -360,18 +362,15 @@ public class PortalListFragment extends Fragment {
 
     private void setTitleBySetting(){
         String title = "";
-        switch (SettingUtil.getResultFilterMethod()){
-            case EVERYTHING:
-                title = getResources().getString(R.string.everything);
+        switch (SettingUtil.getTypeFilterMethod()){
+            case ALL:
+                title = getResources().getString(R.string.navigation_drawer_all_portals);
                 break;
-            case ACCEPTED:
-                title = getResources().getString(R.string.accepted);
+            case EDIT:
+                title = getResources().getString(R.string.navigation_drawer_edit_portals);
                 break;
-            case REJECTED:
-                title = getResources().getString(R.string.rejected);
-                break;
-            case WAITING:
-                title = getResources().getString(R.string.waiting);
+            case SUBMISSION:
+                title = getResources().getString(R.string.navigation_drawer_submission_portals);
                 break;
         }
 
@@ -767,6 +766,12 @@ public class PortalListFragment extends Fragment {
                     totalPortalDetails,
                     ((PortalListAdapter) recyclerView.getAdapter()).dataSet);
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void param){
+            super.onPostExecute(param);
+            switchActionBarColorBySetting();
         }
     }
 

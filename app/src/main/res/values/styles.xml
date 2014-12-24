@@ -38,6 +38,15 @@
     <color name="portal_detail_status_bar_bg_waiting">#F57C00</color>
     <color name="portal_detail_action_bar_bg_waiting">#FF9800</color>
 
+    <color name="portal_list_status_bar_bg_accepted">#388E3C</color>
+    <color name="portal_list_action_bar_bg_accepted">#4CAF50</color>
+    <color name="portal_list_status_bar_bg_rejected">#D32F2F</color>
+    <color name="portal_list_action_bar_bg_rejected">#F44336</color>
+    <color name="portal_list_status_bar_bg_waiting">#F57C00</color>
+    <color name="portal_list_action_bar_bg_waiting">#FF9800</color>
+    <color name="portal_list_status_bar_bg_everything">@color/primary_dark</color>
+    <color name="portal_list_action_bar_bg_everything">@color/primary</color>
+
     <color name="type_filter_status_bar_bg_edit">#388E3C</color>
     <color name="type_filter_action_bar_bg_edit">#4CAF50</color>
     <color name="type_filter_status_bar_bg_submission">#F57C00</color>
