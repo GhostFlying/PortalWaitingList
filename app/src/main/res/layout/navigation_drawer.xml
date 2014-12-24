@@ -123,7 +123,7 @@
                         android:layout_height="wrap_content">
 
                         <ImageView
-                            android:src="@drawable/ic_email"
+                            android:src="@drawable/ic_submission_grey"
                             android:layout_marginLeft="@dimen/navigation_drawer_item_icon_margin_left"
                             android:layout_gravity="center_vertical"
                             android:layout_width="wrap_content"
@@ -175,7 +175,7 @@
                         android:layout_height="wrap_content">
 
                         <ImageView
-                            android:src="@drawable/ic_email"
+                            android:src="@drawable/ic_edit_grey"
                             android:layout_marginLeft="@dimen/navigation_drawer_item_icon_margin_left"
                             android:layout_gravity="center_vertical"
                             android:layout_width="wrap_content"
