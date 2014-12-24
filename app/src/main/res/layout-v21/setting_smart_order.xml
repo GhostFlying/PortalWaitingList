@@ -59,12 +59,7 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginLeft="@dimen/setting_item_separator_margin_horizon"
-        android:layout_marginRight="@dimen/setting_item_separator_margin_horizon"
-        android:background="@android:color/darker_gray"/>
+    <include layout="@layout/setting_separator"/>
 
     <!-- short time setting -->
     <LinearLayout
@@ -111,12 +106,7 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginLeft="@dimen/setting_item_separator_margin_horizon"
-        android:layout_marginRight="@dimen/setting_item_separator_margin_horizon"
-        android:background="@android:color/darker_gray"/>
+    <include layout="@layout/setting_separator"/>
 
     <!-- long time setting -->
     <LinearLayout

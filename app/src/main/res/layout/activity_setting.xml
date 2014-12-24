@@ -32,12 +32,7 @@
             <!-- other sort -->
             <include layout="@layout/setting_other_orders"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="@dimen/setting_item_separator_margin_horizon"
-                android:layout_marginRight="@dimen/setting_item_separator_margin_horizon"
-                android:background="@android:color/darker_gray"/>
+            <include layout="@layout/setting_separator"/>
 
             <!-- About -->
             <LinearLayout

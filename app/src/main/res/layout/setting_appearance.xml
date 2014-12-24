@@ -24,10 +24,10 @@
 
         <LinearLayout
             android:orientation="horizontal"
+            android:paddingTop="@dimen/setting_item_group_title_margin_vertical"
+            android:paddingBottom="@dimen/setting_item_group_title_margin_vertical"
             android:paddingLeft="@dimen/setting_item_group_title_margin_horizon"
             android:paddingRight="@dimen/setting_item_group_title_margin_horizon"
-            android:paddingTop="@dimen/setting_about_text_margin_vertical"
-            android:paddingBottom="@dimen/setting_about_text_margin_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -54,12 +54,7 @@
 
     </com.andexert.library.RippleView>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginLeft="@dimen/setting_item_separator_margin_horizon"
-        android:layout_marginRight="@dimen/setting_item_separator_margin_horizon"
-        android:background="@android:color/darker_gray"/>
+    <include layout="@layout/setting_separator"/>
 
     <com.andexert.library.RippleView
         android:id="@+id/setting_show_status_in_list_line"
@@ -71,10 +66,10 @@
 
         <LinearLayout
             android:orientation="horizontal"
+            android:paddingTop="@dimen/setting_item_group_title_margin_vertical"
+            android:paddingBottom="@dimen/setting_item_group_title_margin_vertical"
             android:paddingLeft="@dimen/setting_item_group_title_margin_horizon"
             android:paddingRight="@dimen/setting_item_group_title_margin_horizon"
-            android:paddingTop="@dimen/setting_about_text_margin_vertical"
-            android:paddingBottom="@dimen/setting_about_text_margin_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
