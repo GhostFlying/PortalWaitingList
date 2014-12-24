@@ -63,7 +63,6 @@
 
                 <ImageView
                     android:id="@+id/portal_status_in_list"
-                    android:src="@drawable/ic_waiting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>

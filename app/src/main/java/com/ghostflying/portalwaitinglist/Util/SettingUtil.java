@@ -20,6 +20,7 @@ public class SettingUtil {
     static final String IF_INVERSE_WAITING_IN_SMART_NAME = "IfInverseWaitingInSmart";
     static final String FORCE_CHINESE_NAME = "ForceChinese";
     static final String TYPE_FILTER_METHOD_NAME = "TypeFilterMethod";
+    static final String SHOW_STATUS_IN_LIST_NAME = "ShowStatusInList";
     static final String READ_FIRST_EXCEPTION = "You must read all settings first.";
     static final boolean DEFAULT_IF_SHOW_IMAGES = true;
     static final int DEFAULT_SHORT_TIME = 7;
@@ -27,6 +28,7 @@ public class SettingUtil {
     static final boolean DEFAULT_IF_INVERSE_WAITING_IN_SMART = false;
     static final boolean DEFAULT_FORCE_CHINESE = false;
     static final int DEFAULT_TYPE_FILTER_METHOD = 0;
+    static final boolean DEFAULT_SHOW_STATUS_IN_LINE = false;
     private static SharedPreferences options;
     private static ResultFilterMethod resultFilterMethod;
     private static SortOrder sortOrder;
@@ -37,6 +39,7 @@ public class SettingUtil {
     private static boolean ifInverseWaitingInSmart;
     private static boolean forceChinese;
     private static TypeFilterMethod typeFilterMethod;
+    private static boolean showStatusInList;
     private static boolean isModified = false;
 
     /**
@@ -59,6 +62,8 @@ public class SettingUtil {
             forceChinese = options.getBoolean(FORCE_CHINESE_NAME, DEFAULT_FORCE_CHINESE);
             typeFilterMethod = TypeFilterMethod.values()[
                     options.getInt(TYPE_FILTER_METHOD_NAME, DEFAULT_TYPE_FILTER_METHOD)];
+            showStatusInList = options.getBoolean(SHOW_STATUS_IN_LIST_NAME,
+                    DEFAULT_SHOW_STATUS_IN_LINE);
         }
     }
 
@@ -79,6 +84,7 @@ public class SettingUtil {
             editor.putBoolean(IF_INVERSE_WAITING_IN_SMART_NAME, ifInverseWaitingInSmart);
             editor.putBoolean(FORCE_CHINESE_NAME, forceChinese);
             editor.putInt(TYPE_FILTER_METHOD_NAME, typeFilterMethod.ordinal());
+            editor.putBoolean(SHOW_STATUS_IN_LIST_NAME, showStatusInList);
             editor.apply();
         }
     }
@@ -252,6 +258,25 @@ public class SettingUtil {
         checkRead();
         isModified = true;
         SettingUtil.typeFilterMethod = typeFilterMethod;
+    }
+
+    /**
+     * Get the setting if show status in list.
+     * @return  the setting show status in list..
+     */
+    public static boolean getShowStatusInList(){
+        checkRead();
+        return showStatusInList;
+    }
+
+    /**
+     * Set the setting show status in list.
+     * @param showStatusInList  the value to set.
+     */
+    public static void setShowStatusInList(boolean showStatusInList){
+        checkRead();
+        isModified = true;
+        SettingUtil.showStatusInList = showStatusInList;
     }
 
     /**

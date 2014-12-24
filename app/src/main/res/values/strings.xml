@@ -84,8 +84,9 @@
     <string name="setting_thank">Thank you for all your support!</string>
     <string name="setting_version">"version "</string>
     <string name="setting_default_version_name">version 0.1</string>
-    <string name="setting_image">Portal image</string>
+    <string name="setting_appearance">Appearance</string>
     <string name="setting_image_toggle">Show portal images</string>
+    <string name="setting_show_status_in_list">Show status icon of portals</string>
     <string name="setting_smart_order">Smart order settings</string>
     <string name="setting_smart_order_short_time">Days of short time</string>
     <string name="setting_other_sort">Other sort</string>

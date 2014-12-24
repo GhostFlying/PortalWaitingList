@@ -20,6 +20,7 @@ public class SettingActivity extends ActionBarActivity
     CheckBox imageToggle;
     CheckBox inverseToggle;
     CheckBox forceChineseToggle;
+    CheckBox showStatusInListToggle;
     TextView shortTimeValue;
     TextView longTimeValue;
     TextView smartOrderSortValue;
@@ -42,6 +43,12 @@ public class SettingActivity extends ActionBarActivity
         imageToggle.setChecked(SettingUtil.getIfShowImages());
         imageToggle.setOnCheckedChangeListener(onCheckedChangeListener);
         findViewById(R.id.setting_show_image_line).setOnClickListener(onClickListener);
+
+        // show status in list
+        showStatusInListToggle = (CheckBox)findViewById(R.id.setting_show_status_in_list_toggle);
+        showStatusInListToggle.setChecked(SettingUtil.getShowStatusInList());
+        showStatusInListToggle.setOnCheckedChangeListener(onCheckedChangeListener);
+        findViewById(R.id.setting_show_status_in_list_line).setOnClickListener(onClickListener);
 
         // default sort
         inverseToggle = (CheckBox)findViewById(R.id.setting_smart_order_inverse_toggle);
@@ -132,6 +139,9 @@ public class SettingActivity extends ActionBarActivity
                 case R.id.setting_force_chinese_line:
                     forceChineseToggle.setChecked(!forceChineseToggle.isChecked());
                     break;
+                case R.id.setting_show_status_in_list_line:
+                    showStatusInListToggle.setChecked(!showStatusInListToggle.isChecked());
+                    break;
             }
         }
     };
@@ -151,6 +161,10 @@ public class SettingActivity extends ActionBarActivity
                     break;
                 case R.id.setting_force_chinese_toggle:
                     SettingUtil.setForceChinese(isChecked);
+                    setNeedFilterOrSort();
+                    break;
+                case R.id.setting_show_status_in_list_toggle:
+                    SettingUtil.setShowStatusInList(isChecked);
                     setNeedFilterOrSort();
                     break;
             }

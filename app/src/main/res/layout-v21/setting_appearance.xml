@@ -5,7 +5,7 @@
               android:layout_height="wrap_content">
 
     <TextView
-        android:text="@string/setting_image"
+        android:text="@string/setting_appearance"
         android:textColor="@color/setting_item_group_title_text"
         android:layout_marginTop="@dimen/setting_item_group_title_margin_vertical"
         android:layout_marginLeft="@dimen/setting_item_group_title_margin_horizon"
@@ -41,7 +41,46 @@
             android:checked="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
     </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="@dimen/setting_item_separator_margin_horizon"
+        android:layout_marginRight="@dimen/setting_item_separator_margin_horizon"
+        android:background="@android:color/darker_gray"/>
+
+    <!-- show status in line -->
+    <LinearLayout
+        android:id="@+id/setting_show_status_in_list_line"
+        android:background="@drawable/setting_item_bg"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/setting_item_group_title_margin_horizon"
+        android:paddingRight="@dimen/setting_item_group_title_margin_horizon"
+        android:paddingTop="@dimen/setting_about_text_margin_vertical"
+        android:paddingBottom="@dimen/setting_about_text_margin_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/setting_show_status_in_list"
+            android:textSize="@dimen/setting_item_text_size"
+            android:textColor="@color/setting_item_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Space
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+
+        <CheckBox
+            android:id="@+id/setting_show_status_in_list_toggle"
+            android:checked="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
 
 </LinearLayout>

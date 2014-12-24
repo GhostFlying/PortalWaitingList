@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ghostflying.portalwaitinglist.Util.SettingUtil;
 import com.ghostflying.portalwaitinglist.data.PortalDetail;
 import com.ghostflying.portalwaitinglist.data.PortalEvent;
 
@@ -75,9 +76,15 @@ public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.Vi
             viewHolder.setEventDate(i, localeDateFormat.format(events.get(i).getDate()));
         }
         // set the status icon in title
-        viewHolder.portalStatus.setImageResource(
-                getStatusIcon(events.get(events.size() - 1).getOperationResult())
-        );
+        if (SettingUtil.getShowStatusInList()){
+            viewHolder.portalStatus.setImageResource(
+                    getStatusIcon(events.get(events.size() - 1).getOperationResult())
+            );
+            viewHolder.portalStatus.setVisibility(View.VISIBLE);
+        }
+        else {
+            viewHolder.portalStatus.setVisibility(View.GONE);
+        }
     }
 
     private String getDateDiffStr(Date date){

@@ -22,8 +22,8 @@
             android:layout_height="wrap_content">
 
 
-            <!-- image settings -->
-            <include layout="@layout/setting_image"/>
+            <!-- appearance settings -->
+            <include layout="@layout/setting_appearance"/>
 
 
             <!-- smart order  -->
