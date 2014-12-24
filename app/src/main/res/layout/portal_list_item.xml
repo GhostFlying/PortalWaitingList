@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/portal_list_last_updated_margin"
                 android:layout_marginLeft="@dimen/portal_list_name_margin"
+                android:layout_marginRight="@dimen/portal_list_name_margin"
                 android:orientation="horizontal">
 
                 <TextView
@@ -55,6 +56,16 @@
                     android:layout_height="wrap_content"
                     android:text="@string/day_ago"/>
 
+                <Space
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"/>
+
+                <ImageView
+                    android:id="@+id/portal_status_in_list"
+                    android:src="@drawable/ic_waiting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
 
