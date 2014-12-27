@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:ripple="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <TextView
+        android:text="@string/setting_appearance"
+        android:textColor="@color/setting_item_group_title_text"
+        android:layout_marginTop="@dimen/setting_item_group_title_margin_vertical"
+        android:layout_marginLeft="@dimen/setting_item_group_title_margin_horizon"
+        android:layout_marginRight="@dimen/setting_item_group_title_margin_horizon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.andexert.library.RippleView
+        android:id="@+id/setting_show_image_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ripple:rv_rippleDuration="@integer/ripple_effect_duration"
+        ripple:rv_type="rectangle"
+        ripple:rv_color="@color/ripple_material_light">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/setting_item_group_title_margin_vertical"
+            android:paddingBottom="@dimen/setting_item_group_title_margin_vertical"
+            android:paddingLeft="@dimen/setting_item_group_title_margin_horizon"
+            android:paddingRight="@dimen/setting_item_group_title_margin_horizon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/setting_image_toggle"
+                android:textSize="@dimen/setting_item_text_size"
+                android:textColor="@color/setting_item_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Space
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+
+            <CheckBox
+                android:id="@+id/setting_image_toggle"
+                android:checked="true"
+                android:clickable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </com.andexert.library.RippleView>
+
+    <include layout="@layout/setting_separator"/>
+
+    <com.andexert.library.RippleView
+        android:id="@+id/setting_show_status_in_list_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ripple:rv_rippleDuration="@integer/ripple_effect_duration"
+        ripple:rv_type="rectangle"
+        ripple:rv_color="@color/ripple_material_light">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/setting_item_group_title_margin_vertical"
+            android:paddingBottom="@dimen/setting_item_group_title_margin_vertical"
+            android:paddingLeft="@dimen/setting_item_group_title_margin_horizon"
+            android:paddingRight="@dimen/setting_item_group_title_margin_horizon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/setting_show_status_in_list"
+                android:textSize="@dimen/setting_item_text_size"
+                android:textColor="@color/setting_item_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Space
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+
+            <CheckBox
+                android:id="@+id/setting_show_status_in_list_toggle"
+                android:checked="true"
+                android:clickable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </com.andexert.library.RippleView>
+</LinearLayout>

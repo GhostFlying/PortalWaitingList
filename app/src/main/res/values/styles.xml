@@ -8,7 +8,9 @@
     </style>
 
     <style name="AppTheme" parent="AppBaseTheme">
+    </style>
 
+    <style name="AppTheme.Transparent" parent="AppTheme">
     </style>
 
     <color name="primary">#2196F3</color>
@@ -36,5 +38,35 @@
     <color name="portal_detail_status_bar_bg_waiting">#F57C00</color>
     <color name="portal_detail_action_bar_bg_waiting">#FF9800</color>
 
+    <color name="portal_list_status_bar_bg_accepted">#388E3C</color>
+    <color name="portal_list_action_bar_bg_accepted">#4CAF50</color>
+    <color name="portal_list_status_bar_bg_rejected">#D32F2F</color>
+    <color name="portal_list_action_bar_bg_rejected">#F44336</color>
+    <color name="portal_list_status_bar_bg_waiting">#F57C00</color>
+    <color name="portal_list_action_bar_bg_waiting">#FF9800</color>
+    <color name="portal_list_status_bar_bg_everything">@color/primary_dark</color>
+    <color name="portal_list_action_bar_bg_everything">@color/primary</color>
+
+    <color name="type_filter_status_bar_bg_edit">#388E3C</color>
+    <color name="type_filter_action_bar_bg_edit">#4CAF50</color>
+    <color name="type_filter_status_bar_bg_submission">#F57C00</color>
+    <color name="type_filter_action_bar_bg_submission">#FF9800</color>
+    <color name="type_filter_status_bar_bg_all">@color/primary_dark</color>
+    <color name="type_filter_action_bar_bg_all">@color/primary</color>
+
     <color name="default_background">@color/background_material_light</color>
+
+    <!-- navigation drawer -->
+    <color name="navigation_drawer_bg">@color/filter_drawer_bg</color>
+    <color name="navigation_drawer_title_bg">@color/primary</color>
+    <color name="navigation_drawer_item_text_color">#000000</color>
+    <color name="navigation_drawer_item_selected_bg">#F5F5F5</color>
+    <color name="navigation_drawer_item_bg">@color/navigation_drawer_bg</color>
+    <color name="navigation_drawer_avatar_bg_color">#F44336</color>
+
+    <!-- setting activity -->
+    <color name="setting_item_group_title_text">@color/primary</color>
+    <color name="setting_item_text">#000000</color>
+    <color name="setting_item_bg">@color/default_background</color>
+    <color name="setting_item_pressed">#9E9E9E</color>
 </resources>

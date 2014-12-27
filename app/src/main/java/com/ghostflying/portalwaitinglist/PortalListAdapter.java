@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ghostflying.portalwaitinglist.Util.SettingUtil;
 import com.ghostflying.portalwaitinglist.data.PortalDetail;
 import com.ghostflying.portalwaitinglist.data.PortalEvent;
 
@@ -74,6 +75,16 @@ public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.Vi
                     events.get(i).getOperationResult()));
             viewHolder.setEventDate(i, localeDateFormat.format(events.get(i).getDate()));
         }
+        // set the status icon in title
+        if (SettingUtil.getShowStatusInList()){
+            viewHolder.portalStatus.setImageResource(
+                    getStatusIcon(events.get(events.size() - 1).getOperationResult())
+            );
+            viewHolder.portalStatus.setVisibility(View.VISIBLE);
+        }
+        else {
+            viewHolder.portalStatus.setVisibility(View.GONE);
+        }
     }
 
     private String getDateDiffStr(Date date){
@@ -110,6 +121,27 @@ public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.Vi
         }
     }
 
+    /**
+     * Get the icon drawable resource id by operation result. The method only return accepted,
+     * rejected or waiting icon.
+     * @param operationResult   the operation result.
+     * @return  the resource id.
+     */
+    private int getStatusIcon(PortalEvent.OperationResult operationResult){
+        switch (operationResult){
+            case ACCEPTED:
+                return R.drawable.ic_accepted;
+            case REJECTED:
+                return R.drawable.ic_rejected;
+            case DUPLICATE:
+                return R.drawable.ic_rejected;
+            case PROPOSED:
+                return R.drawable.ic_waiting;
+            default:
+                return R.drawable.ic_waiting;
+        }
+    }
+
     @Override
     public int getItemCount() {
         return dataSet.size();
@@ -124,6 +156,7 @@ public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.Vi
 
         public TextView portalName;
         public TextView portalLastUpdated;
+        public ImageView portalStatus;
         public LinearLayout portalEventList;
         public ArrayList<View> portalEventItems;
 
@@ -132,6 +165,7 @@ public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.Vi
             super(itemView);
             portalName = (TextView)itemView.findViewById(R.id.portal_name);
             portalLastUpdated = (TextView)itemView.findViewById(R.id.portal_last_updated);
+            portalStatus = (ImageView)itemView.findViewById(R.id.portal_status_in_list);
             portalEventList = (LinearLayout)itemView.findViewById(R.id.portal_event_list);
             portalEventItems = new ArrayList<View>();
             addEventView(INITIAL_EVENT_NUMBER);

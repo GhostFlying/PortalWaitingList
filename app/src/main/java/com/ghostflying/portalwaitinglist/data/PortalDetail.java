@@ -1,5 +1,8 @@
 package com.ghostflying.portalwaitinglist.data;
 
+import com.ghostflying.portalwaitinglist.Util.SettingUtil;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -8,14 +11,14 @@ import java.util.Date;
  * <br>
  * The data structure of portal detail, the class used to create adapter finally.
  */
-public class PortalDetail implements Comparable<PortalDetail>{
+public class PortalDetail implements Comparable<PortalDetail>, Serializable{
     public static final int PRIORITY_REVIEWED_IN_SHORT_TIME = 4;
     public static final int PRIORITY_WAITING_FOR_REVIEW = 3;
     public static final int PRIORITY_NO_RESPONSE_FOR_LONG_TIME = 2;
     public static final int PRIORITY_REVIEWED_BEFORE_SHORT_TIME = 1;
 
-    private static final long SHORT_TIME_THRESHOLD_IN_MILLISECONDS = 3600L * 24 * 7 * 1000;
-    private static final long LONG_TIME_NO_RESPONSE_THRESHOLD_IN_MILLISECONDS = 3600L * 24 * 1000 * 365;
+    private static final long ONE_DAY_TIME_IN_MILLISECONDS = 24 * 3600 * 1000;
+    private static final long DEFAULT_EARLY_TIME_TIME_STAMP = 805176000;
     private String name;
     private ArrayList<PortalEvent> events;
 
@@ -102,6 +105,19 @@ public class PortalDetail implements Comparable<PortalDetail>{
     }
 
     /**
+     * Get the last proposed event's date of this portal.
+     * @return  the newest proposed event' update date, if there are no proposed event,
+     *           return default date.
+     */
+    public Date getLastProposedUpdated(){
+        for (int i = events.size() - 1; i >= 0; i--){
+            if (events.get(i).getOperationResult() == PortalEvent.OperationResult.PROPOSED)
+                return events.get(i).getDate();
+        }
+        return new Date(DEFAULT_EARLY_TIME_TIME_STAMP);
+    }
+
+    /**
      * Check if the portal edit/submit reviewed by NIA.
      * @return true if it is reviewed, otherwise false.
      */
@@ -116,7 +132,7 @@ public class PortalDetail implements Comparable<PortalDetail>{
     public boolean isNoResponseForLongTime(){
         if ((!isReviewed())
                 && (new Date().getTime() - getLastUpdated().getTime()) >
-                LONG_TIME_NO_RESPONSE_THRESHOLD_IN_MILLISECONDS )
+                ONE_DAY_TIME_IN_MILLISECONDS * SettingUtil.getLongTime())
             return true;
         else
             return false;
@@ -140,7 +156,7 @@ public class PortalDetail implements Comparable<PortalDetail>{
 
     private boolean isUpdatedInShortTime(){
         return (new Date().getTime() - getLastUpdated().getTime()) <
-                SHORT_TIME_THRESHOLD_IN_MILLISECONDS;
+                ONE_DAY_TIME_IN_MILLISECONDS * SettingUtil.getShortTime();
     }
 
     /**
@@ -186,5 +202,30 @@ public class PortalDetail implements Comparable<PortalDetail>{
     public boolean isRejected(){
         return events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.REJECTED
                 || events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.DUPLICATE;
+    }
+
+    /**
+     * Check if the portal has submission event.
+     * @return  true if there is one submission event at least, otherwise false.
+     */
+    public boolean hasSubmission(){
+        for (PortalEvent event : events){
+            if (event.getOperationType() == PortalEvent.OperationType.SUBMISSION)
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if the portal has edit/invalid event.
+     * @return  true if there is one edit/invalid event at least, otherwise false.
+     */
+    public boolean hasEdit(){
+        for (PortalEvent event : events){
+            if (event.getOperationType() == PortalEvent.OperationType.EDIT
+                    || event.getOperationType() == PortalEvent.OperationType.INVALID)
+                return true;
+        }
+        return false;
     }
 }

@@ -1,7 +1,6 @@
 package com.ghostflying.portalwaitinglist.fragment;
 
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,12 +23,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ghostflying.portalwaitinglist.R;
+import com.ghostflying.portalwaitinglist.Util.SettingUtil;
 import com.ghostflying.portalwaitinglist.data.PortalDetail;
 import com.ghostflying.portalwaitinglist.data.PortalEvent;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -39,12 +40,17 @@ import java.util.Date;
  * create an instance of this fragment.
  */
 public class PortalDetailFragment extends Fragment {
-    private OnFragmentInteractionListener mListener;
+    static final String ARG_CLICKED_PORTAL_NAME = "clickedPortal";
+
     DateFormat localDateFormat;
     Toolbar toolbar;
+    PortalDetail clickedPortal;
 
-    public static PortalDetailFragment newInstance() {
+    public static PortalDetailFragment newInstance(Serializable clickedPortal) {
         PortalDetailFragment fragment = new PortalDetailFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CLICKED_PORTAL_NAME, clickedPortal);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -53,19 +59,9 @@ public class PortalDetailFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        clickedPortal = (PortalDetail)getArguments().getSerializable(ARG_CLICKED_PORTAL_NAME);
     }
 
     @Override
@@ -73,7 +69,6 @@ public class PortalDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_portal_detail, container, false);
-        final PortalDetail clickedPortal = mListener.getSelectedPortal();
         localDateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
 
         setToolbar(view, clickedPortal);
@@ -103,11 +98,12 @@ public class PortalDetailFragment extends Fragment {
         addEventViews(clickedPortal, (LinearLayout)view.findViewById(R.id.event_list_in_detail));
 
         String imageUrl = clickedPortal.getImageUrl();
-        if (imageUrl != null && imageUrl.startsWith("http")){
+        if (SettingUtil.getIfShowImages() && imageUrl != null && imageUrl.startsWith("http")){
             // download and show the image of portal
             Picasso.with(getActivity())
                     .load(imageUrl.replaceFirst("http://", "https://"))
                     .error(R.drawable.network_error)
+                    .resizeDimen(R.dimen.portal_detail_image_width, R.dimen.portal_detail_image_height)
                     .into((ImageView)view.findViewById(R.id.portal_image_in_detail));
         }
         else {
@@ -140,8 +136,9 @@ public class PortalDetailFragment extends Fragment {
         }
 
         toolbar.setBackgroundColor(actionBarBg);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             getActivity().getWindow().setStatusBarColor(statusBarBg);
+        }
     }
 
     private void setToolbar(View v, PortalDetail portalDetail){
@@ -162,11 +159,7 @@ public class PortalDetailFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == android.R.id.home){
-            mListener.onUpButtonClicked();
-            return true;
-        }
-        else if (id == R.id.menu_item_share){
+        if (id == R.id.menu_item_share){
             new ShareTask().execute();
             return true;
         }
@@ -222,8 +215,9 @@ public class PortalDetailFragment extends Fragment {
         v.draw(c);
 
         // restore the view
-        v.measure(specWidth, originHeight);
-        v.layout(0, 0, originWidth, originHeight);
+        specHeight = View.MeasureSpec.makeMeasureSpec(originHeight, View.MeasureSpec.EXACTLY);
+        v.measure(specWidth, specHeight);
+        v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
         return b;
     }
 
@@ -284,11 +278,6 @@ public class PortalDetailFragment extends Fragment {
         long diff = new Date().getTime() - date.getTime();
         int dayDiff = Math.round(diff / 1000 / 3600 / 24);
         return Integer.toString(dayDiff);
-    }
-
-    public interface OnFragmentInteractionListener {
-        public PortalDetail getSelectedPortal();
-        public void onUpButtonClicked();
     }
 
     public class ShareTask extends AsyncTask<Void, Void, Void>{

@@ -1,5 +1,6 @@
 package com.ghostflying.portalwaitinglist.data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Date;
  * <br>
  * The data structure of each event of portal.
  */
-public abstract class PortalEvent implements Comparable<PortalEvent>{
+public abstract class PortalEvent implements Comparable<PortalEvent>, Serializable{
     String portalName;
     OperationResult operationResult;
     Date date;

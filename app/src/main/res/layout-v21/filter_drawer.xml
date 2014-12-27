@@ -253,9 +253,9 @@
                 android:layout_height="0.5dp"
                 android:background="@android:color/darker_gray"/>
 
-
+            <!-- last date asc order -->
             <LinearLayout
-                android:id="@+id/item_asc_order"
+                android:id="@+id/item_last_asc_order"
                 android:background="@drawable/ripple_drawable"
                 android:padding="@dimen/filter_drawer_title_margin"
                 android:clickable="true"
@@ -272,7 +272,7 @@
                 <TextView
                     android:clickable="false"
                     android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
-                    android:text="@string/asc_order"
+                    android:text="@string/last_asc_order"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/filter_drawer_item_text_color"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -289,9 +289,45 @@
                 android:background="@android:color/darker_gray"/>
 
 
-
+            <!-- proposed date asc order -->
             <LinearLayout
-                android:id="@+id/item_desc_order"
+                android:id="@+id/item_proposed_asc_order"
+                android:background="@drawable/ripple_drawable"
+                android:padding="@dimen/filter_drawer_title_margin"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:clickable="false"
+                    android:src = "@drawable/ic_asc"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+
+                <TextView
+                    android:clickable="false"
+                    android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
+                    android:text="@string/proposed_asc_order"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/filter_drawer_item_text_color"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+
+            <View
+                android:layout_marginLeft="@dimen/filter_drawer_item_item_divider_margin_left"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/darker_gray"/>
+
+
+            <!-- last date desc order -->
+            <LinearLayout
+                android:id="@+id/item_last_desc_order"
                 android:background="@drawable/ripple_drawable"
                 android:padding="@dimen/filter_drawer_title_margin"
                 android:clickable="true"
@@ -308,7 +344,73 @@
                 <TextView
                     android:clickable="false"
                     android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
-                    android:text="@string/desc_order"
+                    android:text="@string/last_desc_order"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/filter_drawer_item_text_color"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/darker_gray"/>
+
+            <!-- proposed date desc order -->
+            <LinearLayout
+                android:id="@+id/item_proposed_desc_order"
+                android:background="@drawable/ripple_drawable"
+                android:padding="@dimen/filter_drawer_title_margin"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:clickable="false"
+                    android:src = "@drawable/ic_desc"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+
+                <TextView
+                    android:clickable="false"
+                    android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
+                    android:text="@string/proposed_desc_order"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/filter_drawer_item_text_color"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/darker_gray"/>
+
+            <!-- alphabetical order -->
+            <LinearLayout
+                android:id="@+id/item_alphabetical_order"
+                android:background="@drawable/ripple_drawable"
+                android:padding="@dimen/filter_drawer_title_margin"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:clickable="false"
+                    android:src = "@drawable/ic_alphabet_order"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+
+                <TextView
+                    android:clickable="false"
+                    android:layout_marginLeft="@dimen/filter_drawer_item_text_margin_left"
+                    android:text="@string/alphabetical_order"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/filter_drawer_item_text_color"
                     android:textAppearance="?android:attr/textAppearanceMedium"
