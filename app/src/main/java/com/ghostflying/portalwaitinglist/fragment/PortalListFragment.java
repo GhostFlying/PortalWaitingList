@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -40,6 +41,7 @@ import com.ghostflying.portalwaitinglist.R;
 import com.ghostflying.portalwaitinglist.SettingActivity;
 import com.ghostflying.portalwaitinglist.Util.GMailServiceUtil;
 import com.ghostflying.portalwaitinglist.Util.MailProcessUtil;
+import com.ghostflying.portalwaitinglist.Util.SearchUtil;
 import com.ghostflying.portalwaitinglist.Util.SettingUtil;
 import com.ghostflying.portalwaitinglist.data.EditEvent;
 import com.ghostflying.portalwaitinglist.data.Message;
@@ -78,6 +80,7 @@ public class PortalListFragment extends Fragment {
     TextView totalSubmission;
     TextView totalEdit;
     View selectedType;
+    SearchTask searchTask;
     boolean isInitialed = false;
 
     public static PortalListFragment newInstance() {
@@ -123,7 +126,38 @@ public class PortalListFragment extends Fragment {
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-        super.onCreateOptionsMenu(menu,inflater);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                new SearchTask().execute(newText);
+                return true;
+            }
+
+        });
+        // setOnCloseListener does not work
+        // see http://developer.android.com/guide/topics/ui/actionbar.html#ActionView
+        // see also http://stackoverflow.com/a/18186164/3875363
+        MenuItemCompat.setOnActionExpandListener(
+                menu.findItem(R.id.action_search),
+                new MenuItemCompat.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem item) {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem item) {
+                        new FilterTask().execute();
+                        return true;
+                    }
+                }
+        );
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -794,6 +828,39 @@ public class PortalListFragment extends Fragment {
                             ((PortalListAdapter) recyclerView.getAdapter()).dataSet
                     );
             return null;
+        }
+    }
+
+    private class SearchTask extends AsyncTask<String, Void, Void>{
+
+        @Override
+        protected void onPreExecute (){
+            if (searchTask != null){
+                searchTask.cancel(true);
+            }
+            searchTask = this;
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            SearchUtil.searchByPortalName(
+                    totalPortalDetails,
+                    ((PortalListAdapter)recyclerView.getAdapter()).dataSet,
+                    params[0]
+            );
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void param){
+            super.onPostExecute(param);
+            recyclerView.getAdapter().notifyDataSetChanged();
+            searchTask = null;
+        }
+
+        @Override
+        protected void onCancelled(Void result){
+            searchTask = null;
         }
     }
 
