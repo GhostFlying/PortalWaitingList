@@ -49,7 +49,7 @@
     <string name="last_update_in_detail">Last update</string>
     <string name="status">Status</string>
     <string name="default_status">Default status</string>
-    <string name="portal_address">Address</string>
+    <string name="portal_address">Address(click to view on intel)</string>
     <string name="default_portal_address">N/A</string>
     <string name="default_operation_result">Default operation result</string>
     <string name="default_operation_type">Default operation type</string>
