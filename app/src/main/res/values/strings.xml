@@ -114,4 +114,8 @@
     <string name="days_picker_fragment_days">Days</string>
     <string name="title_activity_detail">DetailActivity</string>
 
+    <!-- Search -->
+    <string name="search_hint">Portal name</string>
+    <string name="action_search">search</string>
+
 </resources>
