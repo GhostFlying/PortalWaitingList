@@ -1,4 +1,4 @@
-package com.ghostflying.portalwaitinglist.Util;
+package com.ghostflying.portalwaitinglist.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -87,7 +87,7 @@ public class RegexUtil {
     }
 
     /**
-     * Get the last match str, must be called after {@link com.ghostflying.portalwaitinglist.Util.RegexUtil#isFound(int, String)}
+     * Get the last match str, must be called after {@link com.ghostflying.portalwaitinglist.util.RegexUtil#isFound(int, String)}
      * @return  the matched str.
      */
     public String getMatchedStr(){

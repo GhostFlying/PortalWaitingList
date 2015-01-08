@@ -1,4 +1,4 @@
-package com.ghostflying.portalwaitinglist;
+package com.ghostflying.portalwaitinglist.recyclerviewHelper;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,9 +8,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ghostflying.portalwaitinglist.Util.SettingUtil;
-import com.ghostflying.portalwaitinglist.data.PortalDetail;
-import com.ghostflying.portalwaitinglist.data.PortalEvent;
+import com.ghostflying.portalwaitinglist.R;
+import com.ghostflying.portalwaitinglist.model.PortalDetail;
+import com.ghostflying.portalwaitinglist.model.PortalEvent;
+import com.ghostflying.portalwaitinglist.util.SettingUtil;
 
 import java.text.DateFormat;
 import java.util.ArrayList;

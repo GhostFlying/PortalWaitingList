@@ -1,12 +1,12 @@
-package com.ghostflying.portalwaitinglist.Util;
+package com.ghostflying.portalwaitinglist.util;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.ghostflying.portalwaitinglist.PortalEventContract;
 import com.ghostflying.portalwaitinglist.PortalEventDbHelper;
-import com.ghostflying.portalwaitinglist.data.Message;
-import com.ghostflying.portalwaitinglist.data.MessageList;
+import com.ghostflying.portalwaitinglist.model.Message;
+import com.ghostflying.portalwaitinglist.model.MessageList;
 import com.google.gson.Gson;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.MultipartBuilder;

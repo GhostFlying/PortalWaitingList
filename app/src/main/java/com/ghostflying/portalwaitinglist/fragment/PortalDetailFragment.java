@@ -23,9 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ghostflying.portalwaitinglist.R;
-import com.ghostflying.portalwaitinglist.Util.SettingUtil;
-import com.ghostflying.portalwaitinglist.data.PortalDetail;
-import com.ghostflying.portalwaitinglist.data.PortalEvent;
+import com.ghostflying.portalwaitinglist.model.PortalDetail;
+import com.ghostflying.portalwaitinglist.model.PortalEvent;
+import com.ghostflying.portalwaitinglist.util.SettingUtil;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;

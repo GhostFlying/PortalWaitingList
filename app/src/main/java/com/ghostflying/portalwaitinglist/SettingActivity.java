@@ -9,9 +9,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.ghostflying.portalwaitinglist.Util.SettingUtil;
 import com.ghostflying.portalwaitinglist.fragment.BaseAlertDialogFragment;
 import com.ghostflying.portalwaitinglist.fragment.DaysPickerDialogFragment;
+import com.ghostflying.portalwaitinglist.util.SettingUtil;
 
 
 public class SettingActivity extends ActionBarActivity

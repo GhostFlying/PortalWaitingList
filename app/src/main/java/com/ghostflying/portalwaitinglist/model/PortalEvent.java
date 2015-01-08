@@ -1,4 +1,4 @@
-package com.ghostflying.portalwaitinglist.data;
+package com.ghostflying.portalwaitinglist.model;
 
 import java.io.Serializable;
 import java.util.Date;

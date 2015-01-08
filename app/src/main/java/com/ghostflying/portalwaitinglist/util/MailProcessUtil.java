@@ -1,13 +1,13 @@
-package com.ghostflying.portalwaitinglist.Util;
+package com.ghostflying.portalwaitinglist.util;
 
 import android.util.Base64;
 
-import com.ghostflying.portalwaitinglist.data.EditEvent;
-import com.ghostflying.portalwaitinglist.data.InvalidEvent;
-import com.ghostflying.portalwaitinglist.data.Message;
-import com.ghostflying.portalwaitinglist.data.PortalDetail;
-import com.ghostflying.portalwaitinglist.data.PortalEvent;
-import com.ghostflying.portalwaitinglist.data.SubmissionEvent;
+import com.ghostflying.portalwaitinglist.model.EditEvent;
+import com.ghostflying.portalwaitinglist.model.InvalidEvent;
+import com.ghostflying.portalwaitinglist.model.Message;
+import com.ghostflying.portalwaitinglist.model.PortalDetail;
+import com.ghostflying.portalwaitinglist.model.PortalEvent;
+import com.ghostflying.portalwaitinglist.model.SubmissionEvent;
 
 import java.text.Collator;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.ghostflying.portalwaitinglist.Util;
+package com.ghostflying.portalwaitinglist.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

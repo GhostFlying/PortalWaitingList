@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
-import com.ghostflying.portalwaitinglist.Util.SettingUtil;
-import com.ghostflying.portalwaitinglist.data.PortalDetail;
 import com.ghostflying.portalwaitinglist.fragment.PortalListFragment;
+import com.ghostflying.portalwaitinglist.model.PortalDetail;
+import com.ghostflying.portalwaitinglist.util.SettingUtil;
 
 
 public class MainActivity extends ActionBarActivity

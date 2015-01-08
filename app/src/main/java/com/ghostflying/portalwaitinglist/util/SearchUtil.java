@@ -1,6 +1,6 @@
-package com.ghostflying.portalwaitinglist.Util;
+package com.ghostflying.portalwaitinglist.util;
 
-import com.ghostflying.portalwaitinglist.data.PortalDetail;
+import com.ghostflying.portalwaitinglist.model.PortalDetail;
 
 import java.util.ArrayList;
 

@@ -1,7 +1,7 @@
-package com.ghostflying.portalwaitinglist.Util;
+package com.ghostflying.portalwaitinglist.util;
 
-import com.ghostflying.portalwaitinglist.data.Message;
-import com.ghostflying.portalwaitinglist.data.MessageList;
+import com.ghostflying.portalwaitinglist.model.Message;
+import com.ghostflying.portalwaitinglist.model.MessageList;
 
 import retrofit.http.GET;
 import retrofit.http.Path;
