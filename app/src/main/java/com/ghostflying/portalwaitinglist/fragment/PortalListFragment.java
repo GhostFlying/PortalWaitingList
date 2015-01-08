@@ -269,6 +269,7 @@ public class PortalListFragment extends Fragment {
                 case R.id.navigation_item_setting:
                     Intent setting = new Intent(getActivity(), SettingActivity.class);
                     startActivityForResult(setting, SettingActivity.REQUEST_SETTING);
+                    getActivity().overridePendingTransition(R.animator.setting_swap_in_bottom, R.animator.setting_swap_out_bottom);
                     break;
                 case R.id.navigation_item_feedback:
                     Intent mailIntent = new Intent(
