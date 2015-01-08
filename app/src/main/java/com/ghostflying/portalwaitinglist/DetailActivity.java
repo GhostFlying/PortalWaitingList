@@ -3,7 +3,7 @@ package com.ghostflying.portalwaitinglist;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
-import com.ghostflying.portalwaitinglist.fragment.PortalDetailFragment;
+import com.ghostflying.portalwaitinglist.fragment.ReDesignDetailFragment;
 
 import java.io.Serializable;
 
@@ -19,7 +19,7 @@ public class DetailActivity extends ActionBarActivity {
         Serializable clickPortal = getIntent().getSerializableExtra(ARG_CLICKED_PORTAL);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, PortalDetailFragment.newInstance(clickPortal))
+                    .add(R.id.container, ReDesignDetailFragment.newInstance(clickPortal))
                     .commit();
         }
     }
