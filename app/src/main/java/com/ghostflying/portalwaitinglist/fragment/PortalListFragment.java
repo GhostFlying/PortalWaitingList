@@ -41,7 +41,6 @@ import com.ghostflying.portalwaitinglist.model.Message;
 import com.ghostflying.portalwaitinglist.model.PortalDetail;
 import com.ghostflying.portalwaitinglist.model.PortalEvent;
 import com.ghostflying.portalwaitinglist.model.SubmissionEvent;
-import com.ghostflying.portalwaitinglist.recyclerviewHelper.BaseItemAnimator;
 import com.ghostflying.portalwaitinglist.recyclerviewHelper.PortalListAdapter;
 import com.ghostflying.portalwaitinglist.util.GMailServiceUtil;
 import com.ghostflying.portalwaitinglist.util.MailProcessUtil;
@@ -467,7 +466,6 @@ public class PortalListFragment extends Fragment {
             }
         });
         recyclerView.setAdapter(adapter);
-        recyclerView.setItemAnimator(new BaseItemAnimator());
     }
 
 
