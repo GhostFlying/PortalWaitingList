@@ -67,4 +67,7 @@
     <!-- Days Picker Fragment -->
     <dimen name="days_picker_text_margin_left">10dp</dimen>
 
+    <!-- Redesign detail activity -->
+    <dimen name="portal_detail_max_header_elevation">4dp</dimen>
+
 </resources>
