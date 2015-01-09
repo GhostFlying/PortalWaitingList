@@ -2,6 +2,7 @@ package com.ghostflying.portalwaitinglist.fragment;
 
 
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ghostflying.portalwaitinglist.ObservableScrollView;
 import com.ghostflying.portalwaitinglist.R;
@@ -28,6 +30,8 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
     View mPhotoViewContainer;
     View mHeaderBox;
     View mDetailsContainer;
+    TextView mPortalName;
+    TextView mPortalStatus;
     Toolbar mToolbar;
     private int mPhotoHeightPixels;
     private int mHeaderHeightPixels;
@@ -61,22 +65,42 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_re_design_detail, container, false);
         mToolbar = (Toolbar)view.findViewById(R.id.detail_toolbar);
+        mToolbar.setTitle("");
         ((ActionBarActivity)getActivity()).setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_up);
+        // remove the elevation to make header unify
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            mToolbar.setElevation(0);
         mScrollView = (ObservableScrollView)view.findViewById(R.id.scroll_view);
         mScrollView.addCallbacks(this);
         mHeaderBox = view.findViewById(R.id.header_portal);
         mPhotoView = (ImageView)view.findViewById(R.id.portal_photo);
-        mHasPhoto = true;
         mPhotoViewContainer = view.findViewById(R.id.portal_photo_container);
         mDetailsContainer = view.findViewById(R.id.detail_container);
+        mPortalName = (TextView)view.findViewById(R.id.portal_name);
+        mPortalStatus = (TextView)view.findViewById(R.id.portal_status_in_detail);
+        mPortalName.setText(clickedPortal.getName());
+        mPortalStatus.setText(getStatusTextResource(clickedPortal));
         mMaxHeaderElevation = getResources().getDimensionPixelSize(
                 R.dimen.portal_detail_max_header_elevation);
+        mHasPhoto = true;
+        setStatusAndActionBarBg(clickedPortal);
         ViewTreeObserver vto = mScrollView.getViewTreeObserver();
         if (vto.isAlive()) {
             vto.addOnGlobalLayoutListener(mGlobalLayoutListener);
         }
         return view;
+    }
+
+    private int getStatusTextResource(PortalDetail portalDetail){
+        if (!portalDetail.isReviewed())
+            return R.string.waiting;
+        else if (portalDetail.isAccepted())
+            return R.string.accept;
+        else if (portalDetail.isRejected())
+            return R.string.rejected;
+        else
+            return R.string.default_status;
     }
 
     private ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener
@@ -135,6 +159,29 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
         }
 
         onScrollChanged(0, 0); // trigger scroll handling
+    }
+
+    private void setStatusAndActionBarBg(PortalDetail portal){
+        int actionBarBg;
+        int statusBarBg;
+        if (portal.isAccepted()){
+            actionBarBg = getResources().getColor(R.color.portal_detail_action_bar_bg_accepted);
+            statusBarBg = getResources().getColor(R.color.portal_detail_status_bar_bg_accepted);
+        }
+        else if (portal.isRejected()){
+            actionBarBg = getResources().getColor(R.color.portal_detail_action_bar_bg_rejected);
+            statusBarBg = getResources().getColor(R.color.portal_detail_status_bar_bg_rejected);
+        }
+        else {
+            actionBarBg = getResources().getColor(R.color.portal_detail_action_bar_bg_waiting);
+            statusBarBg = getResources().getColor(R.color.portal_detail_status_bar_bg_waiting);
+        }
+
+        mToolbar.setBackgroundColor(actionBarBg);
+        mHeaderBox.setBackgroundColor(actionBarBg);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            getActivity().getWindow().setStatusBarColor(statusBarBg);
+        }
     }
 
     @Override

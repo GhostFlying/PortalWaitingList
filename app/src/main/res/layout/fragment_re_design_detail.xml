@@ -34,22 +34,29 @@
             android:orientation="vertical"
             android:paddingBottom="16dp">
 
-            <include android:id="@+id/detail_toolbar" layout="@layout/toolbar" />
+            <include android:id="@+id/detail_toolbar"
+                     layout="@layout/toolbar" />
 
             <!-- Session title -->
             <TextView android:layout_height="wrap_content"
                       android:layout_width="match_parent"
                       android:layout_marginBottom="0dp"
-                      android:id="@+id/session_title"
+                      android:layout_marginLeft="@dimen/portal_detail_keyline_2"
+                      android:layout_marginRight="@dimen/portal_detail_keyline_1"
+                      android:textAppearance="?android:attr/textAppearanceLargeInverse"
+                      android:id="@+id/portal_name"
                       android:text="title"
-                      android:maxLines="4"
+                      android:maxLines="2"
                       android:ellipsize="end"
                       android:lineSpacingMultiplier="1.1"/>
 
             <!-- Session subtitle -->
             <TextView android:layout_height="wrap_content"
                       android:layout_width="match_parent"
-                      android:id="@+id/session_subtitle"
+                      android:layout_marginLeft="@dimen/portal_detail_keyline_2"
+                      android:layout_marginRight="@dimen/portal_detail_keyline_1"
+                      android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                      android:id="@+id/portal_status_in_detail"
                       android:text="subtext"
                       android:maxLines="2"
                       android:ellipsize="end"

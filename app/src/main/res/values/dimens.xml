@@ -69,5 +69,7 @@
 
     <!-- Redesign detail activity -->
     <dimen name="portal_detail_max_header_elevation">4dp</dimen>
+    <dimen name="portal_detail_keyline_1">16dp</dimen>
+    <dimen name="portal_detail_keyline_2">72dp</dimen>
 
 </resources>
