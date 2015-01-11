@@ -115,7 +115,7 @@ public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.Vi
                     case SUBMISSION:
                         return R.drawable.ic_proposed;
                     case INVALID:
-                        return R.drawable.ic_proposed;
+                        return R.drawable.ic_edit;
                 }
             default:
                 return R.drawable.ic_proposed;
