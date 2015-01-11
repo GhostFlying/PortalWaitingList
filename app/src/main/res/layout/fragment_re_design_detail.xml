@@ -71,6 +71,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <FrameLayout
+                android:id="@+id/portal_address_view_in_detail"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/portal_detail_event_padding_vertical"
+                android:paddingBottom="@dimen/portal_detail_event_padding_vertical"
+                android:paddingRight="@dimen/portal_detail_keyline_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@drawable/ic_launcher"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/portal_detail_keyline_1"
+                    android:layout_width="@dimen/portal_detail_icon_size"
+                    android:layout_height="@dimen/portal_detail_icon_size"/>
+
+                <TextView
+                    android:id="@+id/portal_address_in_detail"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/portal_detail_keyline_2"
+                    android:text="@string/default_portal_address"
+                    android:textColor="@android:color/black"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/portal_event_list"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </FrameLayout>

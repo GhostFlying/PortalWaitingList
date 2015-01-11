@@ -36,6 +36,7 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
     TextView mPortalName;
     TextView mPortalSummary;
     Toolbar mToolbar;
+    View mPortalEventListContainer;
     private DateFormat localDateFormat;
     private int mPhotoHeightPixels;
     private int mHeaderHeightPixels;
@@ -92,9 +93,18 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
         mMaxHeaderElevation = getResources().getDimensionPixelSize(
                 R.dimen.portal_detail_max_header_elevation);
 
-        // events
+        // details
         mDetailsContainer = view.findViewById(R.id.detail_container);
-        addEventViews(clickedPortal, (ViewGroup)mDetailsContainer);
+        String address = clickedPortal.getAddress();
+        if (address != null){
+            ((TextView)view.findViewById(R.id.portal_address_in_detail))
+                    .setText(address);
+        }
+        else {
+            view.findViewById(R.id.portal_address_view_in_detail).setVisibility(View.GONE);
+        }
+        mPortalEventListContainer = view.findViewById(R.id.portal_event_list);
+        addEventViews(clickedPortal, (ViewGroup)mPortalEventListContainer);
 
         mHasPhoto = true;
 
