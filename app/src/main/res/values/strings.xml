@@ -118,4 +118,8 @@
     <string name="search_hint">Portal name</string>
     <string name="action_search">search</string>
 
+
+    <!-- Redesign detail activity-->
+    <string name="date_for">" for "</string>
+    <string name="days">day(s)</string>
 </resources>

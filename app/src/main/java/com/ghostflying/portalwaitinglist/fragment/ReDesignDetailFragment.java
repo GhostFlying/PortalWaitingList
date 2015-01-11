@@ -19,6 +19,7 @@ import com.ghostflying.portalwaitinglist.R;
 import com.ghostflying.portalwaitinglist.model.PortalDetail;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 public class ReDesignDetailFragment extends Fragment implements ObservableScrollView.Callbacks {
@@ -31,7 +32,7 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
     View mHeaderBox;
     View mDetailsContainer;
     TextView mPortalName;
-    TextView mPortalStatus;
+    TextView mPortalSummary;
     Toolbar mToolbar;
     private int mPhotoHeightPixels;
     private int mHeaderHeightPixels;
@@ -64,6 +65,8 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_re_design_detail, container, false);
+
+        // toolbar
         mToolbar = (Toolbar)view.findViewById(R.id.detail_toolbar);
         mToolbar.setTitle("");
         ((ActionBarActivity)getActivity()).setSupportActionBar(mToolbar);
@@ -73,18 +76,25 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
             mToolbar.setElevation(0);
         mScrollView = (ObservableScrollView)view.findViewById(R.id.scroll_view);
         mScrollView.addCallbacks(this);
+
+        // Header
         mHeaderBox = view.findViewById(R.id.header_portal);
         mPhotoView = (ImageView)view.findViewById(R.id.portal_photo);
         mPhotoViewContainer = view.findViewById(R.id.portal_photo_container);
-        mDetailsContainer = view.findViewById(R.id.detail_container);
         mPortalName = (TextView)view.findViewById(R.id.portal_name);
-        mPortalStatus = (TextView)view.findViewById(R.id.portal_status_in_detail);
+        mPortalSummary = (TextView)view.findViewById(R.id.portal_status_in_detail);
         mPortalName.setText(clickedPortal.getName());
-        mPortalStatus.setText(getStatusTextResource(clickedPortal));
+        mPortalSummary.setText(getSummaryText(clickedPortal));
         mMaxHeaderElevation = getResources().getDimensionPixelSize(
                 R.dimen.portal_detail_max_header_elevation);
+
+        mDetailsContainer = view.findViewById(R.id.detail_container);
         mHasPhoto = true;
+
+        // set color
         setStatusAndActionBarBg(clickedPortal);
+
+        // set observer for views
         ViewTreeObserver vto = mScrollView.getViewTreeObserver();
         if (vto.isAlive()) {
             vto.addOnGlobalLayoutListener(mGlobalLayoutListener);
@@ -92,15 +102,30 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
         return view;
     }
 
-    private int getStatusTextResource(PortalDetail portalDetail){
-        if (!portalDetail.isReviewed())
-            return R.string.waiting;
-        else if (portalDetail.isAccepted())
-            return R.string.accept;
-        else if (portalDetail.isRejected())
-            return R.string.rejected;
+    private String getSummaryText(PortalDetail portalDetail){
+        // return the summary text for portals
+        // if portal is still waiting, the text is like Waiting for xxx days.
+        // if portal is accepted/rejected, the text is like Accepted/Rejected xxx days ago.
+        if (!portalDetail.isReviewed()){
+            return getString(R.string.waiting) + getString(R.string.date_for) +
+                    getDateDiffStr(portalDetail.getLastUpdated()) + getString(R.string.days);
+        }
+        else if (portalDetail.isAccepted()){
+            return getString(R.string.accepted) + " " +
+                    getDateDiffStr(portalDetail.getLastUpdated()) + " " + getString(R.string.day_ago);
+        }
+        else if (portalDetail.isRejected()){
+            return getString(R.string.rejected) + " " +
+                getDateDiffStr(portalDetail.getLastUpdated()) + " " + getString(R.string.day_ago);
+        }
         else
-            return R.string.default_status;
+            return getString(R.string.default_status);
+    }
+
+    private String getDateDiffStr(Date date){
+        long diff = new Date().getTime() - date.getTime();
+        int dayDiff = Math.round(diff / 1000 / 3600 / 24);
+        return Integer.toString(dayDiff);
     }
 
     private ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener
