@@ -17,8 +17,10 @@ import android.widget.TextView;
 import com.ghostflying.portalwaitinglist.ObservableScrollView;
 import com.ghostflying.portalwaitinglist.R;
 import com.ghostflying.portalwaitinglist.model.PortalDetail;
+import com.ghostflying.portalwaitinglist.model.PortalEvent;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.Date;
 
 
@@ -34,6 +36,7 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
     TextView mPortalName;
     TextView mPortalSummary;
     Toolbar mToolbar;
+    private DateFormat localDateFormat;
     private int mPhotoHeightPixels;
     private int mHeaderHeightPixels;
     private boolean mHasPhoto;
@@ -55,6 +58,7 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        localDateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
         if (getArguments() != null) {
             clickedPortal = (PortalDetail)getArguments().getSerializable(ARG_CLICKED_PORTAL_NAME);
         }
@@ -88,7 +92,10 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
         mMaxHeaderElevation = getResources().getDimensionPixelSize(
                 R.dimen.portal_detail_max_header_elevation);
 
+        // events
         mDetailsContainer = view.findViewById(R.id.detail_container);
+        addEventViews(clickedPortal, (ViewGroup)mDetailsContainer);
+
         mHasPhoto = true;
 
         // set color
@@ -100,6 +107,63 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
             vto.addOnGlobalLayoutListener(mGlobalLayoutListener);
         }
         return view;
+    }
+
+    private void addEventViews(PortalDetail portalDetail, ViewGroup container){
+        LayoutInflater inflater = LayoutInflater.from(container.getContext());
+        for (PortalEvent event : portalDetail.getEvents()){
+            View view = inflater.inflate(R.layout.portal_event_in_re_design_detail,
+                    container, false);
+            ((ImageView)view.findViewById(R.id.event_result)).setImageResource(
+                    getEventResultIconResource(event.getOperationResult())
+            );
+            ((TextView)view.findViewById(R.id.event_description)).setText(getEventDescription(event));
+            ((TextView)view.findViewById(R.id.event_date))
+                    .setText(localDateFormat.format(event.getDate()) +
+                    " (" + getDateDiffStr(event.getDate()) + getString(R.string.days_ago) + ")");
+            container.addView(view);
+        }
+    }
+
+    private String getEventDescription(PortalEvent event){
+        String description = null;
+        switch (event.getOperationType()){
+            case SUBMISSION:
+                description = getString(R.string.event_description_submission);
+                break;
+            case EDIT:
+                description = getString(R.string.event_description_edit);
+                break;
+            case INVALID:
+                description = getString(R.string.event_description_invalid);
+                break;
+        }
+        switch (event.getOperationResult()){
+            case PROPOSED:
+                description += getString(R.string.event_description_proposed);
+                break;
+            case ACCEPTED:
+                description += getString(R.string.event_description_accepted);
+                break;
+            case DUPLICATE:
+            case REJECTED:
+                description += getString(R.string.event_description_rejected);
+                break;
+        }
+        return description;
+    }
+
+    private int getEventResultIconResource(PortalEvent.OperationResult result){
+        switch (result){
+            case PROPOSED:
+                return R.drawable.ic_waiting;
+            case ACCEPTED:
+                return R.drawable.ic_accepted;
+            case DUPLICATE:
+            case REJECTED:
+                return R.drawable.ic_rejected;
+        }
+        return R.drawable.ic_launcher;
     }
 
     private String getSummaryText(PortalDetail portalDetail){

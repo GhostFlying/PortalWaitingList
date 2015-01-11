@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:paddingRight="@dimen/portal_detail_keyline_1"
+              android:paddingTop="@dimen/portal_detail_event_padding_vertical"
+              android:paddingBottom="@dimen/portal_detail_event_padding_vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/event_result"
+        android:src="@drawable/ic_proposed"
+        android:layout_marginLeft="@dimen/portal_detail_keyline_1"
+        android:layout_gravity="center_vertical"
+        android:layout_width="40dp"
+        android:layout_height="40dp"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/portal_detail_keyline_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/event_description"
+            android:text="@string/default_event_description"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/event_date"
+            android:layout_marginTop="@dimen/portal_detail_event_description_margin"
+            android:text="@string/default_event_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</FrameLayout>

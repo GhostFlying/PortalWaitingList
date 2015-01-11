@@ -71,5 +71,7 @@
     <dimen name="portal_detail_max_header_elevation">4dp</dimen>
     <dimen name="portal_detail_keyline_1">16dp</dimen>
     <dimen name="portal_detail_keyline_2">72dp</dimen>
+    <dimen name="portal_detail_event_padding_vertical">20dp</dimen>
+    <dimen name="portal_detail_event_description_margin">5dp</dimen>
 
 </resources>
