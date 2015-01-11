@@ -18,6 +18,7 @@ import com.ghostflying.portalwaitinglist.ObservableScrollView;
 import com.ghostflying.portalwaitinglist.R;
 import com.ghostflying.portalwaitinglist.model.PortalDetail;
 import com.ghostflying.portalwaitinglist.model.PortalEvent;
+import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -106,10 +107,22 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
         mPortalEventListContainer = view.findViewById(R.id.portal_event_list);
         addEventViews(clickedPortal, (ViewGroup)mPortalEventListContainer);
 
-        mHasPhoto = true;
-
+        // photo
+        String photoUrl = clickedPortal.getImageUrl();
+        if (photoUrl != null && photoUrl.startsWith("http")){
+            mHasPhoto = true;
+            // download and show the image of portal
+            Picasso.with(getActivity())
+                    .load(photoUrl.replaceFirst("http://", "https://"))
+                    .placeholder(R.drawable.portal_photo_placeholder)
+                    .resizeDimen(R.dimen.portal_detail_photo_width, R.dimen.portal_detail_photo_height)
+                    .into(mPhotoView);
+        }
+        else {
+            mHasPhoto = false;
+        }
         // set color
-        setStatusAndActionBarBg(clickedPortal);
+        setColors(clickedPortal);
 
         // set observer for views
         ViewTreeObserver vto = mScrollView.getViewTreeObserver();
@@ -260,7 +273,7 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
         onScrollChanged(0, 0); // trigger scroll handling
     }
 
-    private void setStatusAndActionBarBg(PortalDetail portal){
+    private void setColors(PortalDetail portal){
         int actionBarBg;
         int statusBarBg;
         if (portal.isAccepted()){
@@ -278,6 +291,7 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
 
         mToolbar.setBackgroundColor(actionBarBg);
         mHeaderBox.setBackgroundColor(actionBarBg);
+        mPhotoViewContainer.setBackgroundColor(statusBarBg);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             getActivity().getWindow().setStatusBarColor(statusBarBg);
         }

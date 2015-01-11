@@ -74,5 +74,7 @@
     <dimen name="portal_detail_event_padding_vertical">20dp</dimen>
     <dimen name="portal_detail_event_description_margin">5dp</dimen>
     <dimen name="portal_detail_icon_size">40dp</dimen>
+    <dimen name="portal_detail_photo_height">250dp</dimen>
+    <dimen name="portal_detail_photo_width">0dp</dimen>
 
 </resources>
