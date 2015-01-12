@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:src="@drawable/ic_launcher"
+                    android:src="@drawable/ic_place"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/portal_detail_keyline_1"
                     android:layout_width="@dimen/portal_detail_icon_size"

@@ -283,12 +283,12 @@ public class ReDesignDetailFragment extends Fragment
     private int getEventResultIconResource(PortalEvent.OperationResult result){
         switch (result){
             case PROPOSED:
-                return R.drawable.ic_waiting;
+                return R.drawable.ic_waiting_40dp;
             case ACCEPTED:
-                return R.drawable.ic_accepted;
+                return R.drawable.ic_accepted_40dp;
             case DUPLICATE:
             case REJECTED:
-                return R.drawable.ic_rejected;
+                return R.drawable.ic_rejected_40dp;
         }
         return R.drawable.ic_launcher;
     }
