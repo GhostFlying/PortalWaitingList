@@ -131,4 +131,8 @@
     <string name="event_description_proposed">" proposed"</string>
     <string name="event_description_accepted">" accepted"</string>
     <string name="event_description_rejected">" rejected"</string>
+    <string name="map">Map</string>
+
+    <!-- ScreenShot dialog -->
+    <string name="process_screen_shot">ScreenShot is generating, please wait for a while.</string>
 </resources>

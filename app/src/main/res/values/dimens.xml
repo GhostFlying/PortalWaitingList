@@ -77,4 +77,7 @@
     <dimen name="portal_detail_photo_height">250dp</dimen>
     <dimen name="portal_detail_photo_width">0dp</dimen>
 
+    <!-- ScreenShot dialog -->
+    <dimen name="screen_shot_dialog_padding">30dp</dimen>
+
 </resources>

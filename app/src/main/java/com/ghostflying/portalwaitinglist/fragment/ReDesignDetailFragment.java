@@ -2,17 +2,26 @@ package com.ghostflying.portalwaitinglist.fragment;
 
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ghostflying.portalwaitinglist.ObservableScrollView;
 import com.ghostflying.portalwaitinglist.R;
@@ -20,12 +29,15 @@ import com.ghostflying.portalwaitinglist.model.PortalDetail;
 import com.ghostflying.portalwaitinglist.model.PortalEvent;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
 
 
-public class ReDesignDetailFragment extends Fragment implements ObservableScrollView.Callbacks {
+public class ReDesignDetailFragment extends Fragment
+        implements ObservableScrollView.Callbacks {
     static final String ARG_CLICKED_PORTAL_NAME = "clickedPortal";
 
     PortalDetail clickedPortal;
@@ -43,6 +55,7 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
     private int mHeaderHeightPixels;
     private boolean mHasPhoto;
     private float mMaxHeaderElevation;
+    private String addressUrl;
 
 
     public static ReDesignDetailFragment newInstance(Serializable clickedPortal) {
@@ -129,7 +142,98 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
         if (vto.isAlive()) {
             vto.addOnGlobalLayoutListener(mGlobalLayoutListener);
         }
+
+        // menu
+        setHasOptionsMenu(true);
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_re_design_detail, menu);
+
+        // check if there is available address url
+        addressUrl = clickedPortal.getAddressUrl();
+        if (addressUrl == null || !addressUrl.startsWith("http"))
+            menu.removeItem(R.id.menu_item_view_map);
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.menu_item_view_map:
+                openUrl(addressUrl);
+                return true;
+            case R.id.menu_item_share:
+                new ShareTask().execute();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void openUrl(String url){
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(webIntent);
+    }
+
+    private void doShare(Bitmap generated){
+        // save file to external
+        File file = new File(getActivity().getExternalCacheDir(),
+                "ScreenShot-" + Long.toString(new Date().getTime()) + ".png");
+        try{
+            FileOutputStream fOut = new FileOutputStream(file);
+            generated.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+        }
+        catch (Exception e){
+            handleException(e);
+            return;
+        }
+
+        // share file to other apps
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/*");
+        Uri uri = Uri.fromFile(file);
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.putExtra(Intent.EXTRA_TEXT, clickedPortal.getName());
+        startActivity(Intent.createChooser(share, "Share Portal"));
+    }
+
+    private void handleException(Exception e){
+        e.printStackTrace();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getActivity(), R.string.write_error_toast, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private Bitmap getBitmapFromView(View v) {
+        // store the origin state
+        int originWidth = v.getMeasuredWidth();
+        int originHeight = v.getMeasuredHeight();
+        // capture the view
+        int specWidth = View.MeasureSpec.makeMeasureSpec(originWidth, View.MeasureSpec.EXACTLY);
+        int specHeight = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        v.measure(specWidth, specHeight);
+        Bitmap b = Bitmap.createBitmap(v.getMeasuredWidth(), v.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+        Canvas c = new Canvas(b);
+        c.drawColor(getResources().getColor(R.color.default_background));
+        v.draw(c);
+
+        // restore the view
+        specHeight = View.MeasureSpec.makeMeasureSpec(originHeight, View.MeasureSpec.EXACTLY);
+        v.measure(specWidth, specHeight);
+        v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+        return b;
     }
 
     private void addEventViews(PortalDetail portalDetail, ViewGroup container){
@@ -316,5 +420,28 @@ public class ReDesignDetailFragment extends Fragment implements ObservableScroll
         }
 
         return (value - min) / (float) (max - min);
+    }
+
+    public class ShareTask extends AsyncTask<Void, Void, Void> {
+        Bitmap bitmap;
+        ScreenShotDialogFragment dialogFragment;
+
+        @Override
+        protected void onPreExecute() {
+            dialogFragment = ScreenShotDialogFragment.newInstance();
+            dialogFragment.show(getFragmentManager(), null);
+            bitmap = getBitmapFromView(getView());
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            doShare(bitmap);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result){
+            dialogFragment.dismiss();
+        }
     }
 }
