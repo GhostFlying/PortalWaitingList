@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * DB Helper Class, used for create or update.
  */
 public class PortalEventDbHelper extends SQLiteOpenHelper {
-    static final int DATABASE_VERSION = 2;
+    static final int DATABASE_VERSION = 3;
     static final String DATABASE_NAME = "PortalEvent.db";
 
     private static final String TEXT_TYPE = " TEXT";

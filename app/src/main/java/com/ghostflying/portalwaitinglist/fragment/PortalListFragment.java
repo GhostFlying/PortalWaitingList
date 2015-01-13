@@ -645,7 +645,7 @@ public class PortalListFragment extends Fragment {
                 values.put(PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_RESULT, event.getOperationResult().ordinal());
                 values.put(PortalEventContract.PortalEvent.COLUMN_NAME_DATE, event.getDate().getTime());
                 values.put(PortalEventContract.PortalEvent.COLUMN_NAME_MESSAGE_ID, event.getMessageId());
-                if (event instanceof SubmissionEvent && event.getOperationResult() != PortalEvent.OperationResult.ACCEPTED) {
+                if (event instanceof SubmissionEvent) {
                     values.put(PortalEventContract.PortalEvent.COLUMN_NAME_IMAGE_URL, ((SubmissionEvent) event).getPortalImageUrl());
                 }
                 else {
