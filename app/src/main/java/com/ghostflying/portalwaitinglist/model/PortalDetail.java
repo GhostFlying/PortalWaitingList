@@ -175,13 +175,27 @@ public class PortalDetail implements Comparable<PortalDetail>, Serializable{
     }
 
     /**
-     * Check if the portal edit/submit accepted by NIA.
+     * Check if the portal edit/submit ever accepted by NIA.
      * If there is any accept event for the portal, it will be deal as accepted.
      * @return  true if accepted, otherwise false.
      */
     public boolean isEverAccepted(){
         for (PortalEvent eachEvent : events){
             if (eachEvent.getOperationResult() == PortalEvent.OperationResult.ACCEPTED)
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if the portal edit/submit ever rejected by NIA.
+     * If there is any rejected event for the portal, it will be deal as rejected.
+     * @return  true if rejected, otherwise false.
+     */
+    public boolean isEverRejected(){
+        for (PortalEvent eachEvent : events){
+            if (eachEvent.getOperationResult() == PortalEvent.OperationResult.REJECTED
+                    || eachEvent.getOperationResult() == PortalEvent.OperationResult.DUPLICATE)
                 return true;
         }
         return false;
