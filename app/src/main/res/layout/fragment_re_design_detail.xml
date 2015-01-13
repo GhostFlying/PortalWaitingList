@@ -27,6 +27,7 @@
         <!-- Title/subtitle bar (floating; position determined at run time as the content view scrolls) -->
         <LinearLayout
             android:id="@+id/header_portal"
+            android:transitionName="title"
             android:background="@color/primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,7 +39,7 @@
             <include android:id="@+id/detail_toolbar"
                      layout="@layout/toolbar" />
 
-            <!-- Session title -->
+            <!-- Portal Name -->
             <TextView android:layout_height="wrap_content"
                       android:layout_width="match_parent"
                       android:layout_marginBottom="0dp"
@@ -51,7 +52,7 @@
                       android:ellipsize="end"
                       android:lineSpacingMultiplier="1.1"/>
 
-            <!-- Session subtitle -->
+            <!-- Portal summary -->
             <TextView android:layout_height="wrap_content"
                       android:layout_width="match_parent"
                       android:layout_marginLeft="@dimen/portal_detail_keyline_2"

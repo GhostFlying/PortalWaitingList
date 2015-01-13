@@ -1,8 +1,11 @@
 package com.ghostflying.portalwaitinglist;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
 
 import com.ghostflying.portalwaitinglist.fragment.PortalListFragment;
 import com.ghostflying.portalwaitinglist.model.PortalDetail;
@@ -71,10 +74,17 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public void portalItemClicked(PortalDetail clickedPortal) {
+    public void portalItemClicked(PortalDetail clickedPortal, View clickedView) {
         this.clickedPortal = clickedPortal;
         Intent detail = new Intent(this, DetailActivity.class);
         detail.putExtra(DetailActivity.ARG_CLICKED_PORTAL, clickedPortal);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            clickedView.setTransitionName("title");
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, clickedView, "title");
+            startActivity(detail, options.toBundle());
+            return;
+
+        }
         startActivity(detail);
     }
 }

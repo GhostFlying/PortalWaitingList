@@ -93,7 +93,10 @@ public class ReDesignDetailFragment extends Fragment
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    getActivity().finishAfterTransition();
+                else
+                    getActivity().finish();
             }
         });
         // remove the elevation to make header unify

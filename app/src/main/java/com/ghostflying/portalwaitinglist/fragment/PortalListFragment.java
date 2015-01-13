@@ -459,7 +459,7 @@ public class PortalListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 PortalDetail clickedPortal = adapter.dataSet.get(recyclerView.getChildPosition(v));
-                mListener.portalItemClicked(clickedPortal);
+                mListener.portalItemClicked(clickedPortal, v);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -867,7 +867,7 @@ public class PortalListFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         public void doAuthInActivity();
-        public void portalItemClicked(PortalDetail clickedPortal);
+        public void portalItemClicked(PortalDetail clickedPortal, View clickedView);
     }
 
 }
