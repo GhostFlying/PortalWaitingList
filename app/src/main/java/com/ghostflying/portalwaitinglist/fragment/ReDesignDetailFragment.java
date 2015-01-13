@@ -90,6 +90,12 @@ public class ReDesignDetailFragment extends Fragment
         mToolbar.setTitle("");
         ((ActionBarActivity)getActivity()).setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_up);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
         // remove the elevation to make header unify
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             mToolbar.setElevation(0);
