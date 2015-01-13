@@ -363,7 +363,6 @@ public class ReDesignDetailFragment extends Fragment
         mPhotoHeightPixels = 0;
         if (mHasPhoto) {
             mPhotoHeightPixels = mPhotoView.getHeight();
-            mPhotoHeightPixels = Math.min(mPhotoHeightPixels, mScrollView.getHeight() * 2 / 3);
         }
 
         ViewGroup.LayoutParams lp;
