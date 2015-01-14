@@ -83,7 +83,6 @@ public class MainActivity extends ActionBarActivity
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, clickedView, "title");
             startActivity(detail, options.toBundle());
             return;
-
         }
         startActivity(detail);
     }

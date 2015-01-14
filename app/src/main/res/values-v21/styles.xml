@@ -3,12 +3,6 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- enable window content transitions -->
         <item name="android:windowContentTransitions">true</item>
-
-        <!-- specify shared element transitions -->
-        <item name="android:windowSharedElementEnterTransition">
-            @transition/portal_title_transition</item>
-        <item name="android:windowSharedElementExitTransition">
-            @transition/portal_title_transition</item>
     </style>
     
     <style name="AppTheme.Transparent" parent="AppTheme">

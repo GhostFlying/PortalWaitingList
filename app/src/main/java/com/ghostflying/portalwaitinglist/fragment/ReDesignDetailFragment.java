@@ -1,6 +1,7 @@
 package com.ghostflying.portalwaitinglist.fragment;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -56,6 +57,7 @@ public class ReDesignDetailFragment extends Fragment
     private boolean mHasPhoto;
     private float mMaxHeaderElevation;
     private String addressUrl;
+    private OnFragmentInteractionListener mListener;
 
 
     public static ReDesignDetailFragment newInstance(Serializable clickedPortal) {
@@ -80,6 +82,23 @@ public class ReDesignDetailFragment extends Fragment
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -93,8 +112,10 @@ public class ReDesignDetailFragment extends Fragment
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                    mListener.onNavigationClicked();
                     getActivity().finishAfterTransition();
+                }
                 else
                     getActivity().finish();
             }
@@ -451,5 +472,9 @@ public class ReDesignDetailFragment extends Fragment
         protected void onPostExecute(Void result){
             dialogFragment.dismiss();
         }
+    }
+
+    public interface OnFragmentInteractionListener{
+        public void onNavigationClicked();
     }
 }
