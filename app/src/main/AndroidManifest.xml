@@ -21,6 +21,7 @@
             android:theme="@style/AppTheme.PortalList" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -44,6 +45,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ghostflying.portalwaitinglist.MainActivity" />
         </activity>
+
+        <provider
+            android:name=".dao.DataProvider"
+            android:authorities="com.ghostflying.portalwaitinglist"
+            android:enabled="true"
+            android:exported="false" >
+        </provider>
     </application>
 
 </manifest>
