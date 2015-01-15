@@ -6,6 +6,7 @@ import android.provider.BaseColumns;
  * Created by ghostflying on 1/14/15.
  */
 public class PortalEventDbInfo implements BaseColumns {
+    public static final int ID = 0;
     public static final String TABLE_NAME = "event";
     public static final String COLUMN_NAME_PORTAL_NAME = "portalname";
     public static final String COLUMN_NAME_OPERATION_TYPE = "operationtype";
