@@ -57,8 +57,6 @@ public class ReDesignDetailFragment extends Fragment
     private boolean mHasPhoto;
     private float mMaxHeaderElevation;
     private String addressUrl;
-    private OnFragmentInteractionListener mListener;
-
 
     public static ReDesignDetailFragment newInstance(Serializable clickedPortal) {
         ReDesignDetailFragment fragment = new ReDesignDetailFragment();
@@ -80,24 +78,6 @@ public class ReDesignDetailFragment extends Fragment
             clickedPortal = (PortalDetail)getArguments().getSerializable(ARG_CLICKED_PORTAL_NAME);
         }
     }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -113,7 +93,6 @@ public class ReDesignDetailFragment extends Fragment
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-                    mListener.onNavigationClicked();
                     getActivity().finishAfterTransition();
                 }
                 else
@@ -472,9 +451,5 @@ public class ReDesignDetailFragment extends Fragment
         protected void onPostExecute(Void result){
             dialogFragment.dismiss();
         }
-    }
-
-    public interface OnFragmentInteractionListener{
-        public void onNavigationClicked();
     }
 }

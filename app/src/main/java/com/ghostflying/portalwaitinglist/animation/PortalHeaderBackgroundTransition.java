@@ -35,6 +35,7 @@ public class PortalHeaderBackgroundTransition extends Transition {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PortalHeaderBackgroundTransition);
         mMode = a.getInt(R.styleable.PortalHeaderBackgroundTransition_mode, 0);
+        a.recycle();
     }
 
     public void setMode(int mode){
