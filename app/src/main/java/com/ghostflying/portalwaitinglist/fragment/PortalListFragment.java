@@ -2,7 +2,6 @@ package com.ghostflying.portalwaitinglist.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -34,6 +33,7 @@ import com.ghostflying.portalwaitinglist.PortalEventContract;
 import com.ghostflying.portalwaitinglist.PortalEventDbHelper;
 import com.ghostflying.portalwaitinglist.R;
 import com.ghostflying.portalwaitinglist.SettingActivity;
+import com.ghostflying.portalwaitinglist.dao.datahelper.PortalEventHelper;
 import com.ghostflying.portalwaitinglist.model.EditEvent;
 import com.ghostflying.portalwaitinglist.model.Message;
 import com.ghostflying.portalwaitinglist.model.PortalDetail;
@@ -632,30 +632,9 @@ public class PortalListFragment extends Fragment {
             ArrayList<PortalEvent> newEvents = MailProcessUtil.getInstance().analysisMessages(newMessages);
 
             // write new messages to db.
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
-            ContentValues values;
-            for (PortalEvent event : newEvents){
-                values = new ContentValues();
-                values.put(PortalEventContract.PortalEvent.COLUMN_NAME_PORTAL_NAME, event.getPortalName());
-                values.put(PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_TYPE, event.getOperationType().ordinal());
-                values.put(PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_RESULT, event.getOperationResult().ordinal());
-                values.put(PortalEventContract.PortalEvent.COLUMN_NAME_DATE, event.getDate().getTime());
-                values.put(PortalEventContract.PortalEvent.COLUMN_NAME_MESSAGE_ID, event.getMessageId());
-                if (event instanceof SubmissionEvent) {
-                    values.put(PortalEventContract.PortalEvent.COLUMN_NAME_IMAGE_URL, ((SubmissionEvent) event).getPortalImageUrl());
-                }
-                else {
-                    if (event.getOperationResult() != PortalEvent.OperationResult.PROPOSED){
-                        values.put(PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS, event.getPortalAddress());
-                        values.put(PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS_URL, event.getPortalAddressUrl());
-                    }
-                }
-                db.insert(
-                        PortalEventContract.PortalEvent.TABLE_NAME,
-                        null,
-                        values);
-            }
-            db.close();
+            PortalEventHelper mHelper = new PortalEventHelper(getActivity());
+            mHelper.bulkInsert(newEvents);
+            mHelper.notifyChange();
             // merge new events to exist portal details
             processUtil.mergeEvents(totalPortalDetails, newEvents);
             // update Counts

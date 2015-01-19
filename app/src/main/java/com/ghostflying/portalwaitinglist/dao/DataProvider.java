@@ -16,7 +16,7 @@ import com.ghostflying.portalwaitinglist.dao.dbinfo.PortalEventDbInfo;
 
 
 public class DataProvider extends ContentProvider {
-    private static final String AUTHORITY = BuildConfig.APPLICATION_ID;
+    public static final String AUTHORITY = BuildConfig.APPLICATION_ID;
 
     private DbHelper mDbHelper;
 
