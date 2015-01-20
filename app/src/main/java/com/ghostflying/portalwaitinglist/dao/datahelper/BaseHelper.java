@@ -2,6 +2,7 @@ package com.ghostflying.portalwaitinglist.dao.datahelper;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 
@@ -58,5 +59,15 @@ public abstract class BaseHelper {
 
     public void notifyChange(){
         mContext.getContentResolver().notifyChange(mUri, null);
+    }
+
+    public void setContentObserver(ContentObserver contentObserver){
+        mContext.getContentResolver()
+                .registerContentObserver(mUri, false, contentObserver);
+    }
+
+    public void unregisterContentObserver(ContentObserver contentObserver){
+        mContext.getContentResolver()
+                .unregisterContentObserver(contentObserver);
     }
 }

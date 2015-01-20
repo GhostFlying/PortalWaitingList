@@ -612,13 +612,10 @@ public class PortalListFragment extends Fragment
      * The refresh task to run once user calls to refresh data.
      */
     private class RefreshTask extends AsyncTask<Void, Void, Void>{
-        int[] portalCounts;
         String refreshResult;
 
         @Override
         protected Void doInBackground(Void...params) {
-            // wait until initial done.
-            while (!isInitialed);
             if (getToken())
                 return null;
             // Initial Utils
@@ -656,22 +653,8 @@ public class PortalListFragment extends Fragment
             // write new messages to db.
             PortalEventHelper mHelper = new PortalEventHelper(getActivity());
             mHelper.bulkInsert(newEvents);
-            mHelper.notifyChange();
-            // merge new events to exist portal details
-            processUtil.mergeEvents(totalPortalDetails, newEvents);
-            // update Counts
-            portalCounts = processUtil.getCounts(totalPortalDetails);
-            int[] eventCounts = processUtil.getEventCountsInLastProcess();
+            int[] eventCounts = MailProcessUtil.getInstance().getEventCountsInLastProcess();
             generateRefreshResultSummary(eventCounts);
-
-            // sort and filter the portal details
-            processUtil.filterAndSort(
-                    SettingUtil.getTypeFilterMethod(),
-                    SettingUtil.getResultFilterMethod(),
-                    SettingUtil.getSortOrder(),
-                    totalPortalDetails,
-                    ((PortalListAdapter) recyclerView.getAdapter()).dataSet
-            );
             return null;
         }
 
@@ -762,9 +745,7 @@ public class PortalListFragment extends Fragment
         @Override
         protected void onPostExecute(Void param){
             // update UI
-            recyclerView.getAdapter().notifyDataSetChanged();
             swipeRefreshLayout.setRefreshing(false);
-            updateCountText(portalCounts);
             showRefreshResult(refreshResult);
         }
     }

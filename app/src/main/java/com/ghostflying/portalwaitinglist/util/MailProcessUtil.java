@@ -29,8 +29,13 @@ public class MailProcessUtil {
     private MailProcessUtil(){}
 
     public static MailProcessUtil getInstance(){
-        if(instance == null)
-            instance = new MailProcessUtil();
+        if(instance == null){
+            synchronized (MailProcessUtil.class){
+                if (instance == null){
+                    instance = new MailProcessUtil();
+                }
+            }
+        }
         return instance;
     }
 
