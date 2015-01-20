@@ -74,6 +74,7 @@ public class PortalListFragment extends Fragment
     TextView totalEdit;
     View selectedType;
     SearchTask searchTask;
+    MenuItem searchItem;
 
     public static PortalListFragment newInstance() {
         PortalListFragment fragment = new PortalListFragment();
@@ -114,7 +115,7 @@ public class PortalListFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
         // set search view
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint(getString(R.string.search_hint));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -181,6 +182,12 @@ public class PortalListFragment extends Fragment
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onStop (){
+        searchItem.collapseActionView();
+        super.onStop();
     }
 
     private void setDrawerLayout(View v){
