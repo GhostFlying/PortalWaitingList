@@ -47,6 +47,7 @@ import com.google.android.gms.auth.GoogleAuthUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit.RetrofitError;
 
@@ -63,7 +64,7 @@ public class PortalListFragment extends Fragment
     RecyclerView recyclerView;
     PortalEventDbHelper dbHelper;
     DrawerLayout drawerLayout;
-    ArrayList<PortalDetail> totalPortalDetails;
+    List<PortalDetail> totalPortalDetails;
     TextView countEverything;
     TextView countAccepted;
     TextView countRejected;
@@ -73,7 +74,6 @@ public class PortalListFragment extends Fragment
     TextView totalEdit;
     View selectedType;
     SearchTask searchTask;
-    boolean isInitialed = false;
 
     public static PortalListFragment newInstance() {
         PortalListFragment fragment = new PortalListFragment();
@@ -142,7 +142,7 @@ public class PortalListFragment extends Fragment
 
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
-                        //new FilterTask().execute();
+                        getLoaderManager().getLoader(0).onContentChanged();
                         return true;
                     }
                 }
@@ -489,6 +489,7 @@ public class PortalListFragment extends Fragment
                     swipeRefreshLayout.setRefreshing(true);
                     new RefreshTask().execute();
                 }
+                totalPortalDetails = data.totalPortals;
                 break;
             case SORT:
                 setTitleBySetting();

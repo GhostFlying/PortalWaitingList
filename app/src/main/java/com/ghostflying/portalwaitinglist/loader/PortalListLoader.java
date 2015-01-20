@@ -73,6 +73,7 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
             mCursor.close();
         }
         viewModel.counts = mProcessUtil.getCounts(totalPortals);
+        viewModel.totalPortals = totalPortals;
         doFilter(viewModel);
         viewModel.mAction = Action.GET_DATA;
     }
@@ -86,6 +87,7 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
                 totalPortals,
                 viewModel.mPortals
         );
+        viewModel.totalPortals = totalPortals;
         viewModel.mAction = Action.FILTER;
     }
 
@@ -96,6 +98,7 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
                 SettingUtil.getSortOrder(),
                 viewModel.mPortals
         );
+        viewModel.totalPortals = totalPortals;
         viewModel.mAction = Action.SORT;
     }
 
@@ -144,6 +147,7 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
 
     public class PortalListViewModel{
         public List<PortalDetail> mPortals;
+        public List<PortalDetail> totalPortals;
         public int[] counts;
         public Action mAction;
 
