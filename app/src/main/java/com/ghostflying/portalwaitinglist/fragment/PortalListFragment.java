@@ -2,7 +2,9 @@ package com.ghostflying.portalwaitinglist.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -34,6 +36,7 @@ import com.ghostflying.portalwaitinglist.PortalEventDbHelper;
 import com.ghostflying.portalwaitinglist.R;
 import com.ghostflying.portalwaitinglist.SettingActivity;
 import com.ghostflying.portalwaitinglist.dao.datahelper.PortalEventHelper;
+import com.ghostflying.portalwaitinglist.loader.PortalListLoader;
 import com.ghostflying.portalwaitinglist.model.EditEvent;
 import com.ghostflying.portalwaitinglist.model.Message;
 import com.ghostflying.portalwaitinglist.model.PortalDetail;
@@ -54,7 +57,8 @@ import java.util.Date;
 import retrofit.RetrofitError;
 
 
-public class PortalListFragment extends Fragment {
+public class PortalListFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<PortalListLoader.PortalListViewModel> {
 
     private OnFragmentInteractionListener mListener;
 
@@ -107,7 +111,8 @@ public class PortalListFragment extends Fragment {
         setHasOptionsMenu(true);
         switchActionBarColorBySetting();
         // read stored data.
-        new InitialTask().execute();
+        // new InitialTask().execute();
+        getLoaderManager().initLoader(0, null, this);
         return view;
     }
 
@@ -475,6 +480,23 @@ public class PortalListFragment extends Fragment {
             new SortTask().execute();
     }
 
+    @Override
+    public Loader<PortalListLoader.PortalListViewModel> onCreateLoader(int id, Bundle args) {
+        return new PortalListLoader(getActivity());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<PortalListLoader.PortalListViewModel> loader,
+                               PortalListLoader.PortalListViewModel data) {
+        ((PortalListAdapter)recyclerView.getAdapter()).setDataSet(data.mPortals);
+        updateCountText(data.counts);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<PortalListLoader.PortalListViewModel> loader) {
+
+    }
+
 
     /**
      * The initial task once the activity start.
@@ -831,16 +853,15 @@ public class PortalListFragment extends Fragment {
 
     private void updateCountText(int[] counts){
         if (counts!= null){
-            int total = totalPortalDetails.size();
-            countEverything.setText(Integer.toString(total));
-            countAccepted.setText(Integer.toString(counts[0]));
-            countRejected.setText(Integer.toString(counts[1]));
-            countWaiting.setText(Integer.toString(total - counts[0] - counts[1]));
+            countEverything.setText(Integer.toString(counts[0]));
+            countAccepted.setText(Integer.toString(counts[1]));
+            countRejected.setText(Integer.toString(counts[2]));
+            countWaiting.setText(Integer.toString(counts[3]));
 
             // navigation
-            totalPortals.setText(Integer.toString(total));
-            totalSubmission.setText(Integer.toString(counts[2]));
-            totalEdit.setText(Integer.toString(counts[3]));
+            totalPortals.setText(Integer.toString(counts[0]));
+            totalSubmission.setText(Integer.toString(counts[4]));
+            totalEdit.setText(Integer.toString(counts[5]));
         }
     }
 

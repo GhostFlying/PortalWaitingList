@@ -16,6 +16,7 @@ import com.ghostflying.portalwaitinglist.util.SettingUtil;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ghostflying on 11/22/14.
@@ -23,15 +24,20 @@ import java.util.Date;
  * Adapter for RecyclerView
  */
 public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.ViewHolder>{
-    public ArrayList<PortalDetail> dataSet;
+    public List<PortalDetail> dataSet;
     DateFormat localeDateFormat;
     Date dateNow;
     View.OnClickListener onClickListener;
 
-    public PortalListAdapter (ArrayList<PortalDetail> dataSet){
+    public PortalListAdapter (List<PortalDetail> dataSet){
         this.dataSet = dataSet;
         localeDateFormat = DateFormat.getDateInstance(DateFormat.FULL);
         dateNow = new Date();
+    }
+
+    public void setDataSet(List<PortalDetail> data){
+        dataSet = data;
+        notifyDataSetChanged();
     }
 
     /**

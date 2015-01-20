@@ -2,7 +2,7 @@ package com.ghostflying.portalwaitinglist.util;
 
 import com.ghostflying.portalwaitinglist.model.PortalDetail;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ghostflying on 1/1/15.
@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class SearchUtil {
 
     public static void searchByPortalName(
-            ArrayList<PortalDetail> allPortals,
-            ArrayList<PortalDetail> resultPortals,
+            List<PortalDetail> allPortals,
+            List<PortalDetail> resultPortals,
             String queryText){
         resultPortals.clear();
         if (queryText.equals("")){

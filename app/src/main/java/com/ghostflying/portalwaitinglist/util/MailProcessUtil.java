@@ -13,6 +13,7 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -173,7 +174,7 @@ public class MailProcessUtil {
      * @param events events need to be merged.
      * @return the merged portal detail list.
      */
-    public ArrayList<PortalDetail> mergeEvents(ArrayList<PortalDetail> origin, ArrayList<PortalEvent> events){
+    public List<PortalDetail> mergeEvents(List<PortalDetail> origin, List<PortalEvent> events){
         for (PortalEvent event : events){
             PortalDetail existDetail = findExistDetail(origin, event);
             if (existDetail == null){
@@ -197,7 +198,7 @@ public class MailProcessUtil {
      * @param event     new event.
      * @return  the portal detail if exists, or null if it does not exist.
      */
-    private PortalDetail findExistDetail(ArrayList<PortalDetail> details, PortalEvent event){
+    private PortalDetail findExistDetail(List<PortalDetail> details, PortalEvent event){
         for (PortalDetail detail : details){
             if (detail.getName().equalsIgnoreCase(event.getPortalName())){
                 // if event is Edit, only check name.
@@ -230,8 +231,8 @@ public class MailProcessUtil {
     public void filterAndSort(SettingUtil.TypeFilterMethod typeFilterMethod,
                               SettingUtil.ResultFilterMethod resultFilterMethod,
                               SettingUtil.SortOrder sortOrder,
-                              ArrayList<PortalDetail> origin,
-                              ArrayList<PortalDetail> edit){
+                              List<PortalDetail> origin,
+                              List<PortalDetail> edit){
         filterPortalDetails(typeFilterMethod, resultFilterMethod, origin, edit);
         sortPortalDetails(sortOrder, edit);
     }
@@ -245,8 +246,8 @@ public class MailProcessUtil {
      */
     private void filterPortalDetails(SettingUtil.TypeFilterMethod typeFilterMethod,
                                      SettingUtil.ResultFilterMethod resultFilterMethod,
-                                     ArrayList<PortalDetail> origin,
-                                     ArrayList<PortalDetail> filtered){
+                                     List<PortalDetail> origin,
+                                     List<PortalDetail> filtered){
         DoResultCheck doResultCheck;
         DoTypeCheck doTypeCheck;
 
@@ -293,7 +294,7 @@ public class MailProcessUtil {
      * @param sortOrder     the order set.
      * @param portalDetails the sorted list.
      */
-    public void sortPortalDetails(SettingUtil.SortOrder sortOrder, ArrayList<PortalDetail> portalDetails){
+    public void sortPortalDetails(SettingUtil.SortOrder sortOrder, List<PortalDetail> portalDetails){
         switch (sortOrder){
             case LAST_DATE_ASC:
                 Collections.sort(portalDetails);
@@ -362,28 +363,30 @@ public class MailProcessUtil {
 
 
     /**
-     * Get the accepted count and
+     * Get the counts for each filter method.
      * @param details   the total details.
-     * @return          the accepted count and the rejected count.
-     *                  the item 0 is the accepted count,
-     *                  the item 1 is the rejected count,
-     *                  the item 2 is the submission count,
-     *                  the item 3 is the edit count.
+     * @return          the counts.
+     *                  the item 0 is the total count,
+     *                  the item 1 is the accepted count,
+     *                  the item 2 is the rejected count,
+     *                  the item 3 is the waiting count.
+     *                  the item 4 is the submission count.
+     *                  the item 5 is the edit count.
      */
-    public int[] getCounts(ArrayList<PortalDetail> details) {
-        int[] counts = new int[4];
-        counts[0] = 0;
-        counts[1] = 0;
+    public int[] getCounts(List<PortalDetail> details) {
+        int[] counts = new int[6];
         for (PortalDetail detail : details){
             if (detail.isEverAccepted())
-                counts[0]++;
-            else if (detail.isEverRejected())
                 counts[1]++;
-            if (detail.hasSubmission())
+            else if (detail.isEverRejected())
                 counts[2]++;
+            if (detail.hasSubmission())
+                counts[4]++;
             else
-                counts[3]++;
+                counts[5]++;
         }
+        counts[0] = details.size();
+        counts[3] = counts[0] - counts[1] - counts[2];
         return counts;
     }
 
