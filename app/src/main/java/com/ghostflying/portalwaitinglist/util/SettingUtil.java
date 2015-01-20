@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import com.ghostflying.portalwaitinglist.R;
 
+import java.util.Observer;
+
 /**
  * Created by ghostflying on 11/22/14.
  * <br>
@@ -41,6 +43,7 @@ public class SettingUtil {
     private static TypeFilterMethod typeFilterMethod;
     private static boolean showStatusInList;
     private static boolean isModified = false;
+    private static Observer settingObserver;
 
     /**
      * Read all settings from storage, and store them in the mem.
@@ -123,8 +126,11 @@ public class SettingUtil {
      */
     public static void setResultFilterMethod(ResultFilterMethod resultFilterMethod){
         checkRead();
-        isModified = true;
-        SettingUtil.resultFilterMethod = resultFilterMethod;
+        if (resultFilterMethod != SettingUtil.resultFilterMethod){
+            isModified = true;
+            SettingUtil.resultFilterMethod = resultFilterMethod;
+            notifyChange(resultFilterMethod);
+        }
     }
 
     /**
@@ -142,8 +148,11 @@ public class SettingUtil {
      */
     public static void setSortOrder(SortOrder sortOrder){
         checkRead();
-        isModified = true;
-        SettingUtil.sortOrder = sortOrder;
+        if (sortOrder != SettingUtil.sortOrder){
+            isModified = true;
+            SettingUtil.sortOrder = sortOrder;
+            notifyChange(sortOrder);
+        }
     }
 
     /**
@@ -256,8 +265,11 @@ public class SettingUtil {
      */
     public static void setTypeFilterMethod(TypeFilterMethod typeFilterMethod){
         checkRead();
-        isModified = true;
-        SettingUtil.typeFilterMethod = typeFilterMethod;
+        if (typeFilterMethod != SettingUtil.typeFilterMethod){
+            isModified = true;
+            SettingUtil.typeFilterMethod = typeFilterMethod;
+            notifyChange(typeFilterMethod);
+        }
     }
 
     /**
@@ -294,6 +306,19 @@ public class SettingUtil {
     private static void createSharedPreferences(Context context){
         if (options == null)
             options = context.getSharedPreferences(context.getString(R.string.preference_name), Context.MODE_PRIVATE);
+    }
+
+    public static void registerObserver(Observer observer){
+        settingObserver = observer;
+    }
+
+    public static void unregisterObserver(){
+        settingObserver = null;
+    }
+
+    private static void notifyChange(Object data){
+        if (settingObserver != null)
+            settingObserver.update(null, data);
     }
 
     /**

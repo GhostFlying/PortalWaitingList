@@ -5,8 +5,6 @@ import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -31,17 +29,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ghostflying.portalwaitinglist.AuthActivity;
-import com.ghostflying.portalwaitinglist.PortalEventContract;
 import com.ghostflying.portalwaitinglist.PortalEventDbHelper;
 import com.ghostflying.portalwaitinglist.R;
 import com.ghostflying.portalwaitinglist.SettingActivity;
 import com.ghostflying.portalwaitinglist.dao.datahelper.PortalEventHelper;
 import com.ghostflying.portalwaitinglist.loader.PortalListLoader;
-import com.ghostflying.portalwaitinglist.model.EditEvent;
 import com.ghostflying.portalwaitinglist.model.Message;
 import com.ghostflying.portalwaitinglist.model.PortalDetail;
 import com.ghostflying.portalwaitinglist.model.PortalEvent;
-import com.ghostflying.portalwaitinglist.model.SubmissionEvent;
 import com.ghostflying.portalwaitinglist.recyclerviewHelper.PortalListAdapter;
 import com.ghostflying.portalwaitinglist.util.GMailServiceUtil;
 import com.ghostflying.portalwaitinglist.util.MailProcessUtil;
@@ -52,7 +47,6 @@ import com.google.android.gms.auth.GoogleAuthUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import retrofit.RetrofitError;
 
@@ -148,7 +142,7 @@ public class PortalListFragment extends Fragment
 
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
-                        new FilterTask().execute();
+                        //new FilterTask().execute();
                         return true;
                     }
                 }
@@ -310,7 +304,6 @@ public class PortalListFragment extends Fragment
                     break;
                 default:
             }
-            new SortTask().execute();
             drawerLayout.closeDrawer(Gravity.RIGHT);
         }
     };
@@ -333,7 +326,6 @@ public class PortalListFragment extends Fragment
                     break;
                 default:
             }
-            new FilterTask().execute();
             drawerLayout.closeDrawer(Gravity.RIGHT);
         }
     };
@@ -359,7 +351,6 @@ public class PortalListFragment extends Fragment
             // select this
             v.setSelected(true);
             selectedType = v;
-            new FilterTask().execute();
             drawerLayout.closeDrawer(Gravity.LEFT);
         }
     };
@@ -476,8 +467,9 @@ public class PortalListFragment extends Fragment
         // when return from setting activity and the filter or sort related
         // params are changed, do filter and sort.
         if (requestCode == SettingActivity.REQUEST_SETTING
-                && resultCode == SettingActivity.RESULT_OK)
-            new SortTask().execute();
+                && resultCode == SettingActivity.RESULT_OK){
+            getLoaderManager().getLoader(0).onContentChanged();
+        }
     }
 
     @Override
@@ -489,114 +481,28 @@ public class PortalListFragment extends Fragment
     public void onLoadFinished(Loader<PortalListLoader.PortalListViewModel> loader,
                                PortalListLoader.PortalListViewModel data) {
         ((PortalListAdapter)recyclerView.getAdapter()).setDataSet(data.mPortals);
-        updateCountText(data.counts);
+        switch (data.mAction){
+            case GET_DATA:
+                updateCountText(data.counts);
+                if (account != null && data.mPortals.size() == 0){
+                    showToast(R.string.alert_to_refresh);
+                    swipeRefreshLayout.setRefreshing(true);
+                    new RefreshTask().execute();
+                }
+                break;
+            case SORT:
+                setTitleBySetting();
+                break;
+            case FILTER:
+                setTitleBySetting();
+                switchActionBarColorBySetting();
+                break;
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<PortalListLoader.PortalListViewModel> loader) {
 
-    }
-
-
-    /**
-     * The initial task once the activity start.
-     */
-    private class InitialTask extends AsyncTask<Void, Void, Void>{
-        int[] counts;
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // if no account is set, stop initial.
-            if (account == null)
-                return null;
-            ArrayList<PortalEvent> portalEvents = new ArrayList<PortalEvent>();
-            // query from SQLite
-            SQLiteDatabase database = dbHelper.getReadableDatabase();
-            Cursor cursor = database.query(
-                    PortalEventContract.PortalEvent.TABLE_NAME,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    PortalEventContract.PortalEvent.COLUMN_NAME_DATE + " ASC"
-            );
-            int portalNameIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_PORTAL_NAME);
-            int operationTypeIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_TYPE);
-            int operationResultIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_RESULT);
-            int messageIdIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_MESSAGE_ID);
-            int dateIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_DATE);
-            int imageUrlIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_IMAGE_URL);
-            int addressIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS);
-            int addressUrlIndex = cursor.getColumnIndex(PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS_URL);
-            while(cursor.moveToNext()){
-                PortalEvent event;
-                String name = cursor.getString(portalNameIndex);
-                PortalEvent.OperationType operationType = PortalEvent.OperationType.values()[cursor.getInt(operationTypeIndex)];
-                PortalEvent.OperationResult operationResult = PortalEvent.OperationResult.values()[cursor.getInt(operationResultIndex)];
-                Date date = new Date(cursor.getLong(dateIndex));
-                String messageId = cursor.getString(messageIdIndex);
-                if (operationType == PortalEvent.OperationType.SUBMISSION){
-                    String imageUrl = cursor.getString(imageUrlIndex);
-                    if (operationResult == PortalEvent.OperationResult.ACCEPTED){
-                        String address = cursor.getString(addressIndex);
-                        String addressUrl = cursor.getString(addressUrlIndex);
-                        event = new SubmissionEvent(name,
-                                operationResult,
-                                date,
-                                messageId,
-                                imageUrl,
-                                address,
-                                addressUrl);
-                    }
-                    else {
-                        event = new SubmissionEvent(name, operationResult, date, messageId, imageUrl);
-                    }
-                }
-                else {
-                    if (operationResult != PortalEvent.OperationResult.PROPOSED){
-                        String address = cursor.getString(addressIndex);
-                        String addressUrl = cursor.getString(addressUrlIndex);
-                        event = new EditEvent(name, operationResult, date, messageId, address, addressUrl);
-                    }
-                    else {
-                        event = new EditEvent(name, operationResult, date, messageId);
-                    }
-                }
-                portalEvents.add(event);
-            }
-            cursor.close();
-            database.close();
-            // merge stored events to empty portal detail.
-            MailProcessUtil processUtil = MailProcessUtil.getInstance();
-            processUtil.mergeEvents(totalPortalDetails, portalEvents);
-            //update portalCounts
-            counts = processUtil.getCounts(totalPortalDetails);
-            // sort and filter the portal details
-            processUtil.filterAndSort(
-                    SettingUtil.getTypeFilterMethod(),
-                    SettingUtil.getResultFilterMethod(),
-                    SettingUtil.getSortOrder(),
-                    totalPortalDetails,
-                    ((PortalListAdapter) recyclerView.getAdapter()).dataSet
-            );
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void param){
-            // update UI.
-            recyclerView.getAdapter().notifyDataSetChanged();
-            updateCountText(counts);
-            // set the flag, avoid refresh task run before initial done.
-            isInitialed = true;
-
-            if (account != null && totalPortalDetails.size() == 0){
-                showToast(R.string.alert_to_refresh);
-                swipeRefreshLayout.setRefreshing(true);
-                new RefreshTask().execute();
-            }
-        }
     }
 
     private void showToast(final int resId){
@@ -747,55 +653,6 @@ public class PortalListFragment extends Fragment
             // update UI
             swipeRefreshLayout.setRefreshing(false);
             showRefreshResult(refreshResult);
-        }
-    }
-
-    /**
-     * Async Task for sort or filter action.
-     */
-    private abstract class SortAndFilterBaseTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected abstract Void doInBackground(Void... params);
-
-        @Override
-        protected void onPostExecute(Void param){
-            // update UI
-            recyclerView.getAdapter().notifyDataSetChanged();
-            setTitleBySetting();
-        }
-    }
-
-    private class FilterTask extends SortAndFilterBaseTask{
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            MailProcessUtil.getInstance().filterAndSort(
-                    SettingUtil.getTypeFilterMethod(),
-                    SettingUtil.getResultFilterMethod(),
-                    SettingUtil.getSortOrder(),
-                    totalPortalDetails,
-                    ((PortalListAdapter) recyclerView.getAdapter()).dataSet);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void param){
-            super.onPostExecute(param);
-            switchActionBarColorBySetting();
-        }
-    }
-
-    private class SortTask extends SortAndFilterBaseTask{
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            MailProcessUtil.getInstance()
-                    .sortPortalDetails(
-                            SettingUtil.getSortOrder(),
-                            ((PortalListAdapter) recyclerView.getAdapter()).dataSet
-                    );
-            return null;
         }
     }
 

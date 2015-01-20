@@ -14,6 +14,8 @@ import com.ghostflying.portalwaitinglist.util.SettingUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by ghostflying on 1/20/15.
@@ -25,39 +27,42 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
     private Action mAction;
     private PortalEventHelper mHelper;
     private ContentObserver mContentObserver;
+    private Observer mSettingObserver;
 
     public PortalListLoader(Context context){
         super(context);
         totalPortals = new ArrayList<>();
         mAction = Action.GET_DATA;
         mContentObserver = new PartUpdateContentObserver();
+        mSettingObserver = new SettingObserver();
     }
 
     @Override
     public PortalListViewModel loadInBackground() {
-        if (mViewModel == null)
-            mViewModel = new PortalListViewModel();
+        PortalListViewModel viewModel = new PortalListViewModel();
+        if (mViewModel != null)
+            viewModel.counts = mViewModel.counts;
         switch (mAction){
-            case SORT:
-                doSort();
-                break;
             case FILTER:
-                doFilter();
+                doFilter(viewModel);
                 break;
             case GET_DATA:
+                doGetData(viewModel);
+                break;
+            case SORT:
             default:
-                doGetData();
+                doSort(viewModel);
                 break;
         }
-        return mViewModel;
+        return viewModel;
     }
 
-    private void doGetData(){
-        mHelper = new PortalEventHelper(getContext());
+    private void doGetData(PortalListViewModel viewModel){
+        if (mHelper == null)
+            mHelper = new PortalEventHelper(getContext());
         MailProcessUtil mProcessUtil = MailProcessUtil.getInstance();
         Cursor mCursor = mHelper.getAll(lastEventDate);
         try {
-            mHelper.setContentObserver(mContentObserver);
             List<PortalEvent> portalEvents = mHelper.fromCursor(mCursor);
             if (portalEvents.size() != 0){
                 lastEventDate = portalEvents.get(portalEvents.size() - 1).getDate().getTime();
@@ -67,34 +72,36 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
         finally {
             mCursor.close();
         }
-        mViewModel.counts = mProcessUtil.getCounts(totalPortals);
-        doFilter();
-        mViewModel.mAction = Action.GET_DATA;
+        viewModel.counts = mProcessUtil.getCounts(totalPortals);
+        doFilter(viewModel);
+        viewModel.mAction = Action.GET_DATA;
     }
 
-    private void doFilter(){
+    private void doFilter(PortalListViewModel viewModel){
         MailProcessUtil mProcessUtil = MailProcessUtil.getInstance();
         mProcessUtil.filterAndSort(
                 SettingUtil.getTypeFilterMethod(),
                 SettingUtil.getResultFilterMethod(),
                 SettingUtil.getSortOrder(),
                 totalPortals,
-                mViewModel.mPortals
+                viewModel.mPortals
         );
-        mViewModel.mAction = Action.FILTER;
+        viewModel.mAction = Action.FILTER;
     }
 
-    private void doSort(){
+    private void doSort(PortalListViewModel viewModel){
         MailProcessUtil mProcessUtil = MailProcessUtil.getInstance();
+        viewModel.mPortals = mViewModel.mPortals;
         mProcessUtil.sortPortalDetails(
                 SettingUtil.getSortOrder(),
-                totalPortals
+                viewModel.mPortals
         );
-        mViewModel.mAction = Action.SORT;
+        viewModel.mAction = Action.SORT;
     }
 
     @Override
     public void deliverResult(PortalListViewModel viewModel){
+        mViewModel = viewModel;
         if (isStarted()){
             super.deliverResult(viewModel);
         }
@@ -106,6 +113,10 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
             deliverResult(mViewModel);
         }
 
+        SettingUtil.registerObserver(mSettingObserver);
+        mHelper = new PortalEventHelper(getContext());
+        mHelper.setContentObserver(mContentObserver);
+
         if (takeContentChanged() || mViewModel == null){
             forceLoad();
         }
@@ -114,6 +125,7 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
     @Override
     protected void onStopLoading(){
         cancelLoad();
+        SettingUtil.unregisterObserver();
         if (mHelper != null)
             mHelper.unregisterContentObserver(mContentObserver);
     }
@@ -154,6 +166,20 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
         @Override
         public void onChange(boolean selfChange) {
             mAction = Action.GET_DATA;
+            onContentChanged();
+        }
+    }
+
+    public class SettingObserver implements Observer{
+
+        @Override
+        public void update(Observable observable, Object data) {
+            if (data instanceof SettingUtil.SortOrder){
+                mAction = Action.SORT;
+            }
+            else {
+                mAction = Action.FILTER;
+            }
             onContentChanged();
         }
     }
