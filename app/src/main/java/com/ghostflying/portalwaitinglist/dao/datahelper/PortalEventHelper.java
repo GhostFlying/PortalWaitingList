@@ -66,15 +66,15 @@ public class PortalEventHelper extends BaseHelper {
     }
 
     /**
-     * Get all events happened after timestamp.
-     * @param timestamp the timestamp to filter
+     * Get all events after id.
+     * @param id the id to filter
      * @return  the cursor.
      */
-    public Cursor getAll(long timestamp){
+    public Cursor getAll(long id){
         return query(
                 null,
-                PortalEventDbInfo.COLUMN_NAME_DATE + "> ?",
-                new String[]{Long.toString(timestamp)},
+                PortalEventDbInfo._ID + "> ?",
+                new String[]{Long.toString(id)},
                 PortalEventDbInfo.COLUMN_NAME_DATE + " ASC"
         );
     }

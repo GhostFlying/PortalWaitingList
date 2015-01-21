@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Handler;
 
 import com.ghostflying.portalwaitinglist.dao.datahelper.PortalEventHelper;
+import com.ghostflying.portalwaitinglist.dao.dbinfo.PortalEventDbInfo;
 import com.ghostflying.portalwaitinglist.model.PortalDetail;
 import com.ghostflying.portalwaitinglist.model.PortalEvent;
 import com.ghostflying.portalwaitinglist.util.MailProcessUtil;
@@ -21,7 +22,7 @@ import java.util.Observer;
  * Created by ghostflying on 1/20/15.
  */
 public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalListViewModel> {
-    private long lastEventDate = 0;
+    private long rowId = -1;
     private List<PortalDetail> totalPortals;
     private PortalListViewModel mViewModel;
     private Action mAction;
@@ -65,11 +66,12 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
 
     private void doGetData(PortalListViewModel viewModel){
         MailProcessUtil mProcessUtil = MailProcessUtil.getInstance();
-        Cursor mCursor = mHelper.getAll(lastEventDate);
+        Cursor mCursor = mHelper.getAll(rowId);
         try {
             List<PortalEvent> portalEvents = mHelper.fromCursor(mCursor);
             if (portalEvents.size() != 0){
-                lastEventDate = portalEvents.get(portalEvents.size() - 1).getDate().getTime();
+                mCursor.moveToLast();
+                rowId = mCursor.getLong(mCursor.getColumnIndex(PortalEventDbInfo._ID));
                 mProcessUtil.mergeEvents(totalPortals, portalEvents);
             }
         }
