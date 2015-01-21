@@ -34,32 +34,36 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
         totalPortals = new ArrayList<>();
         mAction = Action.GET_DATA;
         mContentObserver = new PartUpdateContentObserver();
-        mSettingObserver = new SettingObserver();
     }
 
     @Override
     public PortalListViewModel loadInBackground() {
+        if (mHelper == null){
+            mHelper = new PortalEventHelper(getContext());
+            mSettingObserver = new SettingObserver();
+            mHelper.setContentObserver(mContentObserver);
+            SettingUtil.registerObserver(mSettingObserver);
+        }
         PortalListViewModel viewModel = new PortalListViewModel();
         if (mViewModel != null)
             viewModel.counts = mViewModel.counts;
         switch (mAction){
-            case FILTER:
-                doFilter(viewModel);
-                break;
             case GET_DATA:
                 doGetData(viewModel);
                 break;
             case SORT:
-            default:
                 doSort(viewModel);
                 break;
+            case FILTER:
+            default:
+                doFilter(viewModel);
+                break;
         }
+        mAction = Action.DONE;
         return viewModel;
     }
 
     private void doGetData(PortalListViewModel viewModel){
-        if (mHelper == null)
-            mHelper = new PortalEventHelper(getContext());
         MailProcessUtil mProcessUtil = MailProcessUtil.getInstance();
         Cursor mCursor = mHelper.getAll(lastEventDate);
         try {
@@ -116,10 +120,6 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
             deliverResult(mViewModel);
         }
 
-        SettingUtil.registerObserver(mSettingObserver);
-        mHelper = new PortalEventHelper(getContext());
-        mHelper.setContentObserver(mContentObserver);
-
         if (takeContentChanged() || mViewModel == null){
             forceLoad();
         }
@@ -142,7 +142,7 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
     }
 
     public enum Action{
-        GET_DATA, FILTER, SORT
+        GET_DATA, FILTER, SORT, DONE
     }
 
     public class PortalListViewModel{
