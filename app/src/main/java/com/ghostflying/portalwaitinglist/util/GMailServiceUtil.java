@@ -1,10 +1,6 @@
 package com.ghostflying.portalwaitinglist.util;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
-import com.ghostflying.portalwaitinglist.PortalEventContract;
-import com.ghostflying.portalwaitinglist.PortalEventDbHelper;
+import com.ghostflying.portalwaitinglist.dao.datahelper.PortalEventHelper;
 import com.ghostflying.portalwaitinglist.model.Message;
 import com.ghostflying.portalwaitinglist.model.MessageList;
 import com.google.gson.Gson;
@@ -76,38 +72,27 @@ public class GMailServiceUtil {
 
     /**
      * Get all messages related to portal submit.
-     * @param dbHelper the SQLiteHelper to create a database instance.
+     * @param helper    the helper for portal event.
      * @return list of Message
      */
-    public ArrayList<Message> getPortalMessages(PortalEventDbHelper dbHelper) throws IOException{
+    public ArrayList<Message> getPortalMessages(PortalEventHelper helper) throws IOException{
         ArrayList<Message> messages = new ArrayList<>();
-
-        SQLiteDatabase database = dbHelper.getReadableDatabase();
-
-        Cursor lastEvent = database.rawQuery(
-                "SELECT MAX(" + PortalEventContract.PortalEvent.COLUMN_NAME_DATE
-                        + ") AS MAX FROM " + PortalEventContract.PortalEvent.TABLE_NAME,
-                null);
-        lastEvent.moveToFirst();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         //minus a day to avoid the effect of time zone or other problem.
         String afterStr;
-        if (lastEvent.getLong(0) != 0){
-            afterStr = dateFormat.format(new Date(lastEvent.getLong(0) - ONE_DAY_MILLISECONDS));
+        long timestamp = helper.getLastEventTimestamp();
+        if (timestamp != 0){
+            afterStr = dateFormat.format(new Date(timestamp - ONE_DAY_MILLISECONDS));
         }
         else {
             afterStr = DEFAULT_AFTER_STR;
         }
 
-        lastEvent.close();
-
         ArrayList<MessageList.MessageId> messageIds = getAllPortalMessageIds("after:" + afterStr);
 
         // remove all exist messageId
-        removeDuplicate(messageIds, database);
-
-        database.close();
+        removeDuplicate(messageIds, helper);
 
         // Query and add Message to list.
         if (messageIds.size() > 0){
@@ -202,23 +187,12 @@ public class GMailServiceUtil {
     /**
      * Remove the fetched messageId
      * @param ids the messageId list.
-     * @param database the SQLite instance to query.
+     * @param helper    the database helper to query.
      */
-    private void removeDuplicate(ArrayList<MessageList.MessageId> ids, SQLiteDatabase database){
+    private void removeDuplicate(ArrayList<MessageList.MessageId> ids, PortalEventHelper helper){
         for (MessageList.MessageId id : ids.toArray(new MessageList.MessageId[ids.size()])){
-            Cursor existEvent = database.query(
-                    PortalEventContract.PortalEvent.TABLE_NAME,
-                    new String[]{PortalEventContract.PortalEvent.COLUMN_NAME_MESSAGE_ID},
-                    PortalEventContract.PortalEvent.COLUMN_NAME_MESSAGE_ID + " = ?",
-                    new String[]{id.getId()},
-                    null,
-                    null,
-                    null,
-                    "1"
-            );
-            if (existEvent.moveToFirst())
+            if (helper.isExist(id.getId()))
                 ids.remove(id);
-            existEvent.close();
         }
     }
 }

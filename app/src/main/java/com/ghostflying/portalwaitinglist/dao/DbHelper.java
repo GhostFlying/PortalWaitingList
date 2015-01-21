@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.ghostflying.portalwaitinglist.PortalEventContract;
+import com.ghostflying.portalwaitinglist.dao.dbinfo.PortalEventDbInfo;
 
 /**
  * Created by ghostflying on 1/14/15.
@@ -17,17 +17,17 @@ public class DbHelper extends SQLiteOpenHelper{
     private static final String INTEGER_TYPE = " INTEGER";
     private static final String COMMA_SEP = ",";
     private static final String NOT_NULL = " NOT NULL";
-    private static final String SQL_CREATE_EVENTS = "CREATE TABLE " + PortalEventContract.PortalEvent.TABLE_NAME
-            + " (" + PortalEventContract.PortalEvent._ID + INTEGER_TYPE + " PRIMARY KEY, "
-            + PortalEventContract.PortalEvent.COLUMN_NAME_PORTAL_NAME + TEXT_TYPE + NOT_NULL + COMMA_SEP
-            + PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_TYPE + INTEGER_TYPE + NOT_NULL + COMMA_SEP
-            + PortalEventContract.PortalEvent.COLUMN_NAME_OPERATION_RESULT + INTEGER_TYPE + NOT_NULL + COMMA_SEP
-            + PortalEventContract.PortalEvent.COLUMN_NAME_MESSAGE_ID + TEXT_TYPE + NOT_NULL + COMMA_SEP
-            + PortalEventContract.PortalEvent.COLUMN_NAME_DATE + TEXT_TYPE + NOT_NULL + COMMA_SEP
-            + PortalEventContract.PortalEvent.COLUMN_NAME_IMAGE_URL + TEXT_TYPE + COMMA_SEP
-            + PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS + TEXT_TYPE + COMMA_SEP
-            + PortalEventContract.PortalEvent.COLUMN_NAME_ADDRESS_URL + TEXT_TYPE + " )";
-    private static final String SQL_DELETE_EVENTS = "DROP TABLE IF EXISTS " + PortalEventContract.PortalEvent.TABLE_NAME;
+    private static final String SQL_CREATE_EVENTS = "CREATE TABLE " + PortalEventDbInfo.TABLE_NAME
+            + " (" + PortalEventDbInfo._ID + INTEGER_TYPE + " PRIMARY KEY, "
+            + PortalEventDbInfo.COLUMN_NAME_PORTAL_NAME + TEXT_TYPE + NOT_NULL + COMMA_SEP
+            + PortalEventDbInfo.COLUMN_NAME_OPERATION_TYPE + INTEGER_TYPE + NOT_NULL + COMMA_SEP
+            + PortalEventDbInfo.COLUMN_NAME_OPERATION_RESULT + INTEGER_TYPE + NOT_NULL + COMMA_SEP
+            + PortalEventDbInfo.COLUMN_NAME_MESSAGE_ID + TEXT_TYPE + NOT_NULL + COMMA_SEP
+            + PortalEventDbInfo.COLUMN_NAME_DATE + TEXT_TYPE + NOT_NULL + COMMA_SEP
+            + PortalEventDbInfo.COLUMN_NAME_IMAGE_URL + TEXT_TYPE + COMMA_SEP
+            + PortalEventDbInfo.COLUMN_NAME_ADDRESS + TEXT_TYPE + COMMA_SEP
+            + PortalEventDbInfo.COLUMN_NAME_ADDRESS_URL + TEXT_TYPE + " )";
+    private static final String SQL_DELETE_EVENTS = "DROP TABLE IF EXISTS " + PortalEventDbInfo.TABLE_NAME;
 
     public DbHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

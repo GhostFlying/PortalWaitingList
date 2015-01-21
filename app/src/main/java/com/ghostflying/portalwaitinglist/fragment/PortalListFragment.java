@@ -29,7 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ghostflying.portalwaitinglist.AuthActivity;
-import com.ghostflying.portalwaitinglist.PortalEventDbHelper;
 import com.ghostflying.portalwaitinglist.R;
 import com.ghostflying.portalwaitinglist.SettingActivity;
 import com.ghostflying.portalwaitinglist.dao.datahelper.PortalEventHelper;
@@ -62,7 +61,6 @@ public class PortalListFragment extends Fragment
     String account;
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
-    PortalEventDbHelper dbHelper;
     DrawerLayout drawerLayout;
     List<PortalDetail> totalPortalDetails;
     TextView countEverything;
@@ -97,7 +95,6 @@ public class PortalListFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_portal_list, container, false);
         // Initial some members
         account = SettingUtil.getAccount();
-        dbHelper = new PortalEventDbHelper(getActivity());
         totalPortalDetails = new ArrayList<>();
         setToolbar(view);
         setDrawerLayout(view);
@@ -535,6 +532,7 @@ public class PortalListFragment extends Fragment
             // Initial Utils
             GMailServiceUtil fetchUtil = GMailServiceUtil.getInstance(token, false);
             MailProcessUtil processUtil = MailProcessUtil.getInstance();
+            PortalEventHelper dbHelper = new PortalEventHelper(getActivity());
             // query and convert all new messages.
             ArrayList<Message> newMessages;
             try{

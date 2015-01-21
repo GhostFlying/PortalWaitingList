@@ -19,6 +19,7 @@ public class DataProvider extends ContentProvider {
     public static final String AUTHORITY = BuildConfig.APPLICATION_ID;
 
     private DbHelper mDbHelper;
+    private SQLiteDatabase mDatabase;
 
     public DataProvider() {
 
@@ -45,6 +46,13 @@ public class DataProvider extends ContentProvider {
         return mDbHelper;
     }
 
+    private SQLiteDatabase getDb(){
+        DbHelper mHelper = getDbHelper();
+        if (mDatabase == null)
+            mDatabase = mHelper.getWritableDatabase();
+        return mDatabase;
+    }
+
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         // Implement this to handle requests to delete one or more rows.
@@ -59,7 +67,7 @@ public class DataProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values){
         synchronized (DataProvider.class){
-            SQLiteDatabase mDb = getDbHelper().getWritableDatabase();
+            SQLiteDatabase mDb = getDb();
             mDb.beginTransaction();
             long rowId = 0;
             try{
@@ -71,7 +79,6 @@ public class DataProvider extends ContentProvider {
             }
             finally {
                 mDb.endTransaction();
-                mDb.close();
             }
             if (rowId > 0){
                 Uri returnUri = ContentUris.withAppendedId(uri, rowId);
@@ -85,7 +92,7 @@ public class DataProvider extends ContentProvider {
     @Override
     public int bulkInsert(Uri uri, @NonNull ContentValues[] values){
         synchronized (DataProvider.class){
-            SQLiteDatabase mDb = getDbHelper().getWritableDatabase();
+            SQLiteDatabase mDb = getDb();
             mDb.beginTransaction();
             try{
                 for (ContentValues each : values){
@@ -105,7 +112,6 @@ public class DataProvider extends ContentProvider {
             }
             finally {
                 mDb.endTransaction();
-                mDb.close();
             }
             throw new SQLException("Failed to insert to " + uri);
         }
@@ -122,7 +128,7 @@ public class DataProvider extends ContentProvider {
         synchronized (DataProvider.class){
             SQLiteQueryBuilder mQueryBuilder = new SQLiteQueryBuilder();
             mQueryBuilder.setTables(getTableName(uri));
-            SQLiteDatabase mDb = getDbHelper().getReadableDatabase();
+            SQLiteDatabase mDb = getDb();
             Cursor mCursor = mQueryBuilder.query(
                     mDb,
                     projection,

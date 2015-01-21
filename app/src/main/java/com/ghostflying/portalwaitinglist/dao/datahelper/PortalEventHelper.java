@@ -3,8 +3,11 @@ package com.ghostflying.portalwaitinglist.dao.datahelper;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import com.ghostflying.portalwaitinglist.dao.DataProvider;
+import com.ghostflying.portalwaitinglist.dao.DbHelper;
 import com.ghostflying.portalwaitinglist.dao.dbinfo.PortalEventDbInfo;
 import com.ghostflying.portalwaitinglist.model.EditEvent;
 import com.ghostflying.portalwaitinglist.model.InvalidEvent;
@@ -75,6 +78,41 @@ public class PortalEventHelper extends BaseHelper {
                 PortalEventDbInfo.COLUMN_NAME_DATE + " ASC"
         );
     }
+
+    public long getLastEventTimestamp(){
+        synchronized (DataProvider.class){
+            DbHelper mHelper = new DbHelper(mContext);
+            SQLiteDatabase mDatabase = mHelper.getReadableDatabase();
+            Cursor lastEvent = mDatabase.rawQuery(
+                    "SELECT MAX(" + PortalEventDbInfo.COLUMN_NAME_DATE
+                            + ") AS MAX FROM " + PortalEventDbInfo.TABLE_NAME,
+                    null);
+            try{
+                lastEvent.moveToFirst();
+                return lastEvent.getLong(0);
+            }
+            finally {
+                lastEvent.close();
+                mDatabase.close();
+            }
+        }
+    }
+
+    public boolean isExist(String messageId){
+        Cursor mCursor = query(
+                new String[]{PortalEventDbInfo.COLUMN_NAME_MESSAGE_ID},
+                PortalEventDbInfo.COLUMN_NAME_MESSAGE_ID + " = ?",
+                new String[]{messageId},
+                null
+        );
+        try{
+            return mCursor.moveToFirst();
+        }
+        finally {
+            mCursor.close();
+        }
+    }
+
 
     public List<PortalEvent> fromCursor(Cursor cursor){
         List<PortalEvent> portalEvents = new ArrayList<>();
