@@ -1,5 +1,7 @@
 package com.ghostflying.portalwaitinglist.model;
 
+import android.os.Parcel;
+
 import java.util.Date;
 
 /**
@@ -32,6 +34,11 @@ public class SubmissionEvent extends PortalEvent {
         this.portalAddressUrl = portalAddressUrl;
     }
 
+    protected SubmissionEvent(Parcel in){
+        super(in);
+        portalImageUrl = in.readString();
+    }
+
     public String getPortalImageUrl(){
         return portalImageUrl;
     }
@@ -39,5 +46,11 @@ public class SubmissionEvent extends PortalEvent {
     @Override
     public OperationType getOperationType() {
         return OperationType.SUBMISSION;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        super.writeToParcel(out, flags);
+        out.writeString(portalImageUrl);
     }
 }

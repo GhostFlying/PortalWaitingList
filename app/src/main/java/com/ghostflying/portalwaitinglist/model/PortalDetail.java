@@ -1,17 +1,20 @@
 package com.ghostflying.portalwaitinglist.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.ghostflying.portalwaitinglist.util.SettingUtil;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ghostflying on 11/22/14.
  * <br>
  * The data structure of portal detail, the class used to create adapter finally.
  */
-public class PortalDetail implements Comparable<PortalDetail>, Serializable{
+public class PortalDetail implements Comparable<PortalDetail>, Parcelable{
     public static final int PRIORITY_REVIEWED_IN_SHORT_TIME = 4;
     public static final int PRIORITY_WAITING_FOR_REVIEW = 3;
     public static final int PRIORITY_NO_RESPONSE_FOR_LONG_TIME = 2;
@@ -20,7 +23,7 @@ public class PortalDetail implements Comparable<PortalDetail>, Serializable{
     private static final long ONE_DAY_TIME_IN_MILLISECONDS = 24 * 3600 * 1000;
     private static final long DEFAULT_EARLY_TIME_TIME_STAMP = 805176000;
     private String name;
-    private ArrayList<PortalEvent> events;
+    private List<PortalEvent> events;
 
     /**
      * Construct method to create a new instance of PortalDetail.
@@ -30,6 +33,16 @@ public class PortalDetail implements Comparable<PortalDetail>, Serializable{
         events = new ArrayList<PortalEvent>();
         addEvent(event);
         name = event.portalName;
+    }
+
+    /**
+     * Construct method to create a new instance of PortalDetail.
+     * @param in    the parcel.
+     */
+    private PortalDetail(Parcel in){
+        events = new ArrayList<>();
+        in.readTypedList(events, PortalEvent.CREATOR);
+        this.name = events.get(0).getPortalName();
     }
 
     /**
@@ -80,7 +93,7 @@ public class PortalDetail implements Comparable<PortalDetail>, Serializable{
         return null;
     }
 
-    public ArrayList<PortalEvent> getEvents(){
+    public List<PortalEvent> getEvents(){
         return events;
     }
 
@@ -242,4 +255,27 @@ public class PortalDetail implements Comparable<PortalDetail>, Serializable{
         }
         return false;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeTypedList(events);
+    }
+
+    public static final Creator<PortalDetail> CREATOR
+            = new Creator<PortalDetail>(){
+        @Override
+        public PortalDetail createFromParcel(Parcel source) {
+            return new PortalDetail(source);
+        }
+
+        @Override
+        public PortalDetail[] newArray(int size) {
+            return new PortalDetail[size];
+        }
+    };
 }

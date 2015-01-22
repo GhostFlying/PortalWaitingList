@@ -1,5 +1,7 @@
 package com.ghostflying.portalwaitinglist.model;
 
+import android.os.Parcel;
+
 import java.util.Date;
 
 /**
@@ -8,6 +10,10 @@ import java.util.Date;
 public class InvalidEvent extends SubmissionEvent {
     public InvalidEvent(String portalName, OperationResult result, Date date, String messageId, String portalImageUrl) {
         super(portalName, result, date, messageId, portalImageUrl);
+    }
+
+    protected InvalidEvent(Parcel in){
+        super(in);
     }
 
     @Override

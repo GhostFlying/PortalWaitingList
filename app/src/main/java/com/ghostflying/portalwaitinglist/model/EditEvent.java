@@ -1,5 +1,7 @@
 package com.ghostflying.portalwaitinglist.model;
 
+import android.os.Parcel;
+
 import java.util.Date;
 
 /**
@@ -23,6 +25,10 @@ public class EditEvent extends PortalEvent {
         super(portalName, result, date, messageId);
         this.portalAddress = portalAddress;
         this.portalAddressUrl = portalAddressUrl;
+    }
+
+    protected EditEvent(Parcel in){
+        super(in);
     }
 
 

@@ -75,7 +75,7 @@ public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.Vi
         viewHolder.portalName.setText(detail.getName());
         viewHolder.portalLastUpdated.setText(getDateDiffStr(detail.getLastUpdated()));
         // set the event list
-        ArrayList<PortalEvent> events = detail.getEvents();
+        List<PortalEvent> events = detail.getEvents();
         viewHolder.setEventCount(events.size());
         for (int i = 0; i < events.size(); i++){
             viewHolder.setEventIcon(i, getEventIcon(events.get(i).getOperationType(),

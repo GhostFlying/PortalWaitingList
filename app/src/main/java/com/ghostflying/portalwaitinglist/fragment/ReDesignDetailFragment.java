@@ -1,7 +1,6 @@
 package com.ghostflying.portalwaitinglist.fragment;
 
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -32,7 +32,6 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -58,10 +57,10 @@ public class ReDesignDetailFragment extends Fragment
     private float mMaxHeaderElevation;
     private String addressUrl;
 
-    public static ReDesignDetailFragment newInstance(Serializable clickedPortal) {
+    public static ReDesignDetailFragment newInstance(Parcelable clickedPortal) {
         ReDesignDetailFragment fragment = new ReDesignDetailFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_CLICKED_PORTAL_NAME, clickedPortal);
+        args.putParcelable(ARG_CLICKED_PORTAL_NAME, clickedPortal);
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,7 +74,7 @@ public class ReDesignDetailFragment extends Fragment
         super.onCreate(savedInstanceState);
         localDateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
         if (getArguments() != null) {
-            clickedPortal = (PortalDetail)getArguments().getSerializable(ARG_CLICKED_PORTAL_NAME);
+            clickedPortal = getArguments().getParcelable(ARG_CLICKED_PORTAL_NAME);
         }
     }
     @Override
