@@ -29,11 +29,13 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
     private PortalEventHelper mHelper;
     private ContentObserver mContentObserver;
     private Observer mSettingObserver;
+    private boolean isObserved;
 
     public PortalListLoader(Context context){
         super(context);
         totalPortals = new ArrayList<>();
         mAction = Action.GET_DATA;
+        isObserved = false;
         mContentObserver = new PartUpdateContentObserver();
     }
 
@@ -42,9 +44,8 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
         if (mHelper == null){
             mHelper = new PortalEventHelper(getContext());
             mSettingObserver = new SettingObserver();
-            mHelper.setContentObserver(mContentObserver);
-            SettingUtil.registerObserver(mSettingObserver);
         }
+        setObserver();
         PortalListViewModel viewModel = new PortalListViewModel();
         if (mViewModel != null)
             viewModel.counts = mViewModel.counts;
@@ -62,6 +63,14 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
         }
         mAction = Action.DONE;
         return viewModel;
+    }
+
+    private void setObserver() {
+        if (!isObserved){
+            mHelper.setContentObserver(mContentObserver);
+            SettingUtil.registerObserver(mSettingObserver);
+            isObserved = true;
+        }
     }
 
     private void doGetData(PortalListViewModel viewModel){
@@ -122,6 +131,10 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
             deliverResult(mViewModel);
         }
 
+        if (mHelper != null){
+            setObserver();
+        }
+
         if (takeContentChanged() || mViewModel == null){
             forceLoad();
         }
@@ -133,6 +146,7 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
         SettingUtil.unregisterObserver();
         if (mHelper != null)
             mHelper.unregisterContentObserver(mContentObserver);
+        isObserved = false;
     }
 
     @Override

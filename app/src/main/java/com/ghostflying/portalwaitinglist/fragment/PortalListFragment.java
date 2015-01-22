@@ -102,9 +102,6 @@ public class PortalListFragment extends Fragment
         setSwipeRefreshLayout(view);
         setHasOptionsMenu(true);
         switchActionBarColorBySetting();
-        // read stored data.
-        // new InitialTask().execute();
-        getLoaderManager().initLoader(0, null, this);
         return view;
     }
 
@@ -179,6 +176,13 @@ public class PortalListFragment extends Fragment
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        // read stored data.
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
