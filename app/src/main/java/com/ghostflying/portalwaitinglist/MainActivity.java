@@ -24,7 +24,7 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // read all settings from storage.
-        SettingUtil.readAllSettings(this);
+        SettingUtil.getSettings(this);
         // If account is not set, usually user open this first time
         // turn to AuthIntent.
         if ((account = SettingUtil.getAccount()) == null){
@@ -51,12 +51,6 @@ public class MainActivity extends ActionBarActivity
                 this.finish();
             }
         }
-    }
-
-    @Override
-    protected void onPause(){
-        super.onPause();
-        SettingUtil.saveAllSettings();
     }
 
     @Override
