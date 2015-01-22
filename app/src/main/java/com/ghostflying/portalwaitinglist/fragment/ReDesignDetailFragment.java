@@ -28,6 +28,7 @@ import com.ghostflying.portalwaitinglist.ObservableScrollView;
 import com.ghostflying.portalwaitinglist.R;
 import com.ghostflying.portalwaitinglist.model.PortalDetail;
 import com.ghostflying.portalwaitinglist.model.PortalEvent;
+import com.ghostflying.portalwaitinglist.util.SettingUtil;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -130,7 +131,7 @@ public class ReDesignDetailFragment extends Fragment
 
         // photo
         String photoUrl = clickedPortal.getImageUrl();
-        if (photoUrl != null && photoUrl.startsWith("http")){
+        if (SettingUtil.getIfShowImages() && photoUrl != null && photoUrl.startsWith("http")){
             mHasPhoto = true;
             // download and show the image of portal
             Picasso.with(getActivity())
