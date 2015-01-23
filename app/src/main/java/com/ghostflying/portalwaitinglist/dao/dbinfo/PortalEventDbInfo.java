@@ -1,6 +1,5 @@
 package com.ghostflying.portalwaitinglist.dao.dbinfo;
 
-import android.app.SearchManager;
 import android.provider.BaseColumns;
 
 /**
@@ -17,8 +16,4 @@ public class PortalEventDbInfo implements BaseColumns {
     public static final String COLUMN_NAME_IMAGE_URL = "imageurl";
     public static final String COLUMN_NAME_ADDRESS = "address";
     public static final String COLUMN_NAME_ADDRESS_URL = "addressurl";
-    public static final String COLUMN_NAME_SUGGEST_TEXT_1 = SearchManager.SUGGEST_COLUMN_TEXT_1;//alias
-    public static final String COLUMN_NAME_SUGGEST_TEXT_2 = SearchManager.SUGGEST_COLUMN_TEXT_2;
-    public static final String COLUMN_NAME_SUGGEST_ICON_1 = SearchManager.SUGGEST_COLUMN_ICON_1;
-    public static final String COLUMN_NAME_SUGGEST_INTENT_DATA = SearchManager.SUGGEST_COLUMN_INTENT_DATA;//alias
 }

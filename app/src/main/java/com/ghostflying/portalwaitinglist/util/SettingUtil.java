@@ -23,7 +23,6 @@ public class SettingUtil {
     static final String FORCE_CHINESE_NAME = "ForceChinese";
     static final String TYPE_FILTER_METHOD_NAME = "TypeFilterMethod";
     static final String SHOW_STATUS_IN_LIST_NAME = "ShowStatusInList";
-    static final String UPGRADE_FLAG_NAME = "UpgradeFlag";
     static final boolean DEFAULT_IF_SHOW_IMAGES = true;
     static final int DEFAULT_SHORT_TIME = 7;
     static final int DEFAULT_LONG_TIME = 365;
@@ -31,7 +30,6 @@ public class SettingUtil {
     static final boolean DEFAULT_FORCE_CHINESE = false;
     static final int DEFAULT_TYPE_FILTER_METHOD = 0;
     static final boolean DEFAULT_SHOW_STATUS_IN_LIST = false;
-    static final int DEFAULT_UPGRADE_FLAG = 0;
     private static SharedPreferences options;
     private static Observer settingObserver;
 
@@ -227,24 +225,6 @@ public class SettingUtil {
     public static void setShowStatusInList(boolean showStatusInList){
         options.edit()
                 .putBoolean(SHOW_STATUS_IN_LIST_NAME, showStatusInList)
-                .apply();
-    }
-
-    /**
-     * Get upgrade flag, this is used to check if upgrade.
-     * @return  the upgrade flag.
-     */
-    public static int getUpgradeFlag(){
-        return options.getInt(UPGRADE_FLAG_NAME, DEFAULT_UPGRADE_FLAG);
-    }
-
-    /**
-     * Set upgrade flag.
-     * @param upgradeFlag   the upgrade flag.
-     */
-    public static void setUpgradeFlag(int upgradeFlag){
-        options.edit()
-                .putInt(UPGRADE_FLAG_NAME, upgradeFlag)
                 .apply();
     }
 
