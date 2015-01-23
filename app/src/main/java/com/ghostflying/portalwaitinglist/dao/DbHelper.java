@@ -10,7 +10,7 @@ import com.ghostflying.portalwaitinglist.dao.dbinfo.PortalEventDbInfo;
  * Created by ghostflying on 1/14/15.
  */
 public class DbHelper extends SQLiteOpenHelper{
-    static final int DATABASE_VERSION = 3;
+    static final int DATABASE_VERSION = 4;
     static final String DATABASE_NAME = "PortalEvent.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -26,7 +26,9 @@ public class DbHelper extends SQLiteOpenHelper{
             + PortalEventDbInfo.COLUMN_NAME_DATE + TEXT_TYPE + NOT_NULL + COMMA_SEP
             + PortalEventDbInfo.COLUMN_NAME_IMAGE_URL + TEXT_TYPE + COMMA_SEP
             + PortalEventDbInfo.COLUMN_NAME_ADDRESS + TEXT_TYPE + COMMA_SEP
-            + PortalEventDbInfo.COLUMN_NAME_ADDRESS_URL + TEXT_TYPE + " )";
+            + PortalEventDbInfo.COLUMN_NAME_ADDRESS_URL + TEXT_TYPE + COMMA_SEP
+            + PortalEventDbInfo.COLUMN_NAME_SUGGEST_TEXT_2 + TEXT_TYPE + COMMA_SEP
+            + PortalEventDbInfo.COLUMN_NAME_SUGGEST_ICON_1 + TEXT_TYPE + " )";
     private static final String SQL_DELETE_EVENTS = "DROP TABLE IF EXISTS " + PortalEventDbInfo.TABLE_NAME;
 
     public DbHelper(Context context){
@@ -40,6 +42,17 @@ public class DbHelper extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion == 3 && newVersion == 4){
+            db.execSQL(
+                    "ALTER TABLE " + PortalEventDbInfo.TABLE_NAME + " ADD COLUMN " +
+                            PortalEventDbInfo.COLUMN_NAME_SUGGEST_TEXT_2 + TEXT_TYPE
+            );
+            db.execSQL(
+                    "ALTER TABLE " + PortalEventDbInfo.TABLE_NAME + " ADD COLUMN " +
+                            PortalEventDbInfo.COLUMN_NAME_SUGGEST_ICON_1 + TEXT_TYPE
+            );
+            return;
+        }
         db.execSQL(SQL_DELETE_EVENTS);
         onCreate(db);
     }
