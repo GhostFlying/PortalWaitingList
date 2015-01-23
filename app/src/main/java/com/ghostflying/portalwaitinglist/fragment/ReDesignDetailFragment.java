@@ -29,6 +29,8 @@ import com.ghostflying.portalwaitinglist.R;
 import com.ghostflying.portalwaitinglist.model.PortalDetail;
 import com.ghostflying.portalwaitinglist.model.PortalEvent;
 import com.ghostflying.portalwaitinglist.util.SettingUtil;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -40,8 +42,10 @@ import java.util.Date;
 public class ReDesignDetailFragment extends Fragment
         implements ObservableScrollView.Callbacks {
     static final String ARG_CLICKED_PORTAL_NAME = "clickedPortal";
+    static final String ARG_FIRST_EVENT_ID = "firstEventId";
 
     PortalDetail clickedPortal;
+    String firstEventId;
     ObservableScrollView mScrollView;
     ImageView mPhotoView;
     View mPhotoViewContainer;
@@ -57,11 +61,24 @@ public class ReDesignDetailFragment extends Fragment
     private boolean mHasPhoto;
     private float mMaxHeaderElevation;
     private String addressUrl;
+    private GoogleApiClient mClient;
+    private static final Uri BASE_APP_URI = Uri.parse(
+            "android-app://com.ghostflying.portalwaitinglist/http/portalwaitinglist.ghostflying.com/portal/");
+    private static final String BASE_WEB_URL = "http://portalwaitinglist.ghostflying.com/portal/";
+    private Uri appUri;
 
     public static ReDesignDetailFragment newInstance(Parcelable clickedPortal) {
         ReDesignDetailFragment fragment = new ReDesignDetailFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_CLICKED_PORTAL_NAME, clickedPortal);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static ReDesignDetailFragment newInstance(String messageId) {
+        ReDesignDetailFragment fragment = new ReDesignDetailFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_FIRST_EVENT_ID, messageId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,10 +91,31 @@ public class ReDesignDetailFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         localDateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+        mClient = new GoogleApiClient.Builder(getActivity()).addApi(AppIndex.APP_INDEX_API).build();
         if (getArguments() != null) {
             clickedPortal = getArguments().getParcelable(ARG_CLICKED_PORTAL_NAME);
+            firstEventId = getArguments().getString(ARG_FIRST_EVENT_ID);
         }
     }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        mClient.connect();
+        final String TITLE = clickedPortal.getName();
+        String messageId = clickedPortal.getEvents().get(0).getMessageId();
+        appUri = BASE_APP_URI.buildUpon().appendPath(messageId).build();
+        final Uri WEB_URI = Uri.parse(BASE_WEB_URL + messageId);
+        AppIndex.AppIndexApi.view(mClient, getActivity(), appUri, TITLE, WEB_URI, null);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        AppIndex.AppIndexApi.viewEnd(mClient, getActivity(), appUri);
+        mClient.disconnect();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

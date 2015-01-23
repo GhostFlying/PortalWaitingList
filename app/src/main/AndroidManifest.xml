@@ -44,6 +44,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ghostflying.portalwaitinglist.MainActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="http"
+                      android:host="portalwaitinglist.ghostflying.com"
+                      android:pathPrefix="/portal" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
         </activity>
 
         <provider
