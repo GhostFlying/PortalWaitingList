@@ -113,6 +113,48 @@ public class PortalEventHelper extends BaseHelper {
         }
     }
 
+    /**
+     * Get events with the same portal name with the specified event.
+     * The specified event is the first one.
+     * @param messageId the messageId of the specified event.
+     * @return  the list of events.
+     */
+    public List<PortalEvent> getEventsByName(String messageId){
+        List<PortalEvent> events = new ArrayList<>();
+        Cursor specifiedCursor = query(
+                null,
+                PortalEventDbInfo.COLUMN_NAME_MESSAGE_ID + " = ?",
+                new String[]{messageId},
+                null
+        );
+        try{
+            events.addAll(fromCursor(specifiedCursor));
+        }
+        finally {
+            specifiedCursor.close();
+        }
+
+        if (events.size() == 1){
+            String portalName = events.get(0).getPortalName();
+            Cursor sameNameCursor = query(
+                    null,
+                    PortalEventDbInfo.COLUMN_NAME_PORTAL_NAME + " = ? AND " +
+                    PortalEventDbInfo.COLUMN_NAME_MESSAGE_ID + " != ?",
+                    new String[]{portalName, messageId},
+                    PortalEventDbInfo.COLUMN_NAME_DATE + " ASC"
+            );
+            try{
+                events.addAll(fromCursor(sameNameCursor));
+            }
+            finally {
+                sameNameCursor.close();
+            }
+            return events;
+        }
+        // if there are no events in the specified Id, return empty list.
+        else
+            return new ArrayList<PortalEvent>();
+    }
 
     public List<PortalEvent> fromCursor(Cursor cursor){
         List<PortalEvent> portalEvents = new ArrayList<>();

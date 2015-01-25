@@ -2,7 +2,9 @@ package com.ghostflying.portalwaitinglist.fragment;
 
 
 import android.app.Fragment;
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
@@ -26,6 +28,7 @@ import android.widget.Toast;
 
 import com.ghostflying.portalwaitinglist.ObservableScrollView;
 import com.ghostflying.portalwaitinglist.R;
+import com.ghostflying.portalwaitinglist.loader.SearchResultLoader;
 import com.ghostflying.portalwaitinglist.model.PortalDetail;
 import com.ghostflying.portalwaitinglist.model.PortalEvent;
 import com.ghostflying.portalwaitinglist.util.SettingUtil;
@@ -40,7 +43,7 @@ import java.util.Date;
 
 
 public class ReDesignDetailFragment extends Fragment
-        implements ObservableScrollView.Callbacks {
+        implements ObservableScrollView.Callbacks, LoaderManager.LoaderCallbacks<PortalDetail> {
     static final String ARG_CLICKED_PORTAL_NAME = "clickedPortal";
     static final String ARG_FIRST_EVENT_ID = "firstEventId";
 
@@ -53,8 +56,11 @@ public class ReDesignDetailFragment extends Fragment
     View mDetailsContainer;
     TextView mPortalName;
     TextView mPortalSummary;
+    TextView mPortalAddress;
+    View mPortalAddressView;
     Toolbar mToolbar;
     View mPortalEventListContainer;
+    Menu mMenu;
     private DateFormat localDateFormat;
     private int mPhotoHeightPixels;
     private int mHeaderHeightPixels;
@@ -101,6 +107,11 @@ public class ReDesignDetailFragment extends Fragment
     @Override
     public void onStart(){
         super.onStart();
+        if (clickedPortal != null)
+            recordView();
+    }
+
+    private void recordView() {
         mClient.connect();
         final String TITLE = clickedPortal.getName();
         String messageId = clickedPortal.getEvents().get(0).getMessageId();
@@ -149,26 +160,49 @@ public class ReDesignDetailFragment extends Fragment
         mPhotoViewContainer = view.findViewById(R.id.portal_photo_container);
         mPortalName = (TextView)view.findViewById(R.id.portal_name);
         mPortalSummary = (TextView)view.findViewById(R.id.portal_status_in_detail);
-        mPortalName.setText(clickedPortal.getName());
-        mPortalSummary.setText(getSummaryText(clickedPortal));
         mMaxHeaderElevation = getResources().getDimensionPixelSize(
                 R.dimen.portal_detail_max_header_elevation);
 
         // details
         mDetailsContainer = view.findViewById(R.id.detail_container);
-        String address = clickedPortal.getAddress();
+        mPortalAddress = (TextView)view.findViewById(R.id.portal_address_in_detail);
+        mPortalAddressView = view.findViewById(R.id.portal_address_view_in_detail);
+        mPortalEventListContainer = view.findViewById(R.id.portal_event_list);
+
+
+        // set observer for views
+        ViewTreeObserver vto = mScrollView.getViewTreeObserver();
+        if (vto.isAlive()) {
+            vto.addOnGlobalLayoutListener(mGlobalLayoutListener);
+        }
+
+        // menu
+        setHasOptionsMenu(true);
+
+        if (clickedPortal != null)
+            showPortal(clickedPortal);
+        else {
+            getLoaderManager().initLoader(0, null, this);
+        }
+        return view;
+    }
+
+    private void showPortal(PortalDetail portal){
+        mPortalName.setText(portal.getName());
+        mPortalSummary.setText(getSummaryText(portal));
+
+        String address = portal.getAddress();
         if (address != null){
-            ((TextView)view.findViewById(R.id.portal_address_in_detail))
-                    .setText(address);
+            mPortalAddress.setText(address);
         }
         else {
-            view.findViewById(R.id.portal_address_view_in_detail).setVisibility(View.GONE);
+            mPortalAddressView.setVisibility(View.GONE);
         }
-        mPortalEventListContainer = view.findViewById(R.id.portal_event_list);
-        addEventViews(clickedPortal, (ViewGroup)mPortalEventListContainer);
+
+        addEventViews(portal, (ViewGroup)mPortalEventListContainer);
 
         // photo
-        String photoUrl = clickedPortal.getImageUrl();
+        String photoUrl = portal.getImageUrl();
         if (SettingUtil.getIfShowImages() && photoUrl != null && photoUrl.startsWith("http")){
             mHasPhoto = true;
             // download and show the image of portal
@@ -182,28 +216,31 @@ public class ReDesignDetailFragment extends Fragment
             mHasPhoto = false;
         }
         // set color
-        setColors(clickedPortal);
+        setColors(portal);
+        removeMapMenuOnDemand(portal);
 
-        // set observer for views
-        ViewTreeObserver vto = mScrollView.getViewTreeObserver();
-        if (vto.isAlive()) {
-            vto.addOnGlobalLayoutListener(mGlobalLayoutListener);
+        if (firstEventId != null && mHasPhoto){
+            ViewGroup.LayoutParams lp;
+            lp = mPhotoViewContainer.getLayoutParams();
+            lp.height = getResources().getDimensionPixelSize(R.dimen.portal_detail_photo_height);
+            mPhotoViewContainer.setLayoutParams(lp);
         }
+    }
 
-        // menu
-        setHasOptionsMenu(true);
-        return view;
+    private void removeMapMenuOnDemand(PortalDetail portal) {
+        if (portal != null && mMenu != null){
+            // check if there is available address url
+            addressUrl = portal.getAddressUrl();
+            if (addressUrl == null || !addressUrl.startsWith("http"))
+                mMenu.removeItem(R.id.menu_item_view_map);
+        }
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_re_design_detail, menu);
-
-        // check if there is available address url
-        addressUrl = clickedPortal.getAddressUrl();
-        if (addressUrl == null || !addressUrl.startsWith("http"))
-            menu.removeItem(R.id.menu_item_view_map);
-
+        mMenu = menu;
+        removeMapMenuOnDemand(clickedPortal);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -213,7 +250,8 @@ public class ReDesignDetailFragment extends Fragment
 
         switch (id){
             case R.id.menu_item_view_map:
-                openUrl(addressUrl);
+                if (addressUrl != null)
+                    openUrl(addressUrl);
                 return true;
             case R.id.menu_item_share:
                 new ShareTask().execute();
@@ -466,6 +504,25 @@ public class ReDesignDetailFragment extends Fragment
         }
 
         return (value - min) / (float) (max - min);
+    }
+
+    @Override
+    public Loader<PortalDetail> onCreateLoader(int id, Bundle args) {
+        return new SearchResultLoader(getActivity(), firstEventId);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<PortalDetail> loader, PortalDetail data) {
+        if (data != null){
+            clickedPortal = data;
+            showPortal(data);
+            recordView();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<PortalDetail> loader) {
+
     }
 
     public class ShareTask extends AsyncTask<Void, Void, Void> {
