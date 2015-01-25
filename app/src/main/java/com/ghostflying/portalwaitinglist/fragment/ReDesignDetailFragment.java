@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ghostflying.portalwaitinglist.MainActivity;
 import com.ghostflying.portalwaitinglist.ObservableScrollView;
 import com.ghostflying.portalwaitinglist.R;
 import com.ghostflying.portalwaitinglist.loader.SearchResultLoader;
@@ -141,6 +142,9 @@ public class ReDesignDetailFragment extends Fragment
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (firstEventId != null){
+                    startActivity(new Intent(getActivity(), MainActivity.class));
+                }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
                     getActivity().finishAfterTransition();
                 }
