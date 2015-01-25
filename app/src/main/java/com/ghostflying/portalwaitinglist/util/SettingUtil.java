@@ -74,7 +74,7 @@ public class SettingUtil {
      * @param resultFilterMethod  filterMethod to be set.
      */
     public static void setResultFilterMethod(ResultFilterMethod resultFilterMethod){
-        if (resultFilterMethod == getResultFilterMethod()){
+        if (resultFilterMethod != getResultFilterMethod()){
             options.edit().putInt(RESULT_FILTER_METHOD_NAME, resultFilterMethod.ordinal()).apply();
             notifyChange(resultFilterMethod);
         }
