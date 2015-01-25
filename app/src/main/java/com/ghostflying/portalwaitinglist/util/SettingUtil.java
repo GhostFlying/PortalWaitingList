@@ -205,9 +205,12 @@ public class SettingUtil {
      * @param typeFilterMethod  the method set to filter by type.
      */
     public static void setTypeFilterMethod(TypeFilterMethod typeFilterMethod){
-        options.edit()
-                .putInt(TYPE_FILTER_METHOD_NAME, typeFilterMethod.ordinal())
-                .apply();
+        if (typeFilterMethod != getTypeFilterMethod()){
+            options.edit()
+                    .putInt(TYPE_FILTER_METHOD_NAME, typeFilterMethod.ordinal())
+                    .apply();
+            notifyChange(typeFilterMethod);
+        }
     }
 
     /**
