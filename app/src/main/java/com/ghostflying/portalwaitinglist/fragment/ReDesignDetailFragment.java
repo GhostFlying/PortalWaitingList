@@ -498,7 +498,10 @@ public class ReDesignDetailFragment extends Fragment
 
         ViewTreeObserver vto = mScrollView.getViewTreeObserver();
         if (vto.isAlive()) {
-            vto.removeGlobalOnLayoutListener(mGlobalLayoutListener);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                vto.removeOnGlobalLayoutListener(mGlobalLayoutListener);
+            else
+                vto.removeGlobalOnLayoutListener(mGlobalLayoutListener);
         }
     }
 
