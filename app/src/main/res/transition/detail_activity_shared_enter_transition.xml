@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
-               xmlns:app="http://schemas.android.com/apk/res-auto"
-               android:transitionOrdering="together">
-    <changeBounds/>
-    <transition
-        class="com.ghostflying.portalwaitinglist.animation.PortalHeaderBackgroundTransition"
-        app:mode="0"/>
-</transitionSet>
