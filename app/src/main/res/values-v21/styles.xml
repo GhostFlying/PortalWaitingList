@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme" parent="AppBaseTheme">
+    </style>
+
+    <style name="AppTheme.Detail" parent="AppTheme">
         <!-- enable window content transitions -->
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowSharedElementEnterTransition">
