@@ -362,6 +362,8 @@ public class ReDesignDetailFragment extends Fragment
                 description += getString(R.string.event_description_accepted);
                 break;
             case DUPLICATE:
+                description += getString(R.string.event_description_duplicated);
+                break;
             case REJECTED:
                 description += getString(R.string.event_description_rejected);
                 break;
