@@ -1,19 +1,15 @@
 package com.ghostflying.portalwaitinglist.fragment;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -51,26 +47,20 @@ import java.util.List;
 import retrofit.RetrofitError;
 
 
-public class PortalListFragment extends Fragment
+public class PortalListFragment extends BaseNavDrawerFragment
         implements LoaderManager.LoaderCallbacks<PortalListLoader.PortalListViewModel> {
 
     private OnFragmentInteractionListener mListener;
 
-    Toolbar toolbar;
     String token;
     String account;
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
-    DrawerLayout drawerLayout;
     List<PortalDetail> totalPortalDetails;
     TextView countEverything;
     TextView countAccepted;
     TextView countRejected;
     TextView countWaiting;
-    TextView totalPortals;
-    TextView totalSubmission;
-    TextView totalEdit;
-    View selectedType;
     SearchTask searchTask;
     MenuItem searchItem;
 
@@ -192,20 +182,7 @@ public class PortalListFragment extends Fragment
     }
 
     private void setDrawerLayout(View v){
-        drawerLayout = (DrawerLayout)v.findViewById(R.id.drawer_layout);
-        // set the status bar bg when nav do not open
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.primary_dark));
-
-        // handle the home button
-        ActionBarDrawerToggle actionBarDrawerToggle =
-                new ActionBarDrawerToggle(getActivity(),
-                        drawerLayout,
-                        toolbar,
-                        R.string.app_name,
-                        R.string.app_name);
-        actionBarDrawerToggle.syncState();
-        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        setNavDrawer(v);
 
         // result filter
         v.findViewById(R.id.item_everything).setOnClickListener(resultFilterClickListener);
@@ -226,67 +203,11 @@ public class PortalListFragment extends Fragment
         v.findViewById(R.id.navigation_item_submission).setOnClickListener(typeFilterClickListener);
         v.findViewById(R.id.navigation_item_edit).setOnClickListener(typeFilterClickListener);
 
-
-        // select from setting
-        switch (SettingUtil.getTypeFilterMethod()){
-            case ALL:
-                selectedType = v.findViewById(R.id.navigation_item_all);
-                break;
-            case SUBMISSION:
-                selectedType = v.findViewById(R.id.navigation_item_submission);
-                break;
-            case EDIT:
-                selectedType = v.findViewById(R.id.navigation_item_edit);
-                break;
-            default:
-                selectedType = v.findViewById(R.id.navigation_item_all);
-        }
-        selectedType.setSelected(true);
-
-        // other in navigation
-        v.findViewById(R.id.navigation_item_setting).setOnClickListener(navigationDrawerClickListener);
-        v.findViewById(R.id.navigation_item_feedback).setOnClickListener(navigationDrawerClickListener);
-        totalPortals = (TextView)v.findViewById(R.id.navigation_drawer_total_portals);
-        totalEdit = (TextView)v.findViewById(R.id.navigation_drawer_total_edit);
-        totalSubmission = (TextView)v.findViewById(R.id.navigation_drawer_total_submission);
-
-        // set the user avatar and account name
-        if (SettingUtil.getAccount() != null){
-            ((TextView)v.findViewById(R.id.account_name)).setText(SettingUtil.getAccount());
-            ((TextView)v.findViewById(R.id.user_avatar)).setText(
-                    SettingUtil.getAccount().toUpperCase().substring(0 ,1)
-            );
-        }
-
-
         countEverything = (TextView)v.findViewById(R.id.count_everything);
         countAccepted = (TextView)v.findViewById(R.id.count_accepted);
         countRejected = (TextView)v.findViewById(R.id.count_rejected);
         countWaiting = (TextView)v.findViewById(R.id.count_waiting);
     }
-
-    View.OnClickListener navigationDrawerClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()){
-                case R.id.navigation_item_setting:
-                    Intent setting = new Intent(getActivity(), SettingActivity.class);
-                    startActivityForResult(setting, SettingActivity.REQUEST_SETTING);
-                    getActivity().overridePendingTransition(R.animator.setting_swap_in_bottom, R.animator.setting_swap_out_bottom);
-                    break;
-                case R.id.navigation_item_feedback:
-                    Intent mailIntent = new Intent(
-                            Intent.ACTION_SENDTO,
-                            Uri.fromParts("mailto", getString(R.string.author_mail), null)
-                    );
-                    mailIntent.putExtra(Intent.EXTRA_SUBJECT,
-                            getString(R.string.navigation_drawer_feedback_subject));
-                    startActivity(Intent.createChooser(
-                            mailIntent, getString(R.string.navigation_drawer_send)));
-                    break;
-            }
-        }
-    };
 
     View.OnClickListener sortClickListener = new View.OnClickListener() {
         @Override
@@ -392,7 +313,8 @@ public class PortalListFragment extends Fragment
             drawerLayout.setStatusBarBackground(statusBarBg);
     }
 
-    private void setToolbar(View v){
+    @Override
+    protected void setToolbar(View v){
         toolbar = (Toolbar)v.findViewById(R.id.action_bar_in_list);
         setTitleBySetting();
         ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
