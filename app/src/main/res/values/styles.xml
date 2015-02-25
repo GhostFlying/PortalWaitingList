@@ -5,20 +5,32 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="actionModeBackground">@color/primary</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="colorAccent">@color/color_accent</item>
     </style>
 
     <style name="AppTheme" parent="AppBaseTheme">
     </style>
 
+    <style name="AppTheme.Detail" parent="AppTheme">
+    </style>
+
     <style name="AppTheme.Transparent" parent="AppTheme">
+    </style>
+
+    <style name="AppTheme.PortalList" parent="AppTheme.Transparent">
+        <item name="colorControlActivated">@android:color/white</item>
     </style>
 
     <color name="primary">#2196F3</color>
     <color name="primary_dark">#1976D2</color>
+    <color name="color_accent">#448AFF</color>
+    <color name="color_accent_light">#82B1FF</color>
     <color name="account_info_title_bg">#607D8B</color>
     <color name="mail_address_text">#000000</color>
     <color name="filter_drawer_bg">#FFFFFF</color>
-    <color name="filter_drawer_title_color">#2979FF</color>
+    <color name="filter_drawer_title_color">#2979FF</color>trl
     <color name="filter_drawer_item_text_color">#000000</color>
     <color name="filter_drawer_count_text_everything">#000000</color>
     <color name="filter_drawer_count_text_accepted">@color/accent_material_light</color>

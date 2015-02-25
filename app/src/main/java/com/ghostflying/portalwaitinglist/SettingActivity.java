@@ -4,14 +4,15 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.ghostflying.portalwaitinglist.Util.SettingUtil;
 import com.ghostflying.portalwaitinglist.fragment.BaseAlertDialogFragment;
 import com.ghostflying.portalwaitinglist.fragment.DaysPickerDialogFragment;
+import com.ghostflying.portalwaitinglist.util.SettingUtil;
 
 
 public class SettingActivity extends ActionBarActivity
@@ -196,4 +197,21 @@ public class SettingActivity extends ActionBarActivity
     public void onNegativeButtonClick(int value, int title) {
 
     }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        this.overridePendingTransition(R.animator.setting_swap_in_top, R.animator.setting_swap_out_top);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            this.overridePendingTransition(R.animator.setting_swap_in_top, R.animator.setting_swap_out_top);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+   }
 }

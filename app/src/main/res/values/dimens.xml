@@ -67,4 +67,17 @@
     <!-- Days Picker Fragment -->
     <dimen name="days_picker_text_margin_left">10dp</dimen>
 
+    <!-- Redesign detail activity -->
+    <dimen name="portal_detail_max_header_elevation">4dp</dimen>
+    <dimen name="portal_detail_keyline_1">16dp</dimen>
+    <dimen name="portal_detail_keyline_2">72dp</dimen>
+    <dimen name="portal_detail_event_padding_vertical">20dp</dimen>
+    <dimen name="portal_detail_event_description_margin">5dp</dimen>
+    <dimen name="portal_detail_icon_size">40dp</dimen>
+    <dimen name="portal_detail_photo_height">250dp</dimen>
+    <dimen name="portal_detail_photo_width">0dp</dimen>
+
+    <!-- ScreenShot dialog -->
+    <dimen name="screen_shot_dialog_padding">30dp</dimen>
+
 </resources>

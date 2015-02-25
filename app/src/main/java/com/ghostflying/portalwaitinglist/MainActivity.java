@@ -1,12 +1,15 @@
 package com.ghostflying.portalwaitinglist;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
 
-import com.ghostflying.portalwaitinglist.Util.SettingUtil;
-import com.ghostflying.portalwaitinglist.data.PortalDetail;
 import com.ghostflying.portalwaitinglist.fragment.PortalListFragment;
+import com.ghostflying.portalwaitinglist.model.PortalDetail;
+import com.ghostflying.portalwaitinglist.util.SettingUtil;
 
 
 public class MainActivity extends ActionBarActivity
@@ -21,7 +24,7 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // read all settings from storage.
-        SettingUtil.readAllSettings(this);
+        SettingUtil.getSettings(this);
         // If account is not set, usually user open this first time
         // turn to AuthIntent.
         if ((account = SettingUtil.getAccount()) == null){
@@ -51,12 +54,6 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    protected void onPause(){
-        super.onPause();
-        SettingUtil.saveAllSettings();
-    }
-
-    @Override
     public void onBackPressed() {
         if(getFragmentManager().getBackStackEntryCount() != 0) {
             getFragmentManager().popBackStack();
@@ -71,10 +68,16 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public void portalItemClicked(PortalDetail clickedPortal) {
+    public void portalItemClicked(PortalDetail clickedPortal, View clickedView) {
         this.clickedPortal = clickedPortal;
         Intent detail = new Intent(this, DetailActivity.class);
         detail.putExtra(DetailActivity.ARG_CLICKED_PORTAL, clickedPortal);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            clickedView.setTransitionName("title");
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, clickedView, "title");
+            startActivity(detail, options.toBundle());
+            return;
+        }
         startActivity(detail);
     }
 }

@@ -2,6 +2,15 @@
 <resources>
     <style name="AppTheme" parent="AppBaseTheme">
     </style>
+
+    <style name="AppTheme.Detail" parent="AppTheme">
+        <!-- enable window content transitions -->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/detail_activity_shared_enter_transition</item>
+        <item name="android:windowSharedElementReturnTransition">
+            @transition/detail_activity_shared_return_transition</item>
+    </style>
     
     <style name="AppTheme.Transparent" parent="AppTheme">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>

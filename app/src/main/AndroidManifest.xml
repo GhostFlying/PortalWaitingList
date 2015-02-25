@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".MyApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -19,7 +18,7 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme.Transparent" >
+            android:theme="@style/AppTheme.PortalList" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,11 +40,27 @@
         <activity
             android:name=".DetailActivity"
             android:label="@string/title_activity_detail"
+            android:theme="@style/AppTheme.Detail"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ghostflying.portalwaitinglist.MainActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="http"
+                      android:host="portalwaitinglist.ghostflying.com"
+                      android:pathPrefix="/portal" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
         </activity>
+
+        <provider
+            android:name=".dao.DataProvider"
+            android:authorities="com.ghostflying.portalwaitinglist"
+            android:enabled="true"
+            android:exported="false" >
+        </provider>
     </application>
 
 </manifest>

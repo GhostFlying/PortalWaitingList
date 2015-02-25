@@ -49,7 +49,7 @@
     <string name="last_update_in_detail">Last update</string>
     <string name="status">Status</string>
     <string name="default_status">Default status</string>
-    <string name="portal_address">Address</string>
+    <string name="portal_address">Address(click to view on intel)</string>
     <string name="default_portal_address">N/A</string>
     <string name="default_operation_result">Default operation result</string>
     <string name="default_operation_type">Default operation type</string>
@@ -114,4 +114,26 @@
     <string name="days_picker_fragment_days">Days</string>
     <string name="title_activity_detail">DetailActivity</string>
 
+    <!-- Search -->
+    <string name="search_hint">Portal name</string>
+    <string name="action_search">search</string>
+
+
+    <!-- Redesign detail activity-->
+    <string name="date_for">" for "</string>
+    <string name="days">day(s)</string>
+    <string name="days_ago">" days ago"</string>
+    <string name="default_event_date">1995/07/08(1000 days ago)</string>
+    <string name="default_event_description">Submission proposed</string>
+    <string name="event_description_submission">Submission</string>
+    <string name="event_description_edit">Edit</string>
+    <string name="event_description_invalid">Invalid report</string>
+    <string name="event_description_proposed">" proposed"</string>
+    <string name="event_description_accepted">" accepted"</string>
+    <string name="event_description_duplicated">" duplicated"</string>
+    <string name="event_description_rejected">" rejected"</string>
+    <string name="map">Map</string>
+
+    <!-- ScreenShot dialog -->
+    <string name="process_screen_shot">ScreenShot is generating, please wait for a while.</string>
 </resources>
