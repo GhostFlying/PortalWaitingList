@@ -9,13 +9,13 @@ android {
             keyPassword RELEASE_KEY_PASSWORD
         }
     }
-    compileSdkVersion 21
+    compileSdkVersion 22
     buildToolsVersion "21.1.2"
     defaultConfig {
         applicationId "com.ghostflying.portalwaitinglist"
         minSdkVersion 15
-        targetSdkVersion 21
-        versionCode 19
+        targetSdkVersion 22
+        versionCode 21
         versionName "0.5e"
     }
     buildTypes {
@@ -31,14 +31,14 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:21.+'
-    compile 'com.android.support:recyclerview-v7:21.0.+'
-    compile 'com.android.support:cardview-v7:21.+'
-    compile 'com.google.android.gms:play-services:6.5.+'
-    compile 'com.squareup.retrofit:retrofit:1.8.0'
-    compile 'com.squareup.picasso:picasso:2.4.0'
-    compile 'com.squareup.okhttp:okhttp:2.1.0'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
-    compile 'com.github.traex.rippleeffect:library:1.2.3'
+    compile 'com.android.support:appcompat-v7:22.+'
+    compile 'com.android.support:recyclerview-v7:22.0.+'
+    compile 'com.android.support:cardview-v7:22.+'
+    compile 'com.google.android.gms:play-services:7.3.+'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.okhttp:okhttp:2.3.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
+    compile 'com.github.traex.rippleeffect:library:1.3'
     compile 'com.google.code.gson:gson:2.3.1'
 }
