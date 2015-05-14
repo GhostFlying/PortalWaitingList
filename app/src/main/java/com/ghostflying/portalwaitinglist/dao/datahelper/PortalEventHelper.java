@@ -45,6 +45,10 @@ public class PortalEventHelper extends BaseHelper {
         values.put(PortalEventDbInfo.COLUMN_NAME_MESSAGE_ID, portalEvent.getMessageId());
         if (portalEvent instanceof SubmissionEvent){
             values.put(PortalEventDbInfo.COLUMN_NAME_IMAGE_URL, ((SubmissionEvent) portalEvent).getPortalImageUrl());
+            if (portalEvent.getOperationResult() == PortalEvent.OperationResult.ACCEPTED){
+                values.put(PortalEventDbInfo.COLUMN_NAME_ADDRESS, portalEvent.getPortalAddress());
+                values.put(PortalEventDbInfo.COLUMN_NAME_ADDRESS_URL, portalEvent.getPortalAddressUrl());
+            }
         }
         else {
             if (portalEvent.getOperationResult() != PortalEvent.OperationResult.PROPOSED){
