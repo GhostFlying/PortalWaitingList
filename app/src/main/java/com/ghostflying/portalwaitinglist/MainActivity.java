@@ -4,7 +4,7 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.ghostflying.portalwaitinglist.fragment.PortalListFragment;
@@ -12,7 +12,7 @@ import com.ghostflying.portalwaitinglist.model.PortalDetail;
 import com.ghostflying.portalwaitinglist.util.SettingUtil;
 
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends AppCompatActivity
         implements PortalListFragment.OnFragmentInteractionListener{
     private static final String LIST_FRAGMENT_TAG = "LIST_FRAGMENT";
     private static final String DETAIL_FRAGMENT_TAG = "DETAIL_FRAGMENT";

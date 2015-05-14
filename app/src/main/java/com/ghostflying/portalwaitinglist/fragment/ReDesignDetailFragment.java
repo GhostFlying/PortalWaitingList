@@ -13,7 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -137,7 +137,7 @@ public class ReDesignDetailFragment extends Fragment
         // toolbar
         mToolbar = (Toolbar)view.findViewById(R.id.detail_toolbar);
         mToolbar.setTitle("");
-        ((ActionBarActivity)getActivity()).setSupportActionBar(mToolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_up);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

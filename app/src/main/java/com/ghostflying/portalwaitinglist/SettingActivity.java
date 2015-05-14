@@ -2,7 +2,7 @@ package com.ghostflying.portalwaitinglist;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +15,7 @@ import com.ghostflying.portalwaitinglist.fragment.DaysPickerDialogFragment;
 import com.ghostflying.portalwaitinglist.util.SettingUtil;
 
 
-public class SettingActivity extends ActionBarActivity
+public class SettingActivity extends AppCompatActivity
         implements BaseAlertDialogFragment.OnFragmentInteractionListener{
     public static final int REQUEST_SETTING = 1;
     CheckBox imageToggle;

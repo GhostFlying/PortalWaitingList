@@ -3,13 +3,13 @@ package com.ghostflying.portalwaitinglist;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.ghostflying.portalwaitinglist.fragment.ReDesignDetailFragment;
 import com.ghostflying.portalwaitinglist.util.SettingUtil;
 
 
-public class DetailActivity extends ActionBarActivity {
+public class DetailActivity extends AppCompatActivity {
 
     public static final String ARG_CLICKED_PORTAL = "clickedItem";
 

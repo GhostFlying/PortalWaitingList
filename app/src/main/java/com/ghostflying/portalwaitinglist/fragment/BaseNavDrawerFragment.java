@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -28,8 +28,8 @@ public abstract class BaseNavDrawerFragment extends Fragment {
 
     protected void setToolbar(View view){
         toolbar = (Toolbar)view.findViewById(R.id.action_bar_in_list);
-        ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
-        ((ActionBarActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     protected void setNavDrawer(View view) {
