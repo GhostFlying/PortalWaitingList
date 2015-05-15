@@ -104,14 +104,14 @@ public class MailProcessUtil {
                         getPortalAddressUrl(content));
             }
 
-//            if (util.isFound(RegexUtil.NEW_PORTAL_SUBMISSION_REJECTED, content)){
-//                rejectedCount ++;
-//                return new SubmissionEvent(util.getMatchedStr().trim(),
-//                        PortalEvent.OperationResult.REJECTED,
-//                        message.getDate(),
-//                        message.getId(),
-//                        getImageUrl(content));
-//            }
+            if (util.isFound(RegexUtil.NEW_PORTAL_SUBMISSION_REJECTED, content)){
+                rejectedCount ++;
+                return new SubmissionEvent(portalName,
+                        PortalEvent.OperationResult.REJECTED,
+                        message.getDate(),
+                        message.getId(),
+                        getImageUrl(content));
+            }
         }
 
         // mails before 05/15/2015

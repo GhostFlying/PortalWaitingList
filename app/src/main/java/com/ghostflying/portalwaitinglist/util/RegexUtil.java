@@ -22,7 +22,7 @@ public class RegexUtil {
     private static final String REGEX_NEW_PORTAL_SUBMISSION = "(?<=Portal submission confirmation: ).+";
     private static final String REGEX_NEW_PORTAL_SUBMISSION_REVIEWED = "(?<=Portal review complete:).+";
     private static final String REGEX_NEW_PORTAL_SUBMISSION_ACCEPTED = "we've accepted your submission";
-    private static final String REGEX_NEW_PORTAL_SUBMISSION_REJECTED = "";
+    private static final String REGEX_NEW_PORTAL_SUBMISSION_REJECTED = "we have decided not to accept this candidate.";
     private static final String REGEX_NEW_PORTAL_EDIT = "(?<=Portal edit submission confirmation:).+";
 
     private static final String REGEX_EACH_JSON_IN_BATCH = "\\{.+\\}";
