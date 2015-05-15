@@ -82,6 +82,12 @@ public class MailProcessUtil {
                     getImageUrl(content));
         }
 
+        if (util.isFound(RegexUtil.NEW_PORTAL_EDIT, subject)){
+            proposedCount ++;
+            return new EditEvent(util.getMatchedStr().trim(),
+                    PortalEvent.OperationResult.PROPOSED, message.getDate(), message.getId());
+        }
+
         if (util.isFound(RegexUtil.NEW_PORTAL_SUBMISSION_REVIEWED, subject)){
             // reviewed, but the result need to be checked
 

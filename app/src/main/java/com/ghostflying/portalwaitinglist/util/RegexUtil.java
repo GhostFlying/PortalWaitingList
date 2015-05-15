@@ -23,6 +23,7 @@ public class RegexUtil {
     private static final String REGEX_NEW_PORTAL_SUBMISSION_REVIEWED = "(?<=Portal review complete:).+";
     private static final String REGEX_NEW_PORTAL_SUBMISSION_ACCEPTED = "we've accepted your submission";
     private static final String REGEX_NEW_PORTAL_SUBMISSION_REJECTED = "";
+    private static final String REGEX_NEW_PORTAL_EDIT = "(?<=Portal edit submission confirmation:).+";
 
     private static final String REGEX_EACH_JSON_IN_BATCH = "\\{.+\\}";
     private static final String REGEX_FIND_BOUNDARY = "(?<=boundary=).+";
@@ -46,7 +47,8 @@ public class RegexUtil {
             REGEX_NEW_PORTAL_SUBMISSION,
             REGEX_NEW_PORTAL_SUBMISSION_REVIEWED,
             REGEX_NEW_PORTAL_SUBMISSION_ACCEPTED,
-            REGEX_NEW_PORTAL_SUBMISSION_REJECTED
+            REGEX_NEW_PORTAL_SUBMISSION_REJECTED,
+            REGEX_NEW_PORTAL_EDIT
     };
     static final int PORTAL_SUBMISSION = 0;
     static final int PORTAL_EDIT = 1;
@@ -65,6 +67,7 @@ public class RegexUtil {
     static final int NEW_PORTAL_SUBMISSION_REVIEWED = 14;
     static final int NEW_PORTAL_SUBMISSION_ACCEPTED = 15;
     static final int NEW_PORTAL_SUBMISSION_REJECTED = 16;
+    static final int NEW_PORTAL_EDIT = 17;
 
     private RegexPair[] regexPairs;
     private Matcher matcher;
