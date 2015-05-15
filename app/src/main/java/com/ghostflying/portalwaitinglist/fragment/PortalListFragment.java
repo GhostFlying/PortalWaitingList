@@ -198,11 +198,6 @@ public class PortalListFragment extends BaseNavDrawerFragment
         v.findViewById(R.id.item_proposed_desc_order).setOnClickListener(sortClickListener);
         v.findViewById(R.id.item_alphabetical_order).setOnClickListener(sortClickListener);
 
-        // type filter
-        v.findViewById(R.id.navigation_item_all).setOnClickListener(typeFilterClickListener);
-        v.findViewById(R.id.navigation_item_submission).setOnClickListener(typeFilterClickListener);
-        v.findViewById(R.id.navigation_item_edit).setOnClickListener(typeFilterClickListener);
-
         countEverything = (TextView)v.findViewById(R.id.count_everything);
         countAccepted = (TextView)v.findViewById(R.id.count_accepted);
         countRejected = (TextView)v.findViewById(R.id.count_rejected);
@@ -319,6 +314,11 @@ public class PortalListFragment extends BaseNavDrawerFragment
         setTitleBySetting();
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    View.OnClickListener getTypeFilterClickListener() {
+        return typeFilterClickListener;
     }
 
     private void setTitleBySetting(){

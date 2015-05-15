@@ -47,7 +47,7 @@ public abstract class BaseNavDrawerFragment extends Fragment {
         actionBarDrawerToggle.syncState();
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
-        // select from setting
+        // last select from setting
         switch (SettingUtil.getTypeFilterMethod()) {
             case ALL:
                 selectedType = view.findViewById(R.id.navigation_item_all);
@@ -62,6 +62,8 @@ public abstract class BaseNavDrawerFragment extends Fragment {
                 selectedType = view.findViewById(R.id.navigation_item_all);
         }
         selectedType.setSelected(true);
+
+        setTypeFilterOutListFragment(view);
 
         // other in navigation
         view.findViewById(R.id.navigation_item_setting).setOnClickListener(navigationDrawerClickListener);
@@ -81,9 +83,9 @@ public abstract class BaseNavDrawerFragment extends Fragment {
 
     protected void setTypeFilterOutListFragment(View view){
         // type filter
-        view.findViewById(R.id.navigation_item_all).setOnClickListener(typeFilterOutListClickListener);
-        view.findViewById(R.id.navigation_item_submission).setOnClickListener(typeFilterOutListClickListener);
-        view.findViewById(R.id.navigation_item_edit).setOnClickListener(typeFilterOutListClickListener);
+        view.findViewById(R.id.navigation_item_all).setOnClickListener(getTypeFilterClickListener());
+        view.findViewById(R.id.navigation_item_submission).setOnClickListener(getTypeFilterClickListener());
+        view.findViewById(R.id.navigation_item_edit).setOnClickListener(getTypeFilterClickListener());
     }
 
     private View.OnClickListener navigationDrawerClickListener = new View.OnClickListener() {
@@ -109,10 +111,5 @@ public abstract class BaseNavDrawerFragment extends Fragment {
         }
     };
 
-    private View.OnClickListener typeFilterOutListClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
+    abstract View.OnClickListener getTypeFilterClickListener();
 }
