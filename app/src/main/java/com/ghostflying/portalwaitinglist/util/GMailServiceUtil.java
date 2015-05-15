@@ -26,7 +26,7 @@ import retrofit.RestAdapter;
  */
 public class GMailServiceUtil {
     private static final long ONE_DAY_MILLISECONDS = 3600L * 24 * 1000;
-    private static final String QUERY_STRING = "from:(super-ops@google.com OR ingress-support@google.com) subject:(Ingress Portal)";
+    private static final String QUERY_STRING = "from:(super-ops@google.com OR ingress-support@google.com) subject:(Portal)";
     private static final String QUERY_MESSAGE_FORMAT = "?format=full";
     private static final String QUERY_MESSAGE_METADATA_DATE = "&metadataHeaders=date";
     private static final String QUERY_MESSAGE_METADATA_SUBJECT = "&metadataHeaders=subject";
@@ -103,7 +103,6 @@ public class GMailServiceUtil {
                 messages.addAll(getBatchMessages(messageIds, (i - 1) * 100, count));
             }
         }
-
         return messages;
     }
 

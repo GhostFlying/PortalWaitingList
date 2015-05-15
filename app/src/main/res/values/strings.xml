@@ -121,7 +121,7 @@
 
     <!-- Redesign detail activity-->
     <string name="date_for">" for "</string>
-    <string name="days">day(s)</string>
+    <string name="days">" day(s)"</string>
     <string name="days_ago">" days ago"</string>
     <string name="default_event_date">1995/07/08(1000 days ago)</string>
     <string name="default_event_description">Submission proposed</string>

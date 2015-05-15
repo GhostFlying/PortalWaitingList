@@ -68,14 +68,60 @@ public class MailProcessUtil {
 
         // Try to match regex.
         String subject = message.getSubject();
+        String content = decodeMailHtml(message.getMessageHtml());
         RegexUtil util = RegexUtil.getInstance();
+
+
+        // mails after 05/15/2015
+        if (util.isFound(RegexUtil.NEW_PORTAL_SUBMISSION, subject)){
+            proposedCount ++;
+            return new SubmissionEvent(util.getMatchedStr().trim(),
+                    PortalEvent.OperationResult.PROPOSED,
+                    message.getDate(),
+                    message.getId(),
+                    getImageUrl(content));
+        }
+
+        if (util.isFound(RegexUtil.NEW_PORTAL_EDIT, subject)){
+            proposedCount ++;
+            return new EditEvent(util.getMatchedStr().trim(),
+                    PortalEvent.OperationResult.PROPOSED, message.getDate(), message.getId());
+        }
+
+        if (util.isFound(RegexUtil.NEW_PORTAL_SUBMISSION_REVIEWED, subject)){
+            // reviewed, but the result need to be checked
+
+            String portalName = util.getMatchedStr().trim();
+
+            if (util.isFound(RegexUtil.NEW_PORTAL_SUBMISSION_ACCEPTED, content)){
+                acceptedCount ++;
+                return new SubmissionEvent(portalName,
+                        PortalEvent.OperationResult.ACCEPTED,
+                        message.getDate(),
+                        message.getId(),
+                        getImageUrl(content),
+                        getPortalAddress(content),
+                        getPortalAddressUrl(content));
+            }
+
+            if (util.isFound(RegexUtil.NEW_PORTAL_SUBMISSION_REJECTED, content)){
+                rejectedCount ++;
+                return new SubmissionEvent(portalName,
+                        PortalEvent.OperationResult.REJECTED,
+                        message.getDate(),
+                        message.getId(),
+                        getImageUrl(content));
+            }
+        }
+
+        // mails before 05/15/2015
         if (util.isFound(RegexUtil.PORTAL_SUBMISSION, subject)){
             proposedCount ++;
             return new SubmissionEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.PROPOSED,
                     message.getDate(),
                     message.getId(),
-                    getImageUrl(message.getMessageHtml()));
+                    getImageUrl(content));
         }
 
         if (util.isFound(RegexUtil.PORTAL_EDIT, subject)){
@@ -90,7 +136,7 @@ public class MailProcessUtil {
                     PortalEvent.OperationResult.PROPOSED,
                     message.getDate(),
                     message.getId(),
-                    getImageUrl(message.getMessageHtml()));
+                    getImageUrl(content));
         }
 
         if (util.isFound(RegexUtil.PORTAL_SUBMISSION_PASSED, subject)){
@@ -99,9 +145,9 @@ public class MailProcessUtil {
                     PortalEvent.OperationResult.ACCEPTED,
                     message.getDate(),
                     message.getId(),
-                    getImageUrl(message.getMessageHtml()),
-                    getPortalAddress(message.getMessageHtml()),
-                    getPortalAddressUrl(message.getMessageHtml()));
+                    getImageUrl(content),
+                    getPortalAddress(content),
+                    getPortalAddressUrl(content));
         }
 
         if (util.isFound(RegexUtil.PORTAL_SUBMISSION_REJECTED, subject)){
@@ -110,7 +156,7 @@ public class MailProcessUtil {
                     PortalEvent.OperationResult.REJECTED,
                     message.getDate(),
                     message.getId(),
-                    getImageUrl(message.getMessageHtml()));
+                    getImageUrl(content));
         }
 
         if (util.isFound(RegexUtil.PORTAL_SUBMISSION_DUPLICATE, subject)){
@@ -119,7 +165,7 @@ public class MailProcessUtil {
                     PortalEvent.OperationResult.DUPLICATE,
                     message.getDate(),
                     message.getId(),
-                    getImageUrl(message.getMessageHtml()));
+                    getImageUrl(content));
         }
 
         if (util.isFound(RegexUtil.PORTAL_EDIT_PASSED, subject)){
@@ -127,8 +173,8 @@ public class MailProcessUtil {
             return new EditEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.ACCEPTED,
                     message.getDate(), message.getId(),
-                    getPortalAddress(message.getMessageHtml()),
-                    getPortalAddressUrl(message.getMessageHtml()));
+                    getPortalAddress(content),
+                    getPortalAddressUrl(content));
         }
 
         if (util.isFound(RegexUtil.PORTAL_EDIT_REJECTED, subject)){
@@ -136,31 +182,28 @@ public class MailProcessUtil {
             return new EditEvent(util.getMatchedStr().trim(),
                     PortalEvent.OperationResult.REJECTED,
                     message.getDate(), message.getId(),
-                    getPortalAddress(message.getMessageHtml()),
-                    getPortalAddressUrl(message.getMessageHtml()));
+                    getPortalAddress(content),
+                    getPortalAddressUrl(content));
         }
 
         return null;
     }
 
     private String getImageUrl(String html){
-        String decodeStr = decodeMailHtml(html);
-        if (RegexUtil.getInstance().isFound(RegexUtil.IMG_URL, decodeStr))
+        if (RegexUtil.getInstance().isFound(RegexUtil.IMG_URL, html))
             return RegexUtil.getInstance().getMatchedStr();
         return PARSE_ERROR_TEXT;
     }
 
 
     private String getPortalAddress(String html){
-        String decodeStr = decodeMailHtml(html);
-        if (RegexUtil.getInstance().isFound(RegexUtil.ADDRESS, decodeStr))
+        if (RegexUtil.getInstance().isFound(RegexUtil.ADDRESS, html))
             return RegexUtil.getInstance().getMatchedStr();
         return PARSE_ERROR_TEXT;
     }
 
     private String getPortalAddressUrl(String html){
-        String decodeStr = decodeMailHtml(html);
-        if (RegexUtil.getInstance().isFound(RegexUtil.ADDRESS_URL, decodeStr))
+        if (RegexUtil.getInstance().isFound(RegexUtil.ADDRESS_URL, html))
             return RegexUtil.getInstance().getMatchedStr();
         return PARSE_ERROR_TEXT;
     }
