@@ -111,6 +111,15 @@ public class MailProcessUtil {
                         message.getId(),
                         getImageUrl(content));
             }
+
+            if (util.isFound(RegexUtil.NEW_PORTAL_SUBMISSION_TOO_CLOSE, content)){
+                rejectedCount ++;
+                return new SubmissionEvent(portalName,
+                        PortalEvent.OperationResult.TOO_CLOSE,
+                        message.getDate(),
+                        message.getId(),
+                        getImageUrl(content));
+            }
         }
 
         if (util.isFound(RegexUtil.NEW_PORTAL_EDIT_REVIEWED, subject)){

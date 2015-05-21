@@ -114,6 +114,8 @@ public class PortalListAdapter extends RecyclerView.Adapter<PortalListAdapter.Vi
                 return R.drawable.ic_rejected;
             case DUPLICATE:
                 return R.drawable.ic_rejected;
+            case TOO_CLOSE:
+                return R.drawable.ic_rejected;
             case PROPOSED:
                 switch (operationType){
                     case EDIT:

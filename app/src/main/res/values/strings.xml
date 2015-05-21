@@ -132,6 +132,7 @@
     <string name="event_description_accepted">" accepted"</string>
     <string name="event_description_duplicated">" duplicated"</string>
     <string name="event_description_rejected">" rejected"</string>
+    <string name="event_description_too_close">" too close"</string>
     <string name="map">Map</string>
 
     <!-- ScreenShot dialog -->

@@ -228,7 +228,8 @@ public class PortalDetail implements Comparable<PortalDetail>, Parcelable{
      */
     public boolean isRejected(){
         return events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.REJECTED
-                || events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.DUPLICATE;
+                || events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.DUPLICATE
+                || events.get(events.size() - 1).getOperationResult() == PortalEvent.OperationResult.TOO_CLOSE;
     }
 
     /**

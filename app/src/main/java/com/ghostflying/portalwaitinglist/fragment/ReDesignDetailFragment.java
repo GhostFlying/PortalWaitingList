@@ -367,6 +367,9 @@ public class ReDesignDetailFragment extends Fragment
             case REJECTED:
                 description += getString(R.string.event_description_rejected);
                 break;
+            case TOO_CLOSE:
+                description += getString(R.string.event_description_too_close);
+                break;
         }
         return description;
     }
@@ -379,6 +382,7 @@ public class ReDesignDetailFragment extends Fragment
                 return R.drawable.ic_accepted_40dp;
             case DUPLICATE:
             case REJECTED:
+            case TOO_CLOSE:
                 return R.drawable.ic_rejected_40dp;
         }
         return R.drawable.ic_launcher;

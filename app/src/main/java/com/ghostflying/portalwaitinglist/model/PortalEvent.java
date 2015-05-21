@@ -74,7 +74,7 @@ public abstract class PortalEvent implements Comparable<PortalEvent>, Parcelable
     }
 
     public enum OperationResult{
-        PROPOSED, ACCEPTED, REJECTED, DUPLICATE
+        PROPOSED, ACCEPTED, REJECTED, DUPLICATE, TOO_CLOSE
     }
 
     @Override
