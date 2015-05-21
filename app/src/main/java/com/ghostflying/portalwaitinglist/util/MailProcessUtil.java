@@ -71,7 +71,6 @@ public class MailProcessUtil {
         String content = decodeMailHtml(message.getMessageHtml());
         RegexUtil util = RegexUtil.getInstance();
 
-
         // mails after 05/15/2015
         if (util.isFound(RegexUtil.NEW_PORTAL_SUBMISSION, subject)){
             proposedCount ++;
@@ -111,6 +110,23 @@ public class MailProcessUtil {
                         message.getDate(),
                         message.getId(),
                         getImageUrl(content));
+            }
+        }
+
+        if (util.isFound(RegexUtil.NEW_PORTAL_EDIT_REVIEWED, subject)){
+            // edit reviewed mail
+
+            String portalName = util.getMatchedStr().trim();
+
+            if (util.isFound(RegexUtil.NEW_PORTAL_EDIT_ACCEPTED, content)){
+                acceptedCount ++;
+                return new EditEvent(
+                        portalName,
+                        PortalEvent.OperationResult.ACCEPTED,
+                        message.getDate(), message.getId(),
+                        getPortalAddress(content),
+                        getPortalAddressUrl(content)
+                );
             }
         }
 
