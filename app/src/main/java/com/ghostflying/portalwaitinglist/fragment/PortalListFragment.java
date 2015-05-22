@@ -187,7 +187,8 @@ public class PortalListFragment extends Fragment
 
     @Override
     public void onStop (){
-        searchItem.collapseActionView();
+        if (searchItem != null)
+            searchItem.collapseActionView();
         super.onStop();
     }
 

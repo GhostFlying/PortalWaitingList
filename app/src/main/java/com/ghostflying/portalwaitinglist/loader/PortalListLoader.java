@@ -131,10 +131,6 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
             deliverResult(mViewModel);
         }
 
-        if (mHelper != null){
-            setObserver();
-        }
-
         if (takeContentChanged() || mViewModel == null){
             forceLoad();
         }
@@ -143,10 +139,6 @@ public class PortalListLoader extends AsyncTaskLoader<PortalListLoader.PortalLis
     @Override
     protected void onStopLoading(){
         cancelLoad();
-        SettingUtil.unregisterObserver();
-        if (mHelper != null)
-            mHelper.unregisterContentObserver(mContentObserver);
-        isObserved = false;
     }
 
     @Override
