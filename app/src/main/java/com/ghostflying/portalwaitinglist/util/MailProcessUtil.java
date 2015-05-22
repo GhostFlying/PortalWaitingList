@@ -120,6 +120,15 @@ public class MailProcessUtil {
                         message.getId(),
                         getImageUrl(content));
             }
+
+            if (util.isFound(RegexUtil.NEW_PORTAL_SUBMISSION_DUPLICATE, content)){
+                rejectedCount ++;
+                return new SubmissionEvent(portalName,
+                        PortalEvent.OperationResult.DUPLICATE,
+                        message.getDate(),
+                        message.getId(),
+                        getImageUrl(content));
+            }
         }
 
         if (util.isFound(RegexUtil.NEW_PORTAL_EDIT_REVIEWED, subject)){

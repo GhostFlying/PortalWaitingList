@@ -28,6 +28,7 @@ public class RegexUtil {
     private static final String REGEX_NEW_PORTAL_EDIT_ACCEPTED = "we have implemented those that improve its overall quality";
     private static final String REGEX_NEW_PORTAL_EDIT_REJECTED = "have decided not to make any changes at this time";
     private static final String REGEX_NEW_PORTAL_SUBMISSION_TOO_CLOSE = "However, this candidate is too close to an existing Portal";
+    private static final String REGEX_NEW_PORTAL_SUBMISSION_DUPLICATE = "Your candidate is a duplicate of either an existing Portal or one that's too close to another live Portal to be safely Hacked.";
 
     private static final String REGEX_EACH_JSON_IN_BATCH = "\\{.+\\}";
     private static final String REGEX_FIND_BOUNDARY = "(?<=boundary=).+";
@@ -56,7 +57,8 @@ public class RegexUtil {
             REGEX_NEW_PORTAL_EDIT_REVIEWED,
             REGEX_NEW_PORTAL_EDIT_ACCEPTED,
             REGEX_NEW_PORTAL_EDIT_REJECTED,
-            REGEX_NEW_PORTAL_SUBMISSION_TOO_CLOSE
+            REGEX_NEW_PORTAL_SUBMISSION_TOO_CLOSE,
+            REGEX_NEW_PORTAL_SUBMISSION_DUPLICATE
     };
     static final int PORTAL_SUBMISSION = 0;
     static final int PORTAL_EDIT = 1;
@@ -80,6 +82,7 @@ public class RegexUtil {
     static final int NEW_PORTAL_EDIT_ACCEPTED = 19;
     static final int NEW_PORTAL_EDIT_REJECTED = 20;
     static final int NEW_PORTAL_SUBMISSION_TOO_CLOSE = 21;
+    static final int NEW_PORTAL_SUBMISSION_DUPLICATE = 22;
 
     private RegexPair[] regexPairs;
     private Matcher matcher;
