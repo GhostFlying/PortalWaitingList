@@ -137,6 +137,17 @@ public class MailProcessUtil {
                         getPortalAddressUrl(content)
                 );
             }
+
+            if (util.isFound(RegexUtil.NEW_PORTAL_EDIT_REJECTED, content)){
+                rejectedCount ++;
+                return new EditEvent(
+                        portalName,
+                        PortalEvent.OperationResult.REJECTED,
+                        message.getDate(), message.getId(),
+                        getPortalAddress(content),
+                        getPortalAddressUrl(content)
+                );
+            }
         }
 
         // mails before 05/15/2015

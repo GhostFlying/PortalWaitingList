@@ -26,7 +26,7 @@ public class RegexUtil {
     private static final String REGEX_NEW_PORTAL_EDIT = "(?<=Portal edit submission confirmation:).+";
     private static final String REGEX_NEW_PORTAL_EDIT_REVIEWED = "(?<=Portal edit review complete:).+";
     private static final String REGEX_NEW_PORTAL_EDIT_ACCEPTED = "we have implemented those that improve its overall quality";
-    private static final String REGEX_NEW_PORTAL_EDIT_REJECTED = "";
+    private static final String REGEX_NEW_PORTAL_EDIT_REJECTED = "have decided not to make any changes at this time";
     private static final String REGEX_NEW_PORTAL_SUBMISSION_TOO_CLOSE = "However, this candidate is too close to an existing Portal";
 
     private static final String REGEX_EACH_JSON_IN_BATCH = "\\{.+\\}";
