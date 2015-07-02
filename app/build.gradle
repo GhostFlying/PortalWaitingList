@@ -15,7 +15,7 @@ android {
         applicationId "com.ghostflying.portalwaitinglist"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 25
+        versionCode 26
         versionName "0.5h"
     }
     buildTypes {
